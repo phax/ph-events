@@ -28,7 +28,7 @@ import com.helger.event.IEventType;
  * Default implementation of the {@link IEvent} interface that only takes an
  * event type and has no additional parameters.
  *
- * @author philip
+ * @author Philip Helger
  */
 @Immutable
 public class BaseEvent implements IEvent

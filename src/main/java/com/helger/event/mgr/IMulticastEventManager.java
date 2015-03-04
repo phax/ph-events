@@ -24,14 +24,14 @@ import com.helger.event.IEventObserver;
 /**
  * Base interface for a multicast event manager. Multicast means having multiple
  * event observers to inform.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 public interface IMulticastEventManager
 {
   /**
    * Register an additional observer.
-   * 
+   *
    * @param aObserver
    *        The observer to be registered. May not be <code>null</code>.
    * @return {@link EChange}
@@ -42,7 +42,7 @@ public interface IMulticastEventManager
 
   /**
    * Unregister an existing observer.
-   * 
+   *
    * @param aObserver
    *        The observer to be unregistered. May not be <code>null</code>.
    * @return {@link EChange}

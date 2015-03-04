@@ -27,8 +27,8 @@ import com.helger.event.impl.EventObservingExceptionWrapper;
 /**
  * Aggregate a list of Boolean result values by combining them with a logical
  * AND.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 public final class DispatchResultAggregatorBooleanAnd implements IAggregator <Object, Object>
 {

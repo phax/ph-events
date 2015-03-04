@@ -28,8 +28,8 @@ import com.helger.event.observerqueue.impl.EventObserverQueueSingleElement;
 
 /**
  * Abstract base class for asynchronous unicast event managers.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 public abstract class AbstractAsynchronousUnicastEventManager implements IUnicastEventManager, IStoppable
 {

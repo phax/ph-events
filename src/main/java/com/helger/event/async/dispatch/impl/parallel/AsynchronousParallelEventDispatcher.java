@@ -46,8 +46,8 @@ import com.helger.event.observerqueue.IEventObserverQueue;
 /**
  * Event dispatcher that spawns a thread for each event and each observer. So if
  * you have 2 events with 7 observers a total of 2 * 7 threads are spawned.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 public class AsynchronousParallelEventDispatcher extends AbstractEventDispatcher implements IAsynchronousEventDispatcher
 {

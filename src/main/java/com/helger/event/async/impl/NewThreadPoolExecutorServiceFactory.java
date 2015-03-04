@@ -19,23 +19,27 @@ package com.helger.event.async.impl;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.annotation.Nonnegative;
+import javax.annotation.Nonnull;
+
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.concurrent.IExecutorServiceFactory;
 
 public class NewThreadPoolExecutorServiceFactory implements IExecutorServiceFactory
 {
   private final int m_nThreadPoolSize;
 
-  public NewThreadPoolExecutorServiceFactory (final int nThreadPoolSize)
+  @Nonnull
+  public NewThreadPoolExecutorServiceFactory (@Nonnegative final int nThreadPoolSize)
   {
-    if (nThreadPoolSize < 1)
-      throw new IllegalArgumentException ("The passed number of threads in the pool is illegal: " + nThreadPoolSize);
+    ValueEnforcer.isGT0 (nThreadPoolSize, "ThreadPoolSize");
     m_nThreadPoolSize = nThreadPoolSize;
   }
 
-  public ExecutorService getExecutorService (final int nParallelTasks)
+  @Nonnull
+  public ExecutorService getExecutorService (@Nonnegative final int nParallelTasks)
   {
-    if (nParallelTasks < 1)
-      throw new IllegalArgumentException ("The number of parallel tasks is invalid: " + nParallelTasks);
+    ValueEnforcer.isGT0 (nParallelTasks, "ParallelTasks");
     return Executors.newFixedThreadPool (Math.min (m_nThreadPoolSize, nParallelTasks));
   }
 }

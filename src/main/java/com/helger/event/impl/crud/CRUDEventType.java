@@ -28,7 +28,7 @@ import com.helger.event.impl.EventTypeRegistry;
 /**
  * Default implementation if the {@link ICRUDEventType} interface.
  *
- * @author philip
+ * @author Philip Helger
  */
 @Immutable
 public final class CRUDEventType implements ICRUDEventType

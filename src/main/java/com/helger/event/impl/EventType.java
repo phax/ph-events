@@ -28,7 +28,7 @@ import com.helger.event.IEventType;
 /**
  * Default implementation if the {@link IEventType} interface.
  *
- * @author philip
+ * @author Philip Helger
  */
 @Immutable
 final class EventType implements IEventType

@@ -33,8 +33,8 @@ import com.helger.web.scopes.mgr.EWebScope;
 
 /**
  * Scope aware event manager for web scopes.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 public final class WebScopedEventManager
 {
@@ -121,7 +121,7 @@ public final class WebScopedEventManager
 
   /**
    * Notify observers without sender and without parameter.
-   * 
+   *
    * @param aEventType
    *        The event type for which an event should be triggered
    * @return <code>true</code> if no observer vetoed against the event
@@ -133,7 +133,7 @@ public final class WebScopedEventManager
 
   /**
    * Notify observers without sender and without parameter.
-   * 
+   *
    * @param aEvent
    *        The event on which observers should be notified.
    * @return <code>true</code> if no observer vetoed against the event

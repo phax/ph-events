@@ -25,8 +25,8 @@ import com.helger.commons.lang.EnumHelper;
 
 /**
  * Determine the point in time, when an event is triggered.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 public enum EEventPointInTime implements IHasID <String>
 {

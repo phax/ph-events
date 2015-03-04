@@ -29,8 +29,8 @@ import com.helger.event.sync.dispatch.ISynchronousEventDispatcherFactory;
 /**
  * Abstract base class for synchronous unicast event managers. Unicast means
  * having only a single event observer.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 public abstract class AbstractSynchronousUnicastEventManager implements IUnicastEventManager, IStoppable
 {

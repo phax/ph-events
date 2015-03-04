@@ -23,8 +23,8 @@ import com.helger.event.IEvent;
 /**
  * Interface for an unidirectional event manager. Unidirectional means that not
  * response is provided.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 public interface IUnidirectionalEventManager
 {

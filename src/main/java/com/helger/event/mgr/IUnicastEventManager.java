@@ -23,14 +23,14 @@ import com.helger.event.IEventObserver;
 /**
  * Base interface for an unicast event manager. Unicast means having only a
  * single event observer.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 public interface IUnicastEventManager
 {
   /**
    * Set the observer to be used.
-   * 
+   *
    * @param aObserver
    *        The observer to be registered. May not be <code>null</code>.
    * @throws IllegalArgumentException

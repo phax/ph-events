@@ -27,8 +27,8 @@ import com.helger.event.IEventType;
 /**
  * Event type registry. Keeps all event types, and ensures, that no event type
  * name is used more than once.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 public final class EventTypeRegistry
 {

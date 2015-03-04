@@ -36,8 +36,8 @@ import com.helger.event.observerqueue.IEventObserverQueue;
 /**
  * Implementation of {@link IEventObserverQueue} based on a
  * {@link LinkedHashSet}. Order of observers is maintained!
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 @ThreadSafe
 public final class EventObserverQueueOrderedSet extends AbstractEventObserverQueue

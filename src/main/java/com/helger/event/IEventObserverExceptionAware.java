@@ -20,8 +20,8 @@ package com.helger.event;
  * This is a marker interface that identifies exceptions that are thrown from
  * within the event observer. This is necessary because normally the event
  * listener catches all exceptions and simply returns an error code.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 public interface IEventObserverExceptionAware
 {

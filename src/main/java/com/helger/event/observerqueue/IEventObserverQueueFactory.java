@@ -20,8 +20,8 @@ import com.helger.commons.factory.IFactory;
 
 /**
  * Factory interface for creating {@link IEventObserverQueue} objects.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 public interface IEventObserverQueueFactory extends IFactory <IEventObserverQueue>
 {

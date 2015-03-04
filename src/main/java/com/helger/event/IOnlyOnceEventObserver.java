@@ -21,8 +21,8 @@ package com.helger.event;
  * plugin. Simply implement this interface besides the regular observer
  * interface. The rest is handled automatically within the event engine (the
  * dispatcher to be exact).
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 public interface IOnlyOnceEventObserver extends IEventObserver
 {

@@ -39,8 +39,8 @@ import com.helger.event.observerqueue.IEventObserverQueue;
 
 /**
  * Dispatch events based on a {@link java.util.concurrent.BlockingQueue}.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 public final class AsynchronousQueueEventDispatcher extends AbstractEventDispatcher implements IAsynchronousEventDispatcher
 {

@@ -26,8 +26,8 @@ import com.helger.event.observerqueue.IEventObserverQueueFactory;
 /**
  * Default implementation of {@link IEventObserverQueueFactory} always returning
  * an {@link EventObserverQueueOrderedSet}.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 @Immutable
 public final class DefaultEventObserverQueueFactory implements IEventObserverQueueFactory

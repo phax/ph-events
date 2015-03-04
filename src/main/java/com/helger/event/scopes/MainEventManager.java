@@ -28,7 +28,7 @@ import com.helger.event.sync.mgr.impl.BidirectionalSynchronousMulticastEventMana
 /**
  * Wraps the main event manager so that it becomes scope destruction aware
  *
- * @author philip
+ * @author Philip Helger
  */
 final class MainEventManager extends BidirectionalSynchronousMulticastEventManager implements IScopeDestructionAware
 {

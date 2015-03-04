@@ -31,8 +31,8 @@ import com.helger.event.IEventType;
 
 /**
  * Abstract base class for a simple event observer.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 public abstract class AbstractEventObserver implements IEventObserver
 {

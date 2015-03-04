@@ -25,8 +25,8 @@ import com.helger.event.IEvent;
  * Interface for a bidirectional, synchronous event manager. Bidirectional means
  * that the event observer can provide a result of the event handling.
  * Synchronous means that the results are collected synchronously.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 public interface IBidirectionalSynchronousEventManager
 {

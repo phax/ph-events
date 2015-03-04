@@ -21,8 +21,8 @@ import com.helger.event.impl.EventObservingExceptionHandler;
 
 /**
  * Specialized exception handler
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 final class ScopedEventObservingExceptionHandler extends EventObservingExceptionHandler
 {

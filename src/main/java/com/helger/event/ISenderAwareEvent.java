@@ -20,8 +20,8 @@ import javax.annotation.Nonnull;
 
 /**
  * Declares an event that knows its sender object.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  * @param <T>
  *        The type of the sender
  */

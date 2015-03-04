@@ -29,8 +29,8 @@ import com.helger.event.observerqueue.IEventObserverQueueFactory;
 
 /**
  * Abstract base class for asynchronous multicast event managers.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 public abstract class AbstractAsynchronousMulticastEventManager implements IMulticastEventManager, IStoppable
 {

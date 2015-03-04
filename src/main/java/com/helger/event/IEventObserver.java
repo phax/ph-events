@@ -23,15 +23,15 @@ import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 
 /**
  * Base interface of event observers.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 public interface IEventObserver
 {
   /**
    * Determine whether we can handle this event or not. This method is always
    * called synchronously.
-   * 
+   *
    * @param aEvent
    *        The event to be checked. May not be <code>null</code>.
    * @return Never <code>null</code>.
@@ -43,7 +43,7 @@ public interface IEventObserver
    * Main event handling routine. This routine is only called if the call to
    * {@link #canHandleEvent(IEvent)} did not return
    * {@link EEventObserverHandlerType#CANNOT_HANDLE}.
-   * 
+   *
    * @param aEvent
    *        The event to be handled. May not be <code>null</code>.
    * @param aResultCallback

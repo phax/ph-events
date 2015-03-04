@@ -26,8 +26,8 @@ import com.helger.event.IEventObservingExceptionHandler;
 /**
  * Utility class that knows what to with an exception that is thrown while
  * performing an event.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 @Immutable
 public class EventObservingExceptionHandler implements IEventObservingExceptionHandler

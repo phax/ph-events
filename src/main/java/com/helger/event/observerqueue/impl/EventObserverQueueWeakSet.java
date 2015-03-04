@@ -37,8 +37,8 @@ import com.helger.event.observerqueue.IEventObserverQueue;
 /**
  * Implementation of {@link IEventObserverQueue} based on a {@link WeakHashMap}
  * used as a {@link Set}. Order of observers is not maintained!
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 @ThreadSafe
 public final class EventObserverQueueWeakSet extends AbstractEventObserverQueue

@@ -30,8 +30,8 @@ import com.helger.event.scopes.ScopedEventManager;
 
 /**
  * JUnit test for class {@link ScopedEventManager}.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 public final class ScopedEventManagerTest
 {

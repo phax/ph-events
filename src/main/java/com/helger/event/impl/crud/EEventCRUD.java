@@ -25,8 +25,8 @@ import com.helger.commons.lang.EnumHelper;
 
 /**
  * Determines the 4 different CRUD states.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 public enum EEventCRUD implements IHasID <String>
 {

@@ -25,14 +25,14 @@ import com.helger.event.observerqueue.IEventObserverQueue;
 
 /**
  * Dispatch events asynchronously.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 public interface IAsynchronousEventDispatcher extends IStoppable
 {
   /**
    * Dispatch an event to a number of observers in a synchronized way.
-   * 
+   *
    * @param aEvent
    *        The event to be dispatched. May not be <code>null</code>.
    * @param aObservers

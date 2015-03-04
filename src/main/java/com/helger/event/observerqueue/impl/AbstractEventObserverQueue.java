@@ -21,8 +21,8 @@ import com.helger.event.observerqueue.IEventObserverQueue;
 
 /**
  * Abstract base implementation of {@link IEventObserverQueue}
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 public abstract class AbstractEventObserverQueue implements IEventObserverQueue
 {

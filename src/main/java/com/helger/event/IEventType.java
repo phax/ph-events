@@ -21,8 +21,8 @@ import com.helger.commons.name.IHasName;
 
 /**
  * Represents the type of an event.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 @MustImplementEqualsAndHashcode
 public interface IEventType extends IHasName

@@ -21,14 +21,14 @@ import javax.annotation.Nonnull;
 /**
  * Implement this interface to instruct an event dispatcher what to do with
  * exceptions thrown by event observers.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 public interface IEventObservingExceptionHandler
 {
   /**
    * Handle the thrown exception.
-   * 
+   *
    * @param aThrowable
    *        The thrown exception. May not be <code>null</code>.
    */

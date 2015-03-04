@@ -20,8 +20,8 @@ import javax.annotation.Nonnull;
 
 /**
  * Base interface for a single event instance.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 public interface IEvent
 {

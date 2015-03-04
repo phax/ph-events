@@ -25,8 +25,8 @@ import com.helger.event.ISenderAwareEvent;
 
 /**
  * Base class for events that have knowledge of their sender
- * 
- * @author philip
+ *
+ * @author Philip Helger
  * @param <T>
  *        The type of the sender
  */

@@ -30,8 +30,8 @@ import com.helger.event.sync.dispatch.ISynchronousEventDispatcherFactory;
 /**
  * Abstract base class for synchronous multicast event managers. Multicast means
  * having multiple event observers to inform.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 public abstract class AbstractSynchronousMulticastEventManager implements IMulticastEventManager, IStoppable
 {

@@ -25,8 +25,8 @@ import com.helger.event.IOnlyOnceEventObserver;
 /**
  * Abstract base class for a simple event observer that can be handled only
  * once.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 public abstract class AbstractOnlyOnceEventObserver extends AbstractEventObserver implements IOnlyOnceEventObserver
 {

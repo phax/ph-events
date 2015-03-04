@@ -38,8 +38,8 @@ import com.helger.event.observerqueue.IEventObserverQueue;
 /**
  * Event dispatcher that spawns a thread for each triggered event and notifies
  * all observers in a serial way.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 public class AsynchronousSerialEventDispatcher extends AbstractEventDispatcher implements IAsynchronousEventDispatcher
 {

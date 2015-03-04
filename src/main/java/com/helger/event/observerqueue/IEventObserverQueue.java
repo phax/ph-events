@@ -26,14 +26,14 @@ import com.helger.event.IEventObserver;
 
 /**
  * Interface for keeping a list of event observers.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 public interface IEventObserverQueue
 {
   /**
    * Add a new observer.
-   * 
+   *
    * @param aObserver
    *        The observer to add. May not be <code>null</code>.
    * @return {@link EChange}
@@ -43,7 +43,7 @@ public interface IEventObserverQueue
 
   /**
    * Remove a previously added observer.
-   * 
+   *
    * @param aObserver
    *        The observer to remove. May not be <code>null</code>.
    * @return {@link EChange}

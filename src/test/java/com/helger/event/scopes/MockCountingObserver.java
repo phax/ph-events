@@ -28,8 +28,8 @@ import com.helger.event.impl.EventTypeRegistry;
 
 /**
  * Dummy observer.
- * 
- * @author philip
+ *
+ * @author Philip Helger
  */
 public final class MockCountingObserver extends AbstractEventObserver
 {
