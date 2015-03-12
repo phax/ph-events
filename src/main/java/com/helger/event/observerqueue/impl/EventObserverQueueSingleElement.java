@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 
 import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.commons.equals.EqualsUtils;
 import com.helger.commons.hash.HashCodeGenerator;
 import com.helger.commons.state.EChange;
@@ -84,7 +84,7 @@ public final class EventObserverQueueSingleElement extends AbstractEventObserver
     m_aRWLock.readLock ().lock ();
     try
     {
-      return ContainerHelper.newList (m_aObserver);
+      return CollectionHelper.newList (m_aObserver);
     }
     finally
     {

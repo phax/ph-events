@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
 import com.helger.commons.annotations.DevelopersNote;
 import com.helger.commons.annotations.UnsupportedOperation;
 import com.helger.commons.collections.ArrayHelper;
-import com.helger.commons.collections.ContainerHelper;
+import com.helger.commons.collections.CollectionHelper;
 import com.helger.event.EEventObserverHandlerType;
 import com.helger.event.IEvent;
 import com.helger.event.IEventObserver;
@@ -60,19 +60,19 @@ public abstract class AbstractEventObserver implements IEventObserver
 
     m_eHandlerType = bWithReturnValue ? EEventObserverHandlerType.HANDLE_RETURN_VALUE
                                      : EEventObserverHandlerType.HANDLE_NO_RETURN;
-    m_aHandledEventTypes = ContainerHelper.newSet (aHandledEventTypes);
+    m_aHandledEventTypes = CollectionHelper.newSet (aHandledEventTypes);
   }
 
   public AbstractEventObserver (final boolean bWithReturnValue, @Nonnull final Iterable <IEventType> aHandledEventTypes)
   {
-    if (ContainerHelper.isEmpty (aHandledEventTypes))
+    if (CollectionHelper.isEmpty (aHandledEventTypes))
       throw new IllegalArgumentException ("No event type is passed");
-    if (ContainerHelper.containsAnyNullElement (aHandledEventTypes))
+    if (CollectionHelper.containsAnyNullElement (aHandledEventTypes))
       throw new IllegalArgumentException ("Event types contain an illegal event type");
 
     m_eHandlerType = bWithReturnValue ? EEventObserverHandlerType.HANDLE_RETURN_VALUE
                                      : EEventObserverHandlerType.HANDLE_NO_RETURN;
-    m_aHandledEventTypes = ContainerHelper.newSet (aHandledEventTypes);
+    m_aHandledEventTypes = CollectionHelper.newSet (aHandledEventTypes);
   }
 
   @Nonnull
