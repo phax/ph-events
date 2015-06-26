@@ -19,7 +19,7 @@ package com.helger.event.sync.dispatch.impl;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.helger.commons.aggregate.IAggregatorFactory;
+import com.helger.event.IAggregatorFactory;
 import com.helger.event.IEventObservingExceptionHandler;
 import com.helger.event.sync.dispatch.ISynchronousEventDispatcher;
 import com.helger.event.sync.dispatch.ISynchronousEventDispatcherFactory;

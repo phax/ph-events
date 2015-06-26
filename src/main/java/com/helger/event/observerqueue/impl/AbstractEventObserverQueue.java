@@ -16,7 +16,7 @@
  */
 package com.helger.event.observerqueue.impl;
 
-import com.helger.commons.annotations.OverrideOnDemand;
+import com.helger.commons.annotation.OverrideOnDemand;
 import com.helger.event.observerqueue.IEventObserverQueue;
 
 /**

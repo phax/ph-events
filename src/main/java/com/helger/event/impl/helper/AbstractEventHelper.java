@@ -19,9 +19,9 @@ package com.helger.event.impl.helper;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
-import com.helger.commons.aggregate.AggregatorFactoryNewInstance;
 import com.helger.commons.aggregate.IAggregator;
-import com.helger.commons.aggregate.IAggregatorFactory;
+import com.helger.event.AggregatorFactoryNewInstance;
+import com.helger.event.IAggregatorFactory;
 import com.helger.event.observerqueue.IEventObserverQueueFactory;
 import com.helger.event.observerqueue.impl.DefaultEventObserverQueueFactory;
 
@@ -34,7 +34,7 @@ public abstract class AbstractEventHelper
   @Nonnull
   public static final IAggregatorFactory <Object, Object> createDispatchResultAggregatorFactory (@Nonnull final Class <? extends IAggregator <Object, ?>> aClass)
   {
-    return new AggregatorFactoryNewInstance <Object, Object> (aClass);
+    return new AggregatorFactoryNewInstance <Object> (aClass);
   }
 
   /**

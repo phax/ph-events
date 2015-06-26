@@ -18,8 +18,8 @@ package com.helger.event.scopes;
 
 import javax.annotation.Nonnull;
 
-import com.helger.commons.scopes.IScope;
-import com.helger.commons.scopes.IScopeDestructionAware;
+import com.helger.commons.scope.IScope;
+import com.helger.commons.scope.IScopeDestructionAware;
 import com.helger.event.impl.helper.AbstractEventHelper;
 import com.helger.event.impl.helper.SynchronousEventHelper;
 import com.helger.event.resultaggregator.impl.DispatchResultAggregatorBooleanAnd;

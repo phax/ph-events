@@ -23,10 +23,10 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 
-import com.helger.commons.annotations.ReturnsMutableCopy;
-import com.helger.commons.collections.CollectionHelper;
-import com.helger.commons.equals.EqualsUtils;
-import com.helger.commons.hash.HashCodeGenerator;
+import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.equals.EqualsHelper;
+import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.event.IEventObserver;
@@ -66,7 +66,7 @@ public final class EventObserverQueueSingleElement extends AbstractEventObserver
     m_aRWLock.writeLock ().lock ();
     try
     {
-      if (!EqualsUtils.equals (m_aObserver, aObserver))
+      if (!EqualsHelper.equals (m_aObserver, aObserver))
         return EChange.UNCHANGED;
       m_aObserver = null;
       return EChange.CHANGED;
@@ -113,7 +113,7 @@ public final class EventObserverQueueSingleElement extends AbstractEventObserver
     if (!(o instanceof EventObserverQueueSingleElement))
       return false;
     final EventObserverQueueSingleElement rhs = (EventObserverQueueSingleElement) o;
-    return EqualsUtils.equals (m_aObserver, rhs.m_aObserver);
+    return EqualsHelper.equals (m_aObserver, rhs.m_aObserver);
   }
 
   @Override

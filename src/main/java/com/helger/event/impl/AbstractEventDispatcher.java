@@ -22,10 +22,10 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.aggregate.IAggregator;
-import com.helger.commons.aggregate.IAggregatorFactory;
-import com.helger.commons.collections.pair.IReadonlyPair;
-import com.helger.commons.collections.pair.ReadonlyPair;
+import com.helger.commons.collection.pair.IPair;
+import com.helger.commons.collection.pair.ReadOnlyPair;
 import com.helger.event.EEventObserverHandlerType;
+import com.helger.event.IAggregatorFactory;
 import com.helger.event.IEvent;
 import com.helger.event.IEventObserver;
 import com.helger.event.IOnlyOnceEventObserver;
@@ -46,8 +46,8 @@ public abstract class AbstractEventDispatcher
   }
 
   @Nonnull
-  protected static final IReadonlyPair <Integer, Map <IEventObserver, EEventObserverHandlerType>> getListOfObserversThatCanHandleTheEvent (@Nonnull final IEvent aEvent,
-                                                                                                                                           @Nonnull final IEventObserverQueue aObservers)
+  protected static final IPair <Integer, Map <IEventObserver, EEventObserverHandlerType>> getListOfObserversThatCanHandleTheEvent (@Nonnull final IEvent aEvent,
+                                                                                                                                   @Nonnull final IEventObserverQueue aObservers)
   {
     // find all handling observers
     final Map <IEventObserver, EEventObserverHandlerType> aHandler = new LinkedHashMap <IEventObserver, EEventObserverHandlerType> ();
@@ -72,6 +72,6 @@ public abstract class AbstractEventDispatcher
           throw new IllegalStateException ("Failed to remove observer " + aObserver + " from " + aObservers);
 
     // return number of handling + handling observer map
-    return ReadonlyPair.create (Integer.valueOf (nHandlingObserverCountWithReturnValue), aHandler);
+    return ReadOnlyPair.create (Integer.valueOf (nHandlingObserverCountWithReturnValue), aHandler);
   }
 }

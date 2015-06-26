@@ -20,10 +20,10 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-import com.helger.commons.annotations.DevelopersNote;
-import com.helger.commons.annotations.UnsupportedOperation;
-import com.helger.commons.collections.ArrayHelper;
-import com.helger.commons.collections.CollectionHelper;
+import com.helger.commons.annotation.DevelopersNote;
+import com.helger.commons.annotation.UnsupportedOperation;
+import com.helger.commons.collection.ArrayHelper;
+import com.helger.commons.collection.CollectionHelper;
 import com.helger.event.EEventObserverHandlerType;
 import com.helger.event.IEvent;
 import com.helger.event.IEventObserver;

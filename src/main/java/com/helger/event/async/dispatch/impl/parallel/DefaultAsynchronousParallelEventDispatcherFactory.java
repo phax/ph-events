@@ -19,8 +19,8 @@ package com.helger.event.async.dispatch.impl.parallel;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.helger.commons.aggregate.IAggregatorFactory;
 import com.helger.commons.concurrent.IExecutorServiceFactory;
+import com.helger.event.IAggregatorFactory;
 import com.helger.event.IEventObservingExceptionHandler;
 import com.helger.event.async.dispatch.IAsynchronousEventDispatcher;
 import com.helger.event.async.dispatch.IAsynchronousEventDispatcherFactory;

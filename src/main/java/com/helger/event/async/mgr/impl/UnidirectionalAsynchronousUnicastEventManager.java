@@ -16,7 +16,7 @@
  */
 package com.helger.event.async.mgr.impl;
 
-import com.helger.commons.hash.HashCodeGenerator;
+import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.event.IEvent;
 import com.helger.event.async.dispatch.IAsynchronousEventDispatcherFactory;
 import com.helger.event.mgr.IUnidirectionalEventManager;

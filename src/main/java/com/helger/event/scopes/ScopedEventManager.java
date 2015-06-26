@@ -23,8 +23,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.scopes.IScope;
-import com.helger.commons.scopes.mgr.EScope;
+import com.helger.commons.scope.IScope;
+import com.helger.commons.scope.mgr.EScope;
 import com.helger.commons.state.EChange;
 import com.helger.event.IEvent;
 import com.helger.event.IEventObserver;

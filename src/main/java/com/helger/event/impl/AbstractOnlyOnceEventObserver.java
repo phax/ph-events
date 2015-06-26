@@ -18,7 +18,7 @@ package com.helger.event.impl;
 
 import javax.annotation.Nonnull;
 
-import com.helger.commons.annotations.DevelopersNote;
+import com.helger.commons.annotation.DevelopersNote;
 import com.helger.event.IEventType;
 import com.helger.event.IOnlyOnceEventObserver;
 

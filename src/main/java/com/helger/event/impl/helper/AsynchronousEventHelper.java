@@ -104,13 +104,13 @@ public final class AsynchronousEventHelper extends AbstractEventHelper
   }
 
   @Nonnull
-  public static BidirectionalAsynchronousMulticastEventManager createBidirectionalMulticastEventManager (@Nonnull final Class <? extends IAggregator <Object, ?>> aClass)
+  public static BidirectionalAsynchronousMulticastEventManager createBidirectionalMulticastEventManager (@Nonnull final Class <? extends IAggregator <Object, ? extends Object>> aClass)
   {
     return createBidirectionalMulticastEventManager (aClass, null);
   }
 
   @Nonnull
-  public static BidirectionalAsynchronousMulticastEventManager createBidirectionalMulticastEventManager (@Nonnull final Class <? extends IAggregator <Object, ?>> aClass,
+  public static BidirectionalAsynchronousMulticastEventManager createBidirectionalMulticastEventManager (@Nonnull final Class <? extends IAggregator <Object, ? extends Object>> aClass,
                                                                                                          @Nullable final IEventObservingExceptionHandler aExceptionHandler)
   {
     return new BidirectionalAsynchronousMulticastEventManager (getObserverQueueFactory (),

@@ -26,13 +26,13 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.aggregate.IAggregatorFactory;
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
-import com.helger.commons.hash.HashCodeGenerator;
-import com.helger.commons.mock.IMockException;
+import com.helger.commons.exception.mock.IMockException;
+import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.event.EEventObserverHandlerType;
+import com.helger.event.IAggregatorFactory;
 import com.helger.event.IEvent;
 import com.helger.event.IEventObserver;
 import com.helger.event.IEventObservingExceptionHandler;

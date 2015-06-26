@@ -18,7 +18,7 @@ package com.helger.event.sync.mgr.impl.wrapper;
 
 import javax.annotation.Nonnull;
 
-import com.helger.commons.hash.HashCodeGenerator;
+import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.state.EChange;
 import com.helger.commons.state.IStoppable;
 import com.helger.event.IEvent;

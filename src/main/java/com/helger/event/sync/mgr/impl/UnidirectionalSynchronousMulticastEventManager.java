@@ -18,7 +18,7 @@ package com.helger.event.sync.mgr.impl;
 
 import javax.annotation.Nonnull;
 
-import com.helger.commons.hash.HashCodeGenerator;
+import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.event.IEvent;
 import com.helger.event.mgr.IUnidirectionalEventManager;
 import com.helger.event.observerqueue.IEventObserverQueueFactory;

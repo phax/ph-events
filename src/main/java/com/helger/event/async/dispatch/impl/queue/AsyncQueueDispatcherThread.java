@@ -19,13 +19,12 @@ package com.helger.event.async.dispatch.impl.queue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.collections.triple.IReadonlyTriple;
-import com.helger.commons.collections.triple.ReadonlyTriple;
 import com.helger.event.IEvent;
 import com.helger.event.IEventObserver;
 import com.helger.event.IEventObservingExceptionHandler;
@@ -35,14 +34,30 @@ import com.helger.event.impl.EventObservingExceptionWrapper;
 
 final class AsyncQueueDispatcherThread extends Thread
 {
+  private static final class Triple
+  {
+    private final IEvent m_aEvent;
+    private final IEventObserver m_aEventObserver;
+    private final AsynchronousEventResultCollector m_aCollector;
+
+    public Triple (@Nonnull final IEvent aEvent,
+                   @Nonnull final IEventObserver aEventObserver,
+                   @Nonnull final AsynchronousEventResultCollector aCollector)
+    {
+      m_aEvent = aEvent;
+      m_aEventObserver = aEventObserver;
+      m_aCollector = aCollector;
+    }
+  }
+
   private static final Logger s_aLogger = LoggerFactory.getLogger (AsyncQueueDispatcherThread.class);
-  private final BlockingQueue <IReadonlyTriple <IEvent, IEventObserver, AsynchronousEventResultCollector>> m_aQueue;
+  private final BlockingQueue <Triple> m_aQueue;
   private final IEventObservingExceptionHandler m_aExceptionHandler;
 
   public AsyncQueueDispatcherThread (@Nullable final IEventObservingExceptionHandler aExceptionHandler)
   {
     super ("async-queue-dispatcher-thread");
-    m_aQueue = new LinkedBlockingQueue <IReadonlyTriple <IEvent, IEventObserver, AsynchronousEventResultCollector>> ();
+    m_aQueue = new LinkedBlockingQueue <Triple> ();
     m_aExceptionHandler = aExceptionHandler != null ? aExceptionHandler : EventObservingExceptionHandler.getInstance ();
   }
 
@@ -52,7 +67,7 @@ final class AsyncQueueDispatcherThread extends Thread
   {
     try
     {
-      m_aQueue.put (ReadonlyTriple.create (aEvent, aObserver, aResultCollector));
+      m_aQueue.put (new Triple (aEvent, aObserver, aResultCollector));
     }
     catch (final InterruptedException ex)
     {
@@ -68,10 +83,10 @@ final class AsyncQueueDispatcherThread extends Thread
       while (!isInterrupted ())
       {
         // get current element
-        final IReadonlyTriple <IEvent, IEventObserver, AsynchronousEventResultCollector> aElement = m_aQueue.take ();
-        final IEvent aEvent = aElement.getFirst ();
-        final IEventObserver aObserver = aElement.getSecond ();
-        final AsynchronousEventResultCollector aCollector = aElement.getThird ();
+        final Triple aElement = m_aQueue.take ();
+        final IEvent aEvent = aElement.m_aEvent;
+        final IEventObserver aObserver = aElement.m_aEventObserver;
+        final AsynchronousEventResultCollector aCollector = aElement.m_aCollector;
 
         try
         {

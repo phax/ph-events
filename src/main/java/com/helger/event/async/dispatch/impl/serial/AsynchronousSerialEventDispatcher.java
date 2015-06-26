@@ -21,12 +21,12 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.helger.commons.aggregate.IAggregatorFactory;
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
-import com.helger.commons.collections.pair.IReadonlyPair;
-import com.helger.commons.hash.HashCodeGenerator;
+import com.helger.commons.collection.pair.IPair;
+import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.state.EChange;
 import com.helger.event.EEventObserverHandlerType;
+import com.helger.event.IAggregatorFactory;
 import com.helger.event.IEvent;
 import com.helger.event.IEventObserver;
 import com.helger.event.IEventObservingExceptionHandler;
@@ -62,8 +62,8 @@ public class AsynchronousSerialEventDispatcher extends AbstractEventDispatcher i
       throw new NullPointerException ("observerQueue");
 
     // find all observers that can handle the passed event
-    final IReadonlyPair <Integer, Map <IEventObserver, EEventObserverHandlerType>> aHandlingInfo = getListOfObserversThatCanHandleTheEvent (aEvent,
-                                                                                                                                            aObservers);
+    final IPair <Integer, Map <IEventObserver, EEventObserverHandlerType>> aHandlingInfo = getListOfObserversThatCanHandleTheEvent (aEvent,
+                                                                                                                                    aObservers);
 
     final int nHandlingObserverCountWithReturnValue = aHandlingInfo.getFirst ().intValue ();
     final Map <IEventObserver, EEventObserverHandlerType> aHandlingObservers = aHandlingInfo.getSecond ();
