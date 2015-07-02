@@ -110,7 +110,7 @@ public final class EventObserverQueueSingleElement extends AbstractEventObserver
   {
     if (o == this)
       return true;
-    if (!(o instanceof EventObserverQueueSingleElement))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final EventObserverQueueSingleElement rhs = (EventObserverQueueSingleElement) o;
     return EqualsHelper.equals (m_aObserver, rhs.m_aObserver);

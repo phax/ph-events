@@ -109,8 +109,9 @@ public class AsynchronousParallelEventDispatcher extends AbstractEventDispatcher
         {
           aCallables.add (Executors.callable (new AsyncParallelDispatcherRunner (aEvent,
                                                                                  aEntry.getKey (),
-                                                                                 aEntry.getValue ().hasReturnValue () ? aLocalResultCallback
-                                                                                                                     : null,
+                                                                                 aEntry.getValue ()
+                                                                                       .hasReturnValue () ? aLocalResultCallback
+                                                                                                          : null,
                                                                                  m_aExceptionHandler)));
         }
 
@@ -147,7 +148,7 @@ public class AsynchronousParallelEventDispatcher extends AbstractEventDispatcher
   {
     if (o == this)
       return true;
-    if (!(o instanceof AsynchronousParallelEventDispatcher))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final AsynchronousParallelEventDispatcher rhs = (AsynchronousParallelEventDispatcher) o;
     return m_aResultAggregator.equals (rhs.m_aResultAggregator) &&

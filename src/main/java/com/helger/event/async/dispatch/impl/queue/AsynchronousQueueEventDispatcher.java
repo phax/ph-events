@@ -122,7 +122,7 @@ public final class AsynchronousQueueEventDispatcher extends AbstractEventDispatc
   {
     if (o == this)
       return true;
-    if (!(o instanceof AsynchronousQueueEventDispatcher))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final AsynchronousQueueEventDispatcher rhs = (AsynchronousQueueEventDispatcher) o;
     return m_aResultAggregator.equals (rhs.m_aResultAggregator);

@@ -27,10 +27,7 @@ import com.helger.event.mgr.IBidirectionalSynchronousEventManager;
 import com.helger.event.mgr.IMulticastEventManager;
 import com.helger.event.sync.mgr.impl.BidirectionalSynchronousMulticastEventManager;
 
-public class WrappedBidirectionalSynchronousMulticastEventManager implements
-                                                                 IBidirectionalSynchronousEventManager,
-                                                                 IMulticastEventManager,
-                                                                 IStoppable
+public class WrappedBidirectionalSynchronousMulticastEventManager implements IBidirectionalSynchronousEventManager, IMulticastEventManager, IStoppable
 {
   private final BidirectionalSynchronousMulticastEventManager m_aEvtMgr;
 
@@ -69,7 +66,7 @@ public class WrappedBidirectionalSynchronousMulticastEventManager implements
   {
     if (o == this)
       return true;
-    if (!(o instanceof WrappedBidirectionalSynchronousMulticastEventManager))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final WrappedBidirectionalSynchronousMulticastEventManager rhs = (WrappedBidirectionalSynchronousMulticastEventManager) o;
     return m_aEvtMgr.equals (rhs.m_aEvtMgr);

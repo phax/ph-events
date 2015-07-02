@@ -116,7 +116,7 @@ public final class EventObserverQueueWeakSet extends AbstractEventObserverQueue
   {
     if (o == this)
       return true;
-    if (!(o instanceof EventObserverQueueWeakSet))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final EventObserverQueueWeakSet rhs = (EventObserverQueueWeakSet) o;
     return m_aWeakMap.equals (rhs.m_aWeakMap);

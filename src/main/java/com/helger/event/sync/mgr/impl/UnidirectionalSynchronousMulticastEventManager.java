@@ -24,8 +24,7 @@ import com.helger.event.mgr.IUnidirectionalEventManager;
 import com.helger.event.observerqueue.IEventObserverQueueFactory;
 import com.helger.event.sync.dispatch.ISynchronousEventDispatcherFactory;
 
-public class UnidirectionalSynchronousMulticastEventManager extends AbstractSynchronousMulticastEventManager implements
-                                                                                                            IUnidirectionalEventManager
+public class UnidirectionalSynchronousMulticastEventManager extends AbstractSynchronousMulticastEventManager implements IUnidirectionalEventManager
 {
   public UnidirectionalSynchronousMulticastEventManager (final IEventObserverQueueFactory aObserverQueueFactory,
                                                          final ISynchronousEventDispatcherFactory aEventDispatcherFactory)
@@ -48,7 +47,7 @@ public class UnidirectionalSynchronousMulticastEventManager extends AbstractSync
   {
     if (o == this)
       return true;
-    if (!(o instanceof UnidirectionalSynchronousMulticastEventManager))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final UnidirectionalSynchronousMulticastEventManager rhs = (UnidirectionalSynchronousMulticastEventManager) o;
     return m_aObserverQueue.equals (rhs.m_aObserverQueue) && m_aEventDispatcher.equals (rhs.m_aEventDispatcher);

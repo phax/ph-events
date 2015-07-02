@@ -76,7 +76,7 @@ public final class CRUDEventType implements ICRUDEventType
   {
     if (o == this)
       return true;
-    if (!(o instanceof CRUDEventType))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final CRUDEventType rhs = (CRUDEventType) o;
     return m_aEventType.equals (rhs.m_aEventType) &&

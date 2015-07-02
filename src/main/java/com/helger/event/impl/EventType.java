@@ -54,7 +54,7 @@ final class EventType implements IEventType
   {
     if (o == this)
       return true;
-    if (!(o instanceof EventType))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final EventType rhs = (EventType) o;
     return m_sName.equals (rhs.m_sName);

@@ -21,8 +21,7 @@ import com.helger.event.IEvent;
 import com.helger.event.async.dispatch.IAsynchronousEventDispatcherFactory;
 import com.helger.event.mgr.IUnidirectionalEventManager;
 
-public class UnidirectionalAsynchronousUnicastEventManager extends AbstractAsynchronousUnicastEventManager implements
-                                                                                                          IUnidirectionalEventManager
+public class UnidirectionalAsynchronousUnicastEventManager extends AbstractAsynchronousUnicastEventManager implements IUnidirectionalEventManager
 {
   public UnidirectionalAsynchronousUnicastEventManager (final IAsynchronousEventDispatcherFactory aEventDispatcherFactory)
   {
@@ -44,7 +43,7 @@ public class UnidirectionalAsynchronousUnicastEventManager extends AbstractAsync
   {
     if (o == this)
       return true;
-    if (!(o instanceof UnidirectionalAsynchronousUnicastEventManager))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final UnidirectionalAsynchronousUnicastEventManager rhs = (UnidirectionalAsynchronousUnicastEventManager) o;
     return m_aObserver.equals (rhs.m_aObserver) && m_aEventDispatcher.equals (rhs.m_aEventDispatcher);

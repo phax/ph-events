@@ -150,7 +150,7 @@ public class SynchronousEventDispatcher extends AbstractEventDispatcher implemen
   {
     if (o == this)
       return true;
-    if (!(o instanceof SynchronousEventDispatcher))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final SynchronousEventDispatcher rhs = (SynchronousEventDispatcher) o;
     return m_aResultAggregator.equals (rhs.m_aResultAggregator);

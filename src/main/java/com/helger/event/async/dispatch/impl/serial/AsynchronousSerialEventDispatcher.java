@@ -101,7 +101,7 @@ public class AsynchronousSerialEventDispatcher extends AbstractEventDispatcher i
   {
     if (o == this)
       return true;
-    if (!(o instanceof AsynchronousSerialEventDispatcher))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final AsynchronousSerialEventDispatcher rhs = (AsynchronousSerialEventDispatcher) o;
     return m_aResultAggregator.equals (rhs.m_aResultAggregator);

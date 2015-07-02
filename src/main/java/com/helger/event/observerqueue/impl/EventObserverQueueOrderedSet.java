@@ -115,7 +115,7 @@ public final class EventObserverQueueOrderedSet extends AbstractEventObserverQue
   {
     if (o == this)
       return true;
-    if (!(o instanceof EventObserverQueueOrderedSet))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final EventObserverQueueOrderedSet rhs = (EventObserverQueueOrderedSet) o;
     return m_aSet.equals (rhs.m_aSet);

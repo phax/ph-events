@@ -27,10 +27,7 @@ import com.helger.event.mgr.IUnicastEventManager;
 import com.helger.event.mgr.IUnidirectionalEventManager;
 import com.helger.event.sync.mgr.impl.UnidirectionalSynchronousUnicastEventManager;
 
-public class WrappedUnidirectionalSynchronousUnicastEventManager implements
-                                                                IUnidirectionalEventManager,
-                                                                IUnicastEventManager,
-                                                                IStoppable
+public class WrappedUnidirectionalSynchronousUnicastEventManager implements IUnidirectionalEventManager, IUnicastEventManager, IStoppable
 {
   private final UnidirectionalSynchronousUnicastEventManager m_aEvtMgr;
 
@@ -62,7 +59,7 @@ public class WrappedUnidirectionalSynchronousUnicastEventManager implements
   {
     if (o == this)
       return true;
-    if (!(o instanceof WrappedUnidirectionalSynchronousUnicastEventManager))
+    if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final WrappedUnidirectionalSynchronousUnicastEventManager rhs = (WrappedUnidirectionalSynchronousUnicastEventManager) o;
     return m_aEvtMgr.equals (rhs.m_aEvtMgr);
