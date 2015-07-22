@@ -42,7 +42,7 @@ final class AsyncQueueDispatcherThread extends Thread
 
     public Triple (@Nonnull final IEvent aEvent,
                    @Nonnull final IEventObserver aEventObserver,
-                   @Nonnull final AsynchronousEventResultCollector aCollector)
+                   @Nullable final AsynchronousEventResultCollector aCollector)
     {
       m_aEvent = aEvent;
       m_aEventObserver = aEventObserver;
@@ -58,12 +58,13 @@ final class AsyncQueueDispatcherThread extends Thread
   {
     super ("async-queue-dispatcher-thread");
     m_aQueue = new LinkedBlockingQueue <Triple> ();
-    m_aExceptionHandler = aExceptionHandler != null ? aExceptionHandler : EventObservingExceptionCallback.getInstance ();
+    m_aExceptionHandler = aExceptionHandler != null ? aExceptionHandler
+                                                    : EventObservingExceptionCallback.getInstance ();
   }
 
-  public void addToQueue (final IEvent aEvent,
-                          final IEventObserver aObserver,
-                          final AsynchronousEventResultCollector aResultCollector)
+  public void addToQueue (@Nonnull final IEvent aEvent,
+                          @Nonnull final IEventObserver aObserver,
+                          @Nullable final AsynchronousEventResultCollector aResultCollector)
   {
     try
     {
