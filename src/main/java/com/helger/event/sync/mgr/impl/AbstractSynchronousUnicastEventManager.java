@@ -18,6 +18,7 @@ package com.helger.event.sync.mgr.impl;
 
 import javax.annotation.Nonnull;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.state.EChange;
 import com.helger.commons.state.IStoppable;
 import com.helger.event.IEventObserver;
@@ -39,8 +40,7 @@ public abstract class AbstractSynchronousUnicastEventManager implements IUnicast
 
   public AbstractSynchronousUnicastEventManager (@Nonnull final ISynchronousEventDispatcherFactory aEventDispatcherFactory)
   {
-    if (aEventDispatcherFactory == null)
-      throw new NullPointerException ("eventDispatcherFactory");
+    ValueEnforcer.notNull (aEventDispatcherFactory, "EventDispatcherFactory");
 
     m_aEventDispatcher = aEventDispatcherFactory.create ();
     if (m_aEventDispatcher == null)

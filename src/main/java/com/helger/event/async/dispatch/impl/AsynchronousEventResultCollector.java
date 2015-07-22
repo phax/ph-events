@@ -23,11 +23,11 @@ import java.util.concurrent.CountDownLatch;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 
-public final class AsynchronousEventResultCollector extends Thread implements
-                                                                  INonThrowingRunnableWithParameter <Object>
+public final class AsynchronousEventResultCollector extends Thread implements INonThrowingRunnableWithParameter <Object>
 {
   private final CountDownLatch m_aCountDown;
   private final List <Object> m_aResults = new Vector <Object> ();
@@ -40,12 +40,9 @@ public final class AsynchronousEventResultCollector extends Thread implements
                                            @Nonnull final INonThrowingRunnableWithParameter <Object> aResultCallback)
   {
     super ("event-result-collector-thread");
-    if (nObserverWithReturn < 1)
-      throw new IllegalArgumentException ("too little observers");
-    if (aResultAggregator == null)
-      throw new NullPointerException ("resultAggregator");
-    if (aResultCallback == null)
-      throw new NullPointerException ("resultCallback");
+    ValueEnforcer.isGT0 (nObserverWithReturn, "ObserverWithReturn");
+    ValueEnforcer.notNull (aResultAggregator, "ResultAggregator");
+    ValueEnforcer.notNull (aResultCallback, "ResultCallback");
 
     m_nExpectedResults = nObserverWithReturn;
     m_aResultAggregator = aResultAggregator;

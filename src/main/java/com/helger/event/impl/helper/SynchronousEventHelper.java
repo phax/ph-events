@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.aggregate.IAggregator;
-import com.helger.event.IEventObservingExceptionHandler;
+import com.helger.event.IEventObservingExceptionCallback;
 import com.helger.event.resultaggregator.impl.DispatchResultAggregatorUseFirst;
 import com.helger.event.sync.dispatch.ISynchronousEventDispatcherFactory;
 import com.helger.event.sync.dispatch.impl.DefaultSynchronousEventDispatcherFactory;
@@ -38,7 +38,7 @@ public final class SynchronousEventHelper extends AbstractEventHelper
 
   @Nonnull
   public static ISynchronousEventDispatcherFactory createSynchronousEventDispatcherFactory (@Nonnull final Class <? extends IAggregator <Object, ?>> aClass,
-                                                                                            @Nullable final IEventObservingExceptionHandler aExceptionHandler)
+                                                                                            @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
     return new DefaultSynchronousEventDispatcherFactory (createDispatchResultAggregatorFactory (aClass),
                                                          aExceptionHandler);
@@ -79,7 +79,7 @@ public final class SynchronousEventHelper extends AbstractEventHelper
 
   @Nonnull
   public static BidirectionalSynchronousMulticastEventManager createBidirectionalMulticastEventManager (@Nonnull final Class <? extends IAggregator <Object, ?>> aAggregatorClass,
-                                                                                                        @Nullable final IEventObservingExceptionHandler aExceptionHandler)
+                                                                                                        @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
     return new BidirectionalSynchronousMulticastEventManager (getObserverQueueFactory (),
                                                               createSynchronousEventDispatcherFactory (aAggregatorClass,

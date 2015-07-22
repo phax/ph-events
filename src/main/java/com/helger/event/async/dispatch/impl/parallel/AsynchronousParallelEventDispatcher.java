@@ -28,6 +28,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.commons.collection.pair.IPair;
 import com.helger.commons.concurrent.IExecutorServiceFactory;
@@ -37,7 +38,7 @@ import com.helger.event.EEventObserverHandlerType;
 import com.helger.event.IAggregatorFactory;
 import com.helger.event.IEvent;
 import com.helger.event.IEventObserver;
-import com.helger.event.IEventObservingExceptionHandler;
+import com.helger.event.IEventObservingExceptionCallback;
 import com.helger.event.async.dispatch.IAsynchronousEventDispatcher;
 import com.helger.event.async.dispatch.impl.AsynchronousEventResultCollector;
 import com.helger.event.impl.AbstractEventDispatcher;
@@ -53,16 +54,15 @@ public class AsynchronousParallelEventDispatcher extends AbstractEventDispatcher
 {
   private final Lock m_aLock = new ReentrantLock ();
   private final IExecutorServiceFactory m_aExecutorServiceFactory;
-  private final IEventObservingExceptionHandler m_aExceptionHandler;
+  private final IEventObservingExceptionCallback m_aExceptionHandler;
 
   public AsynchronousParallelEventDispatcher (@Nonnull final IAggregatorFactory <Object, Object> aResultAggregatorFactory,
                                               @Nonnull final IExecutorServiceFactory aExecutorServiceFactory,
-                                              @Nullable final IEventObservingExceptionHandler aExceptionHandler)
+                                              @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
     super (aResultAggregatorFactory);
 
-    if (aExecutorServiceFactory == null)
-      throw new NullPointerException ("The passed executor service factory is invalid");
+    ValueEnforcer.notNull (aExecutorServiceFactory, "ExecutorServiceFactory");
     m_aExecutorServiceFactory = aExecutorServiceFactory;
     m_aExceptionHandler = aExceptionHandler;
   }
@@ -71,10 +71,8 @@ public class AsynchronousParallelEventDispatcher extends AbstractEventDispatcher
                         @Nonnull final IEventObserverQueue aObservers,
                         final INonThrowingRunnableWithParameter <Object> aOverallResultCallback)
   {
-    if (aEvent == null)
-      throw new NullPointerException ("event");
-    if (aObservers == null)
-      throw new NullPointerException ("observerQueue");
+    ValueEnforcer.notNull (aEvent, "Event");
+    ValueEnforcer.notNull (aObservers, "Observers");
 
     // find all observers that can handle the passed event
     final IPair <Integer, Map <IEventObserver, EEventObserverHandlerType>> aHandlingInfo = getListOfObserversThatCanHandleTheEvent (aEvent,

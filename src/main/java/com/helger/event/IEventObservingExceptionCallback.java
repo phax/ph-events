@@ -18,13 +18,15 @@ package com.helger.event;
 
 import javax.annotation.Nonnull;
 
+import com.helger.commons.callback.ICallback;
+
 /**
  * Implement this interface to instruct an event dispatcher what to do with
  * exceptions thrown by event observers.
  *
  * @author Philip Helger
  */
-public interface IEventObservingExceptionHandler
+public interface IEventObservingExceptionCallback extends ICallback
 {
   /**
    * Handle the thrown exception.

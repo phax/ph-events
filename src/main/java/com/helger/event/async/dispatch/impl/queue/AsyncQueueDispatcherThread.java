@@ -27,9 +27,9 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.event.IEvent;
 import com.helger.event.IEventObserver;
-import com.helger.event.IEventObservingExceptionHandler;
+import com.helger.event.IEventObservingExceptionCallback;
 import com.helger.event.async.dispatch.impl.AsynchronousEventResultCollector;
-import com.helger.event.impl.EventObservingExceptionHandler;
+import com.helger.event.impl.EventObservingExceptionCallback;
 import com.helger.event.impl.EventObservingExceptionWrapper;
 
 final class AsyncQueueDispatcherThread extends Thread
@@ -52,13 +52,13 @@ final class AsyncQueueDispatcherThread extends Thread
 
   private static final Logger s_aLogger = LoggerFactory.getLogger (AsyncQueueDispatcherThread.class);
   private final BlockingQueue <Triple> m_aQueue;
-  private final IEventObservingExceptionHandler m_aExceptionHandler;
+  private final IEventObservingExceptionCallback m_aExceptionHandler;
 
-  public AsyncQueueDispatcherThread (@Nullable final IEventObservingExceptionHandler aExceptionHandler)
+  public AsyncQueueDispatcherThread (@Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
     super ("async-queue-dispatcher-thread");
     m_aQueue = new LinkedBlockingQueue <Triple> ();
-    m_aExceptionHandler = aExceptionHandler != null ? aExceptionHandler : EventObservingExceptionHandler.getInstance ();
+    m_aExceptionHandler = aExceptionHandler != null ? aExceptionHandler : EventObservingExceptionCallback.getInstance ();
   }
 
   public void addToQueue (final IEvent aEvent,

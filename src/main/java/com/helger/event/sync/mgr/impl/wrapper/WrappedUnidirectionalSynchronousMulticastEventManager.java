@@ -18,6 +18,7 @@ package com.helger.event.sync.mgr.impl.wrapper;
 
 import javax.annotation.Nonnull;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.state.EChange;
 import com.helger.commons.state.IStoppable;
@@ -33,8 +34,7 @@ public class WrappedUnidirectionalSynchronousMulticastEventManager implements IU
 
   public WrappedUnidirectionalSynchronousMulticastEventManager (@Nonnull final UnidirectionalSynchronousMulticastEventManager aEvtMgr)
   {
-    if (aEvtMgr == null)
-      throw new NullPointerException ("eventManager");
+    ValueEnforcer.notNull (aEvtMgr, "EvtMgr");
     m_aEvtMgr = aEvtMgr;
   }
 

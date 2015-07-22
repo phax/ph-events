@@ -20,6 +20,7 @@ import java.util.Collection;
 
 import javax.annotation.Nonnull;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.aggregate.AbstractAggregator;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.event.impl.EventObservingExceptionWrapper;
@@ -38,8 +39,7 @@ public final class DispatchResultAggregatorBooleanOr extends AbstractAggregator 
   @Nonnull
   public Boolean aggregate (final Collection <Object> aResults)
   {
-    if (aResults == null)
-      throw new NullPointerException ("results");
+    ValueEnforcer.notNull (aResults, "Results");
 
     boolean bResult = false;
     for (final Object aResult : aResults)

@@ -23,6 +23,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.commons.collection.pair.IPair;
 import com.helger.commons.hashcode.HashCodeGenerator;
@@ -31,7 +32,7 @@ import com.helger.event.EEventObserverHandlerType;
 import com.helger.event.IAggregatorFactory;
 import com.helger.event.IEvent;
 import com.helger.event.IEventObserver;
-import com.helger.event.IEventObservingExceptionHandler;
+import com.helger.event.IEventObservingExceptionCallback;
 import com.helger.event.async.dispatch.IAsynchronousEventDispatcher;
 import com.helger.event.async.dispatch.impl.AsynchronousEventResultCollector;
 import com.helger.event.impl.AbstractEventDispatcher;
@@ -48,7 +49,7 @@ public final class AsynchronousQueueEventDispatcher extends AbstractEventDispatc
   private final AsyncQueueDispatcherThread m_aQueueThread;
 
   public AsynchronousQueueEventDispatcher (@Nonnull final IAggregatorFactory <Object, Object> aResultAggregatorFactory,
-                                           @Nullable final IEventObservingExceptionHandler aExceptionHandler)
+                                           @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
     super (aResultAggregatorFactory);
 
@@ -60,10 +61,8 @@ public final class AsynchronousQueueEventDispatcher extends AbstractEventDispatc
                         @Nonnull final IEventObserverQueue aObservers,
                         final INonThrowingRunnableWithParameter <Object> aOverallResultCallback)
   {
-    if (aEvent == null)
-      throw new NullPointerException ("event");
-    if (aObservers == null)
-      throw new NullPointerException ("observerQueue");
+    ValueEnforcer.notNull (aEvent, "Event");
+    ValueEnforcer.notNull (aObservers, "Observers");
 
     // find all observers that can handle the passed event
     final IPair <Integer, Map <IEventObserver, EEventObserverHandlerType>> aHandlingInfo = getListOfObserversThatCanHandleTheEvent (aEvent,

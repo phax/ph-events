@@ -18,6 +18,7 @@ package com.helger.event.async.mgr.impl;
 
 import javax.annotation.Nonnull;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.state.EChange;
 import com.helger.commons.state.IStoppable;
 import com.helger.event.IEventObserver;
@@ -40,10 +41,8 @@ public abstract class AbstractAsynchronousMulticastEventManager implements IMult
   public AbstractAsynchronousMulticastEventManager (@Nonnull final IEventObserverQueueFactory aObserverQueueFactory,
                                                     @Nonnull final IAsynchronousEventDispatcherFactory aEventDispatcherFactory)
   {
-    if (aObserverQueueFactory == null)
-      throw new NullPointerException ("observerQueueFactory");
-    if (aEventDispatcherFactory == null)
-      throw new NullPointerException ("eventDispatcherFactory");
+    ValueEnforcer.notNull (aObserverQueueFactory, "ObserverQueueFactory");
+    ValueEnforcer.notNull (aEventDispatcherFactory, "EventDispatcherFactory");
 
     m_aObserverQueue = aObserverQueueFactory.create ();
     if (m_aObserverQueue == null)

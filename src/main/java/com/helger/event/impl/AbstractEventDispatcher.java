@@ -21,6 +21,7 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.collection.pair.IPair;
 import com.helger.commons.collection.pair.ReadOnlyPair;
@@ -37,8 +38,7 @@ public abstract class AbstractEventDispatcher
 
   public AbstractEventDispatcher (@Nonnull final IAggregatorFactory <Object, Object> aResultAggregatorFactory)
   {
-    if (aResultAggregatorFactory == null)
-      throw new NullPointerException ("resultAggregatorFactory");
+    ValueEnforcer.notNull (aResultAggregatorFactory, "ResultAggregatorFactory");
 
     m_aResultAggregator = aResultAggregatorFactory.create ();
     if (m_aResultAggregator == null)

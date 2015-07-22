@@ -20,8 +20,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.annotation.concurrent.Immutable;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.event.IEventObserverExceptionAware;
-import com.helger.event.IEventObservingExceptionHandler;
+import com.helger.event.IEventObservingExceptionCallback;
 
 /**
  * Utility class that knows what to with an exception that is thrown while
@@ -30,15 +31,15 @@ import com.helger.event.IEventObservingExceptionHandler;
  * @author Philip Helger
  */
 @Immutable
-public class EventObservingExceptionHandler implements IEventObservingExceptionHandler
+public class EventObservingExceptionCallback implements IEventObservingExceptionCallback
 {
-  private static final IEventObservingExceptionHandler s_aInstance = new EventObservingExceptionHandler ();
+  private static final IEventObservingExceptionCallback s_aInstance = new EventObservingExceptionCallback ();
 
-  protected EventObservingExceptionHandler ()
+  protected EventObservingExceptionCallback ()
   {}
 
   @Nonnull
-  public static IEventObservingExceptionHandler getInstance ()
+  public static IEventObservingExceptionCallback getInstance ()
   {
     return s_aInstance;
   }
@@ -46,8 +47,7 @@ public class EventObservingExceptionHandler implements IEventObservingExceptionH
   @OverridingMethodsMustInvokeSuper
   public void handleObservingException (@Nonnull final Throwable aThrowable)
   {
-    if (aThrowable == null)
-      throw new NullPointerException ("throwable");
+    ValueEnforcer.notNull (aThrowable, "Throwable");
 
     // is it a "pass through" exception?
     if (aThrowable instanceof IEventObserverExceptionAware)

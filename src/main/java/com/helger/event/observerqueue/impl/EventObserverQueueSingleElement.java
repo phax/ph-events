@@ -23,6 +23,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.equals.EqualsHelper;
@@ -43,8 +44,8 @@ public final class EventObserverQueueSingleElement extends AbstractEventObserver
   @Nonnull
   public EChange addObserver (@Nonnull final IEventObserver aObserver)
   {
-    if (aObserver == null)
-      throw new NullPointerException ("observer");
+    ValueEnforcer.notNull (aObserver, "Observer");
+
     m_aRWLock.writeLock ().lock ();
     try
     {
@@ -60,8 +61,7 @@ public final class EventObserverQueueSingleElement extends AbstractEventObserver
   @Nonnull
   public EChange removeObserver (@Nonnull final IEventObserver aObserver)
   {
-    if (aObserver == null)
-      throw new NullPointerException ("observer");
+    ValueEnforcer.notNull (aObserver, "Observer");
 
     m_aRWLock.writeLock ().lock ();
     try

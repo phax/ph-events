@@ -18,6 +18,7 @@ package com.helger.event.async.mgr.impl;
 
 import javax.annotation.Nonnull;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.state.EChange;
 import com.helger.commons.state.IStoppable;
 import com.helger.event.IEventObserver;
@@ -38,8 +39,7 @@ public abstract class AbstractAsynchronousUnicastEventManager implements IUnicas
 
   public AbstractAsynchronousUnicastEventManager (@Nonnull final IAsynchronousEventDispatcherFactory aEventDispatcherFactory)
   {
-    if (aEventDispatcherFactory == null)
-      throw new NullPointerException ("eventDispatcherFactory");
+    ValueEnforcer.notNull (aEventDispatcherFactory, "EventDispatcherFactory");
 
     m_aEventDispatcher = aEventDispatcherFactory.create ();
     if (m_aEventDispatcher == null)

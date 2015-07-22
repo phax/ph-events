@@ -19,21 +19,21 @@ package com.helger.event.async.dispatch.impl.serial;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.event.IAggregatorFactory;
-import com.helger.event.IEventObservingExceptionHandler;
+import com.helger.event.IEventObservingExceptionCallback;
 import com.helger.event.async.dispatch.IAsynchronousEventDispatcher;
 import com.helger.event.async.dispatch.IAsynchronousEventDispatcherFactory;
 
 public class DefaultAsynchronousSerialEventDispatcherFactory implements IAsynchronousEventDispatcherFactory
 {
   private final IAggregatorFactory <Object, Object> m_aResultAggregateFactory;
-  private final IEventObservingExceptionHandler m_aExceptionHandler;
+  private final IEventObservingExceptionCallback m_aExceptionHandler;
 
   public DefaultAsynchronousSerialEventDispatcherFactory (@Nonnull final IAggregatorFactory <Object, Object> aResultAggregateFactory,
-                                                          @Nullable final IEventObservingExceptionHandler aExceptionHandler)
+                                                          @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
-    if (aResultAggregateFactory == null)
-      throw new NullPointerException ("resultAggregatorFactory");
+    ValueEnforcer.notNull (aResultAggregateFactory, "ResultAggregateFactory");
     m_aResultAggregateFactory = aResultAggregateFactory;
     m_aExceptionHandler = aExceptionHandler;
   }

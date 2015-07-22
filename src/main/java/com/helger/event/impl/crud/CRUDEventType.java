@@ -19,6 +19,7 @@ package com.helger.event.impl.crud;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.ToStringGenerator;
@@ -41,10 +42,8 @@ public final class CRUDEventType implements ICRUDEventType
                         @Nonnull final EEventPointInTime ePointInTime,
                         @Nonnull final EEventCRUD eCRUD)
   {
-    if (ePointInTime == null)
-      throw new NullPointerException ("pointInTime");
-    if (eCRUD == null)
-      throw new NullPointerException ("CRUD");
+    ValueEnforcer.notNull (ePointInTime, "PointInTime");
+    ValueEnforcer.notNull (eCRUD, "CRUD");
     // Ensure that the name is unique!
     final String sEventName = sBaseName + '.' + ePointInTime.getID () + '.' + eCRUD.getID ();
     m_aEventType = EventTypeRegistry.createEventType (sEventName);

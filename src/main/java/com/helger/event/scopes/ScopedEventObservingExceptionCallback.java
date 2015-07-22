@@ -17,14 +17,14 @@
 package com.helger.event.scopes;
 
 import com.helger.commons.exception.InitializationException;
-import com.helger.event.impl.EventObservingExceptionHandler;
+import com.helger.event.impl.EventObservingExceptionCallback;
 
 /**
  * Specialized exception handler
  *
  * @author Philip Helger
  */
-final class ScopedEventObservingExceptionHandler extends EventObservingExceptionHandler
+final class ScopedEventObservingExceptionCallback extends EventObservingExceptionCallback
 {
   @Override
   public void handleObservingException (final Throwable aThrowable)

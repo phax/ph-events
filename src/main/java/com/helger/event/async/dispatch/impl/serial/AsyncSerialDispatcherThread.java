@@ -24,12 +24,13 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.event.EEventObserverHandlerType;
 import com.helger.event.IEvent;
 import com.helger.event.IEventObserver;
-import com.helger.event.IEventObservingExceptionHandler;
+import com.helger.event.IEventObservingExceptionCallback;
 import com.helger.event.async.dispatch.impl.AsynchronousEventResultCollector;
-import com.helger.event.impl.EventObservingExceptionHandler;
+import com.helger.event.impl.EventObservingExceptionCallback;
 import com.helger.event.impl.EventObservingExceptionWrapper;
 
 final class AsyncSerialDispatcherThread extends Thread
@@ -38,22 +39,21 @@ final class AsyncSerialDispatcherThread extends Thread
   private final IEvent m_aEvent;
   private final Map <IEventObserver, EEventObserverHandlerType> m_aHandlingObservers;
   private final AsynchronousEventResultCollector m_aLocalResultCallback;
-  private final IEventObservingExceptionHandler m_aExceptionHandler;
+  private final IEventObservingExceptionCallback m_aExceptionHandler;
 
   AsyncSerialDispatcherThread (@Nonnull final IEvent aEvent,
                                @Nonnull final Map <IEventObserver, EEventObserverHandlerType> aHandlingObservers,
                                final AsynchronousEventResultCollector aLocalResultCallback,
-                               @Nullable final IEventObservingExceptionHandler aExceptionHandler)
+                               @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
     super ("serial-event-dispatcher-thread");
-    if (aEvent == null)
-      throw new NullPointerException ("event");
-    if (aHandlingObservers == null)
-      throw new NullPointerException ("handlingObservers");
+    ValueEnforcer.notNull (aEvent, "Event");
+    ValueEnforcer.notNull (aHandlingObservers, "HandlingObservers");
     m_aEvent = aEvent;
     m_aHandlingObservers = aHandlingObservers;
     m_aLocalResultCallback = aLocalResultCallback;
-    m_aExceptionHandler = aExceptionHandler != null ? aExceptionHandler : EventObservingExceptionHandler.getInstance ();
+    m_aExceptionHandler = aExceptionHandler != null ? aExceptionHandler
+                                                    : EventObservingExceptionCallback.getInstance ();
   }
 
   private void _callSingleObserver (final IEventObserver aObserver, final boolean bHasReturnValue)

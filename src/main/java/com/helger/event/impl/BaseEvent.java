@@ -19,6 +19,7 @@ package com.helger.event.impl;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.event.IEvent;
@@ -37,8 +38,7 @@ public class BaseEvent implements IEvent
 
   public BaseEvent (@Nonnull final IEventType aEventType)
   {
-    if (aEventType == null)
-      throw new NullPointerException ("eventType");
+    ValueEnforcer.notNull (aEventType, "EventType");
     m_aEventType = aEventType;
   }
 

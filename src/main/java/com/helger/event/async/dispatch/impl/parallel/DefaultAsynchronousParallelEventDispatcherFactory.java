@@ -19,9 +19,10 @@ package com.helger.event.async.dispatch.impl.parallel;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.concurrent.IExecutorServiceFactory;
 import com.helger.event.IAggregatorFactory;
-import com.helger.event.IEventObservingExceptionHandler;
+import com.helger.event.IEventObservingExceptionCallback;
 import com.helger.event.async.dispatch.IAsynchronousEventDispatcher;
 import com.helger.event.async.dispatch.IAsynchronousEventDispatcherFactory;
 
@@ -29,16 +30,14 @@ public class DefaultAsynchronousParallelEventDispatcherFactory implements IAsync
 {
   private final IAggregatorFactory <Object, Object> m_aResultAggregateFactory;
   private final IExecutorServiceFactory m_aExecutorServiceFactory;
-  private final IEventObservingExceptionHandler m_aExceptionHandler;
+  private final IEventObservingExceptionCallback m_aExceptionHandler;
 
   public DefaultAsynchronousParallelEventDispatcherFactory (@Nonnull final IAggregatorFactory <Object, Object> aResultAggregateFactory,
                                                             @Nonnull final IExecutorServiceFactory aExecutorServiceFactory,
-                                                            @Nullable final IEventObservingExceptionHandler aExceptionHandler)
+                                                            @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
-    if (aResultAggregateFactory == null)
-      throw new NullPointerException ("resultAggregatorFactory");
-    if (aExecutorServiceFactory == null)
-      throw new NullPointerException ("executorServiceFactory");
+    ValueEnforcer.notNull (aResultAggregateFactory, "ResultAggregateFactory");
+    ValueEnforcer.notNull (aExecutorServiceFactory, "ExecutorServiceFactory");
 
     m_aResultAggregateFactory = aResultAggregateFactory;
     m_aExecutorServiceFactory = aExecutorServiceFactory;

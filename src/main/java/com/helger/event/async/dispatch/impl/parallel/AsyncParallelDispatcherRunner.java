@@ -22,11 +22,12 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.event.IEvent;
 import com.helger.event.IEventObserver;
-import com.helger.event.IEventObservingExceptionHandler;
+import com.helger.event.IEventObservingExceptionCallback;
 import com.helger.event.async.dispatch.impl.AsynchronousEventResultCollector;
-import com.helger.event.impl.EventObservingExceptionHandler;
+import com.helger.event.impl.EventObservingExceptionCallback;
 import com.helger.event.impl.EventObservingExceptionWrapper;
 
 final class AsyncParallelDispatcherRunner implements Runnable
@@ -36,21 +37,20 @@ final class AsyncParallelDispatcherRunner implements Runnable
   private final IEvent m_aEvent;
   private final IEventObserver m_aHandlingObserver;
   private final AsynchronousEventResultCollector m_aLocalResultCallback;
-  private final IEventObservingExceptionHandler m_aExceptionHandler;
+  private final IEventObservingExceptionCallback m_aExceptionHandler;
 
   AsyncParallelDispatcherRunner (@Nonnull final IEvent aEvent,
                                  @Nonnull final IEventObserver aObserver,
                                  final AsynchronousEventResultCollector aLocalResultCallback,
-                                 @Nullable final IEventObservingExceptionHandler aExceptionHandler)
+                                 @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
-    if (aEvent == null)
-      throw new NullPointerException ("event");
-    if (aObserver == null)
-      throw new NullPointerException ("observer");
+    ValueEnforcer.notNull (aEvent, "Event");
+    ValueEnforcer.notNull (aObserver, "Observer");
     m_aEvent = aEvent;
     m_aHandlingObserver = aObserver;
     m_aLocalResultCallback = aLocalResultCallback;
-    m_aExceptionHandler = aExceptionHandler != null ? aExceptionHandler : EventObservingExceptionHandler.getInstance ();
+    m_aExceptionHandler = aExceptionHandler != null ? aExceptionHandler
+                                                    : EventObservingExceptionCallback.getInstance ();
   }
 
   public void run ()

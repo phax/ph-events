@@ -26,6 +26,7 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.commons.exception.mock.IMockException;
 import com.helger.commons.hashcode.HashCodeGenerator;
@@ -35,9 +36,9 @@ import com.helger.event.EEventObserverHandlerType;
 import com.helger.event.IAggregatorFactory;
 import com.helger.event.IEvent;
 import com.helger.event.IEventObserver;
-import com.helger.event.IEventObservingExceptionHandler;
+import com.helger.event.IEventObservingExceptionCallback;
 import com.helger.event.impl.AbstractEventDispatcher;
-import com.helger.event.impl.EventObservingExceptionHandler;
+import com.helger.event.impl.EventObservingExceptionCallback;
 import com.helger.event.impl.EventObservingExceptionWrapper;
 import com.helger.event.observerqueue.IEventObserverQueue;
 import com.helger.event.sync.dispatch.ISynchronousEventDispatcher;
@@ -46,22 +47,21 @@ public class SynchronousEventDispatcher extends AbstractEventDispatcher implemen
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (SynchronousEventDispatcher.class);
 
-  private final IEventObservingExceptionHandler m_aExceptionHandler;
+  private final IEventObservingExceptionCallback m_aExceptionHandler;
 
   public SynchronousEventDispatcher (@Nonnull final IAggregatorFactory <Object, Object> aResultAggregatorFactory,
-                                     @Nullable final IEventObservingExceptionHandler aExceptionHandler)
+                                     @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
     super (aResultAggregatorFactory);
-    m_aExceptionHandler = aExceptionHandler != null ? aExceptionHandler : EventObservingExceptionHandler.getInstance ();
+    m_aExceptionHandler = aExceptionHandler != null ? aExceptionHandler
+                                                    : EventObservingExceptionCallback.getInstance ();
   }
 
   @Nullable
   public Object dispatch (@Nonnull final IEvent aEvent, @Nonnull final IEventObserverQueue aObservers)
   {
-    if (aEvent == null)
-      throw new NullPointerException ("event");
-    if (aObservers == null)
-      throw new NullPointerException ("observers");
+    ValueEnforcer.notNull (aEvent, "Event");
+    ValueEnforcer.notNull (aObservers, "Observers");
 
     // find all observers that can handle the passed event
     final Map <IEventObserver, EEventObserverHandlerType> aHandlingObservers = getListOfObserversThatCanHandleTheEvent (aEvent,

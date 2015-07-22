@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 
 import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.concurrent.IExecutorServiceFactory;
-import com.helger.event.IEventObservingExceptionHandler;
+import com.helger.event.IEventObservingExceptionCallback;
 import com.helger.event.async.dispatch.IAsynchronousEventDispatcherFactory;
 import com.helger.event.async.dispatch.impl.parallel.DefaultAsynchronousParallelEventDispatcherFactory;
 import com.helger.event.async.dispatch.impl.queue.DefaultAsynchronousQueueEventDispatcherFactory;
@@ -59,7 +59,7 @@ public final class AsynchronousEventHelper extends AbstractEventHelper
 
   @Nonnull
   public static IAsynchronousEventDispatcherFactory createEventDispFactory (@Nonnull final Class <? extends IAggregator <Object, ?>> aClass,
-                                                                            @Nullable final IEventObservingExceptionHandler aExceptionHandler)
+                                                                            @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
     // switch between parallel, serial and queue
     switch (_getDefaultDispatcherType ())
@@ -111,7 +111,7 @@ public final class AsynchronousEventHelper extends AbstractEventHelper
 
   @Nonnull
   public static BidirectionalAsynchronousMulticastEventManager createBidirectionalMulticastEventManager (@Nonnull final Class <? extends IAggregator <Object, ? extends Object>> aClass,
-                                                                                                         @Nullable final IEventObservingExceptionHandler aExceptionHandler)
+                                                                                                         @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
     return new BidirectionalAsynchronousMulticastEventManager (getObserverQueueFactory (),
                                                                createEventDispFactory (aClass, aExceptionHandler));

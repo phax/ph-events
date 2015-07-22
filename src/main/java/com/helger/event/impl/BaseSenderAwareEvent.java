@@ -18,6 +18,7 @@ package com.helger.event.impl;
 
 import javax.annotation.Nonnull;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.event.IEventType;
@@ -37,8 +38,7 @@ public class BaseSenderAwareEvent <T> extends BaseEvent implements ISenderAwareE
   public BaseSenderAwareEvent (@Nonnull final IEventType aEventType, @Nonnull final T aSender)
   {
     super (aEventType);
-    if (aSender == null)
-      throw new NullPointerException ("sender");
+    ValueEnforcer.notNull (aSender, "Sender");
     m_aSender = aSender;
   }
 
