@@ -34,7 +34,7 @@ import com.helger.event.observerqueue.IEventObserverQueue;
 
 public abstract class AbstractEventDispatcher
 {
-  protected final IAggregator <? super Object, ? super Object> m_aResultAggregator;
+  protected final IAggregator <Object, Object> m_aResultAggregator;
 
   public AbstractEventDispatcher (@Nonnull final IAggregatorFactory <Object, Object> aResultAggregatorFactory)
   {
