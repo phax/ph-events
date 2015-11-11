@@ -3,7 +3,8 @@ language: java
 jdk:
 # Does not work because of weird type inference
 #  - openjdk6
-  - oraclejdk7
+#  - oraclejdk7
+  - oraclejdk8
   
 cache:
   directories:
