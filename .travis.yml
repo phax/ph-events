@@ -1,7 +1,9 @@
 language: java
 
 jdk:
-  - openjdk6
+# Does not work because of weird type inference
+#  - openjdk6
+  - oraclejdk7
   
 cache:
   directories:
