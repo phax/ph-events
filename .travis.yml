@@ -1,5 +1,16 @@
 language: java
 
+env:
+  global:
+    - SONATYPE_USERNAME=ph@phloc.com
+    - secure: "ryh/oDra/jPDtYek4W241DSVQ4a1gGW0BgiPtnh+g6Njn0LtMSFFMNMdTBznba4Ur6Qu9A/8M5xPJWyzZuptc+Rq+
+rkAMPR10mwl5M8ptJ1YrulsKJJNx53l7PaXiJTRykGmDXd5Yv7kA+Hc+7OAg6mSXBK5XjnnDke3p10ePH5zDb7yHbUxtWkIy/Txk
+r4bnGTopm0gpHKSVLTlizCMBOh6xGqqqlxQAQN5u/WcBV+uni5LG1/lK0MOqGh2CHcR/ujMMFGYEzvEou/n6WQQuTtb49m2EZRWH
+KrS0eonlPkRSg3nayGElr4NfiV7QEQBNo9ju69T44XjsDzPhFB8ktcrVz3vt1RMWc5X5TFBThmaNbJdGMcMQPk0Fk+r7+/gVPB6U
+idEgfG9icwvy4GKxtTAuvKT4NirM5xtTUlq0YyJcBURvACIstk9aXwyn/MeNqcxDy0iZ14nLMn3+VvtWaVoexMCdyPvOYlQLDTGR
+1hBDXOeOfN90kcq38E1320jv2vKIAo7/c6ykcsdY/tjbSjlFlPW1cstIlGdAZxjqpPMHwVZy2+wIEDSczuxFB/6Ap6u4ppf/+a5y
+ho58X2WgCgSUH3gEUJKeCzPcDdR5KnC9TScT8xFE+ITYHb4oiklK51drqHatcvYipf3G5RSPNDToe4D7vvnjNkBgamzEQ8="
+
 jdk:
 # Does not work because of weird type inference
 #  - openjdk6
@@ -9,4 +20,8 @@ jdk:
 cache:
   directories:
   - $HOME/.m2
+
+after_success:
+  - python mvn-settings-add-snapshot.py
+  - mvn clean deploy -DskipTests=true --settings ~/.m2/snapshot-settings.xml
   
