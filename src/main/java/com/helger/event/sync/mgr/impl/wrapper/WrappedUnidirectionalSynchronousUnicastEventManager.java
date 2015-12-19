@@ -28,7 +28,10 @@ import com.helger.event.mgr.IUnicastEventManager;
 import com.helger.event.mgr.IUnidirectionalEventManager;
 import com.helger.event.sync.mgr.impl.UnidirectionalSynchronousUnicastEventManager;
 
-public class WrappedUnidirectionalSynchronousUnicastEventManager implements IUnidirectionalEventManager, IUnicastEventManager, IStoppable
+public class WrappedUnidirectionalSynchronousUnicastEventManager implements
+                                                                 IUnidirectionalEventManager,
+                                                                 IUnicastEventManager,
+                                                                 IStoppable
 {
   private final UnidirectionalSynchronousUnicastEventManager m_aEvtMgr;
 

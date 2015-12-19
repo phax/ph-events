@@ -59,7 +59,7 @@ public abstract class AbstractEventObserver implements IEventObserver
       throw new IllegalArgumentException ("Event types contain an illegal event type");
 
     m_eHandlerType = bWithReturnValue ? EEventObserverHandlerType.HANDLE_RETURN_VALUE
-                                     : EEventObserverHandlerType.HANDLE_NO_RETURN;
+                                      : EEventObserverHandlerType.HANDLE_NO_RETURN;
     m_aHandledEventTypes = CollectionHelper.newSet (aHandledEventTypes);
   }
 
@@ -71,7 +71,7 @@ public abstract class AbstractEventObserver implements IEventObserver
       throw new IllegalArgumentException ("Event types contain an illegal event type");
 
     m_eHandlerType = bWithReturnValue ? EEventObserverHandlerType.HANDLE_RETURN_VALUE
-                                     : EEventObserverHandlerType.HANDLE_NO_RETURN;
+                                      : EEventObserverHandlerType.HANDLE_NO_RETURN;
     m_aHandledEventTypes = CollectionHelper.newSet (aHandledEventTypes);
   }
 
@@ -79,6 +79,6 @@ public abstract class AbstractEventObserver implements IEventObserver
   public final EEventObserverHandlerType canHandleEvent (@Nonnull final IEvent aEvent)
   {
     return m_aHandledEventTypes.contains (aEvent.getEventType ()) ? m_eHandlerType
-                                                                 : EEventObserverHandlerType.CANNOT_HANDLE;
+                                                                  : EEventObserverHandlerType.CANNOT_HANDLE;
   }
 }

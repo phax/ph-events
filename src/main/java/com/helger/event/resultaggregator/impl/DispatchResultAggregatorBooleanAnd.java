@@ -21,7 +21,7 @@ import java.util.Collection;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.aggregate.AbstractAggregator;
+import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.event.impl.EventObservingExceptionWrapper;
 
@@ -31,7 +31,7 @@ import com.helger.event.impl.EventObservingExceptionWrapper;
  *
  * @author Philip Helger
  */
-public final class DispatchResultAggregatorBooleanAnd extends AbstractAggregator <Object, Object>
+public final class DispatchResultAggregatorBooleanAnd implements IAggregator <Object, Object>
 {
   public DispatchResultAggregatorBooleanAnd ()
   {}

@@ -83,13 +83,8 @@ public final class AsynchronousEventHelperTest
         aCountDown.countDown ();
       }
     });
-    final INonThrowingRunnableWithParameter <Object> aOverallCB = new INonThrowingRunnableWithParameter <Object> ()
-    {
-      public void run (final Object currentObject)
-      {
-        s_aLogger.info ("Got: " + currentObject);
-      }
-    };
+    final INonThrowingRunnableWithParameter <Object> aOverallCB = currentObject -> s_aLogger.info ("Got: " +
+                                                                                                   currentObject);
     mgr.trigger (new BaseEvent (EV_TYPE), aOverallCB);
     aCountDown.await ();
 
@@ -132,13 +127,9 @@ public final class AsynchronousEventHelperTest
         }
       });
 
-    final INonThrowingRunnableWithParameter <Object> aOverallCB = new INonThrowingRunnableWithParameter <Object> ()
-    {
-      public void run (final Object currentObject)
-      {
-        s_aLogger.info ("Got: " + ((List <?>) currentObject).size () + " results");
-      }
-    };
+    final INonThrowingRunnableWithParameter <Object> aOverallCB = currentObject -> s_aLogger.info ("Got: " +
+                                                                                                   ((List <?>) currentObject).size () +
+                                                                                                   " results");
     mgr.trigger (new BaseEvent (EV_TYPE), aOverallCB);
     aCountDown.await ();
   }
@@ -192,37 +183,25 @@ public final class AsynchronousEventHelperTest
     mgr.registerObserver (new MockAsyncObserver ("Hallo"));
     mgr.registerObserver (new MockAsyncObserverOnlyOnce ("Welt"));
     // trigger for the first time
-    mgr.trigger (new BaseEvent (EV_TYPE), new INonThrowingRunnableWithParameter <Object> ()
-    {
-      public void run (final Object currentObject)
-      {
-        assertTrue (currentObject instanceof List <?>);
-        // -> expect 2 results
-        assertEquals (2, ((List <?>) currentObject).size ());
-        s_aLogger.info ("1. Got: " + currentObject);
-      }
+    mgr.trigger (new BaseEvent (EV_TYPE), currentObject -> {
+      assertTrue (currentObject instanceof List <?>);
+      // -> expect 2 results
+      assertEquals (2, ((List <?>) currentObject).size ());
+      s_aLogger.info ("1. Got: " + currentObject);
     });
     // trigger for the second time
-    mgr.trigger (new BaseEvent (EV_TYPE), new INonThrowingRunnableWithParameter <Object> ()
-    {
-      public void run (final Object currentObject)
-      {
-        assertTrue (currentObject instanceof List <?>);
-        // -> expect 1 result
-        assertEquals (1, ((List <?>) currentObject).size ());
-        s_aLogger.info ("2. Got: " + currentObject);
-      }
+    mgr.trigger (new BaseEvent (EV_TYPE), currentObject -> {
+      assertTrue (currentObject instanceof List <?>);
+      // -> expect 1 result
+      assertEquals (1, ((List <?>) currentObject).size ());
+      s_aLogger.info ("2. Got: " + currentObject);
     });
     // trigger for the third time
-    mgr.trigger (new BaseEvent (EV_TYPE), new INonThrowingRunnableWithParameter <Object> ()
-    {
-      public void run (final Object currentObject)
-      {
-        assertTrue (currentObject instanceof List <?>);
-        // -> expect 1 result
-        assertEquals (1, ((List <?>) currentObject).size ());
-        s_aLogger.info ("3. Got: " + currentObject);
-      }
+    mgr.trigger (new BaseEvent (EV_TYPE), currentObject -> {
+      assertTrue (currentObject instanceof List <?>);
+      // -> expect 1 result
+      assertEquals (1, ((List <?>) currentObject).size ());
+      s_aLogger.info ("3. Got: " + currentObject);
     });
   }
 }

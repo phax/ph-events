@@ -43,7 +43,8 @@ import com.helger.event.observerqueue.IEventObserverQueue;
  *
  * @author Philip Helger
  */
-public final class AsynchronousQueueEventDispatcher extends AbstractEventDispatcher implements IAsynchronousEventDispatcher
+public final class AsynchronousQueueEventDispatcher extends AbstractEventDispatcher
+                                                    implements IAsynchronousEventDispatcher
 {
   private final Lock m_aLock = new ReentrantLock ();
   private final AsyncQueueDispatcherThread m_aQueueThread;

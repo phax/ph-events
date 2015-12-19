@@ -24,7 +24,7 @@ public interface ICRUDEventType extends IEventType
 {
   /**
    * Determines whether the event happens "before" or "after" an action.
-   * 
+   *
    * @return Never <code>null</code>.
    */
   @Nonnull
@@ -32,7 +32,7 @@ public interface ICRUDEventType extends IEventType
 
   /**
    * The CRUD state for which this event is triggered.
-   * 
+   *
    * @return Never <code>null</code>.
    */
   @Nonnull

@@ -28,7 +28,10 @@ import com.helger.event.mgr.IMulticastEventManager;
 import com.helger.event.mgr.IUnidirectionalEventManager;
 import com.helger.event.sync.mgr.impl.UnidirectionalSynchronousMulticastEventManager;
 
-public class WrappedUnidirectionalSynchronousMulticastEventManager implements IUnidirectionalEventManager, IMulticastEventManager, IStoppable
+public class WrappedUnidirectionalSynchronousMulticastEventManager implements
+                                                                   IUnidirectionalEventManager,
+                                                                   IMulticastEventManager,
+                                                                   IStoppable
 {
   private final UnidirectionalSynchronousMulticastEventManager m_aEvtMgr;
 

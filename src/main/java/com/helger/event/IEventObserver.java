@@ -52,5 +52,6 @@ public interface IEventObserver
    * @throws Exception
    *         on error
    */
-  void onEvent (@Nonnull IEvent aEvent, @Nullable INonThrowingRunnableWithParameter <Object> aResultCallback) throws Exception;
+  void onEvent (@Nonnull IEvent aEvent,
+                @Nullable INonThrowingRunnableWithParameter <Object> aResultCallback) throws Exception;
 }

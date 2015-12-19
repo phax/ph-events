@@ -51,7 +51,7 @@ public enum EEventObserverHandlerType
 
   /**
    * This method is just a shortcut to make the code more readable.
-   * 
+   *
    * @param aEvent
    *        Source event.
    * @param aEventType

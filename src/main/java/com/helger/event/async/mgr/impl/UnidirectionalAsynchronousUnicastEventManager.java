@@ -21,7 +21,8 @@ import com.helger.event.IEvent;
 import com.helger.event.async.dispatch.IAsynchronousEventDispatcherFactory;
 import com.helger.event.mgr.IUnidirectionalEventManager;
 
-public class UnidirectionalAsynchronousUnicastEventManager extends AbstractAsynchronousUnicastEventManager implements IUnidirectionalEventManager
+public class UnidirectionalAsynchronousUnicastEventManager extends AbstractAsynchronousUnicastEventManager
+                                                           implements IUnidirectionalEventManager
 {
   public UnidirectionalAsynchronousUnicastEventManager (final IAsynchronousEventDispatcherFactory aEventDispatcherFactory)
   {

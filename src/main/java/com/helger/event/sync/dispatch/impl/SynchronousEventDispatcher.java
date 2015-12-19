@@ -81,13 +81,7 @@ public class SynchronousEventDispatcher extends AbstractEventDispatcher implemen
       final List <Object> aCallbackReturnValues = new ArrayList <Object> ();
 
       // The local result callback that puts the different values into the list
-      final INonThrowingRunnableWithParameter <Object> aResultCallback = new INonThrowingRunnableWithParameter <Object> ()
-      {
-        public void run (final Object aCurrentObject)
-        {
-          aCallbackReturnValues.add (aCurrentObject);
-        }
-      };
+      final INonThrowingRunnableWithParameter <Object> aResultCallback = aCurrentObject -> aCallbackReturnValues.add (aCurrentObject);
 
       // Iterate all handling observers
       for (final Map.Entry <IEventObserver, EEventObserverHandlerType> aEntry : aHandlingObservers.entrySet ())

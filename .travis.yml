@@ -12,9 +12,6 @@ idEgfG9icwvy4GKxtTAuvKT4NirM5xtTUlq0YyJcBURvACIstk9aXwyn/MeNqcxDy0iZ14nLMn3+VvtW
 ho58X2WgCgSUH3gEUJKeCzPcDdR5KnC9TScT8xFE+ITYHb4oiklK51drqHatcvYipf3G5RSPNDToe4D7vvnjNkBgamzEQ8="
 
 jdk:
-# Does not work because of weird type inference
-#  - openjdk6
-#  - oraclejdk7
   - oraclejdk8
   
 cache:

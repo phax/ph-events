@@ -28,7 +28,10 @@ import com.helger.event.mgr.IBidirectionalSynchronousEventManager;
 import com.helger.event.mgr.IMulticastEventManager;
 import com.helger.event.sync.mgr.impl.BidirectionalSynchronousMulticastEventManager;
 
-public class WrappedBidirectionalSynchronousMulticastEventManager implements IBidirectionalSynchronousEventManager, IMulticastEventManager, IStoppable
+public class WrappedBidirectionalSynchronousMulticastEventManager implements
+                                                                  IBidirectionalSynchronousEventManager,
+                                                                  IMulticastEventManager,
+                                                                  IStoppable
 {
   private final BidirectionalSynchronousMulticastEventManager m_aEvtMgr;
 
