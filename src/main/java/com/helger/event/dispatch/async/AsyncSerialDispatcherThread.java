@@ -17,6 +17,7 @@
 package com.helger.event.dispatch.async;
 
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.Nonnull;
 
@@ -33,6 +34,7 @@ import com.helger.event.observer.exception.IEventObservingExceptionCallback;
 final class AsyncSerialDispatcherThread extends Thread
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (AsyncSerialDispatcherThread.class);
+  private static final AtomicInteger s_aCounter = new AtomicInteger (0);
   private final IEvent m_aEvent;
   private final Map <IEventObserver, EEventObserverHandlerType> m_aHandlingObservers;
   private final AsynchronousEventResultCollector m_aLocalResultCallback;
@@ -43,7 +45,7 @@ final class AsyncSerialDispatcherThread extends Thread
                                final AsynchronousEventResultCollector aLocalResultCallback,
                                @Nonnull final IEventObservingExceptionCallback aExceptionHandler)
   {
-    super ("serial-event-dispatcher-thread");
+    super ("serial-event-dispatcher-thread-" + s_aCounter.incrementAndGet ());
     ValueEnforcer.notNull (aEvent, "Event");
     ValueEnforcer.notNull (aHandlingObservers, "HandlingObservers");
     m_aEvent = aEvent;
