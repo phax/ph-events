@@ -34,9 +34,6 @@ final class InternalScopedEventManager extends EventManager implements IScopeDes
     super (new ScopedEventObservingExceptionCallback ());
   }
 
-  public void onBeforeScopeDestruction (@Nonnull final IScope aScopeToBeDestroyed) throws Exception
-  {}
-
   public void onScopeDestruction (@Nonnull final IScope aScopeInDestruction) throws Exception
   {
     // Stop the event manager

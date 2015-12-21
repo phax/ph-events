@@ -31,17 +31,6 @@ import com.helger.commons.ValueEnforcer;
 @Immutable
 public class EventObservingExceptionCallback implements IEventObservingExceptionCallback
 {
-  private static final IEventObservingExceptionCallback s_aInstance = new EventObservingExceptionCallback ();
-
-  protected EventObservingExceptionCallback ()
-  {}
-
-  @Nonnull
-  public static IEventObservingExceptionCallback getInstance ()
-  {
-    return s_aInstance;
-  }
-
   @OverridingMethodsMustInvokeSuper
   public void handleObservingException (@Nonnull final Throwable aThrowable)
   {

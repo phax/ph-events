@@ -27,6 +27,7 @@ import com.helger.commons.concurrent.SimpleLock;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.event.IEvent;
+import com.helger.event.dispatch.AbstractEventDispatcher;
 import com.helger.event.dispatch.EffectiveEventObserverList;
 import com.helger.event.observer.EEventObserverHandlerType;
 import com.helger.event.observer.IEventObserver;
@@ -38,13 +39,14 @@ import com.helger.event.observerqueue.IEventObserverQueue;
  *
  * @author Philip Helger
  */
-public final class AsynchronousQueueEventDispatcher implements IAsynchronousEventDispatcher
+public class AsynchronousQueueEventDispatcher extends AbstractEventDispatcher implements IAsynchronousEventDispatcher
 {
   private final SimpleLock m_aLock = new SimpleLock ();
   private final AsyncQueueDispatcherThread m_aQueueThread;
 
   public AsynchronousQueueEventDispatcher (@Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
+    super (aExceptionHandler);
     m_aQueueThread = new AsyncQueueDispatcherThread (aExceptionHandler);
     m_aQueueThread.start ();
   }
@@ -92,6 +94,7 @@ public final class AsynchronousQueueEventDispatcher implements IAsynchronousEven
     }
   }
 
+  @Override
   @Nonnull
   public EChange stop ()
   {
@@ -105,6 +108,6 @@ public final class AsynchronousQueueEventDispatcher implements IAsynchronousEven
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("QueueThread", m_aQueueThread).toString ();
+    return ToStringGenerator.getDerived (super.toString ()).append ("QueueThread", m_aQueueThread).toString ();
   }
 }

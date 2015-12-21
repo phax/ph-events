@@ -27,7 +27,6 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.event.IEvent;
 import com.helger.event.observer.IEventObserver;
-import com.helger.event.observer.exception.EventObservingExceptionCallback;
 import com.helger.event.observer.exception.EventObservingExceptionWrapper;
 import com.helger.event.observer.exception.IEventObservingExceptionCallback;
 
@@ -53,11 +52,10 @@ final class AsyncQueueDispatcherThread extends Thread
   private final BlockingQueue <Triple> m_aQueue = new LinkedBlockingQueue <> ();
   private final IEventObservingExceptionCallback m_aExceptionHandler;
 
-  public AsyncQueueDispatcherThread (@Nullable final IEventObservingExceptionCallback aExceptionHandler)
+  public AsyncQueueDispatcherThread (@Nonnull final IEventObservingExceptionCallback aExceptionHandler)
   {
     super ("async-queue-dispatcher-thread");
-    m_aExceptionHandler = aExceptionHandler != null ? aExceptionHandler
-                                                    : EventObservingExceptionCallback.getInstance ();
+    m_aExceptionHandler = aExceptionHandler;
   }
 
   public void addToQueue (@Nonnull final IEvent aEvent,

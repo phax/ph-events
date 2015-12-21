@@ -29,28 +29,22 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.commons.exception.mock.IMockException;
-import com.helger.commons.hashcode.HashCodeGenerator;
-import com.helger.commons.state.EChange;
-import com.helger.commons.string.ToStringGenerator;
 import com.helger.event.IEvent;
+import com.helger.event.dispatch.AbstractEventDispatcher;
 import com.helger.event.dispatch.EffectiveEventObserverList;
 import com.helger.event.observer.EEventObserverHandlerType;
 import com.helger.event.observer.IEventObserver;
-import com.helger.event.observer.exception.EventObservingExceptionCallback;
 import com.helger.event.observer.exception.EventObservingExceptionWrapper;
 import com.helger.event.observer.exception.IEventObservingExceptionCallback;
 import com.helger.event.observerqueue.IEventObserverQueue;
 
-public class SynchronousEventDispatcher implements ISynchronousEventDispatcher
+public class SynchronousEventDispatcher extends AbstractEventDispatcher implements ISynchronousEventDispatcher
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (SynchronousEventDispatcher.class);
 
-  private final IEventObservingExceptionCallback m_aExceptionHandler;
-
   public SynchronousEventDispatcher (@Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
-    m_aExceptionHandler = aExceptionHandler != null ? aExceptionHandler
-                                                    : EventObservingExceptionCallback.getInstance ();
+    super (aExceptionHandler);
   }
 
   @Nullable
@@ -94,7 +88,7 @@ public class SynchronousEventDispatcher implements ISynchronousEventDispatcher
         }
         catch (final Throwable t)
         {
-          m_aExceptionHandler.handleObservingException (t);
+          getExceptionCallback ().handleObservingException (t);
           s_aLogger.error ("Failed to notify " + aObserver + " on " + aEvent, t instanceof IMockException ? null : t);
 
           // Handle eventual exception gracefully
@@ -127,37 +121,5 @@ public class SynchronousEventDispatcher implements ISynchronousEventDispatcher
 
     // Return the main dispatch result
     return aDispatchResult;
-  }
-
-  @Nonnull
-  public EChange stop ()
-  {
-    // Nothing to do in here
-    return EChange.UNCHANGED;
-  }
-
-  @Override
-  public boolean equals (final Object o)
-  {
-    if (o == this)
-      return true;
-    if (!super.equals (o))
-      return false;
-    final SynchronousEventDispatcher rhs = (SynchronousEventDispatcher) o;
-    return m_aExceptionHandler.equals (rhs.m_aExceptionHandler);
-  }
-
-  @Override
-  public int hashCode ()
-  {
-    return HashCodeGenerator.getDerived (super.hashCode ()).append (m_aExceptionHandler).getHashCode ();
-  }
-
-  @Override
-  public String toString ()
-  {
-    return ToStringGenerator.getDerived (super.toString ())
-                            .append ("ExceptionHandler", m_aExceptionHandler)
-                            .toString ();
   }
 }

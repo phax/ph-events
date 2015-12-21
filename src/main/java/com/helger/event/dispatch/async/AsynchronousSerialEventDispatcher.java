@@ -23,13 +23,11 @@ import javax.annotation.Nullable;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
-import com.helger.commons.state.EChange;
-import com.helger.commons.string.ToStringGenerator;
 import com.helger.event.IEvent;
+import com.helger.event.dispatch.AbstractEventDispatcher;
 import com.helger.event.dispatch.EffectiveEventObserverList;
 import com.helger.event.observer.EEventObserverHandlerType;
 import com.helger.event.observer.IEventObserver;
-import com.helger.event.observer.exception.EventObservingExceptionCallback;
 import com.helger.event.observer.exception.IEventObservingExceptionCallback;
 import com.helger.event.observerqueue.IEventObserverQueue;
 
@@ -39,14 +37,11 @@ import com.helger.event.observerqueue.IEventObserverQueue;
  *
  * @author Philip Helger
  */
-public class AsynchronousSerialEventDispatcher implements IAsynchronousEventDispatcher
+public class AsynchronousSerialEventDispatcher extends AbstractEventDispatcher implements IAsynchronousEventDispatcher
 {
-  private final IEventObservingExceptionCallback m_aExceptionHandler;
-
   public AsynchronousSerialEventDispatcher (@Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
-    m_aExceptionHandler = aExceptionHandler != null ? aExceptionHandler
-                                                    : EventObservingExceptionCallback.getInstance ();
+    super (aExceptionHandler);
   }
 
   public void dispatch (@Nonnull final IEvent aEvent,
@@ -81,19 +76,10 @@ public class AsynchronousSerialEventDispatcher implements IAsynchronousEventDisp
       }
 
       // Spawn a separate thread for each event that is triggered
-      new AsyncSerialDispatcherThread (aEvent, aHandlingObservers, aLocalResultCallback, m_aExceptionHandler).start ();
+      new AsyncSerialDispatcherThread (aEvent,
+                                       aHandlingObservers,
+                                       aLocalResultCallback,
+                                       getExceptionCallback ()).start ();
     }
-  }
-
-  public EChange stop ()
-  {
-    // Nothing to do in here
-    return EChange.UNCHANGED;
-  }
-
-  @Override
-  public String toString ()
-  {
-    return new ToStringGenerator (this).append ("ExceptionHandler", m_aExceptionHandler).toString ();
   }
 }

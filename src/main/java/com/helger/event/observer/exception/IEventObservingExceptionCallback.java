@@ -31,7 +31,7 @@ import com.helger.commons.callback.ICallback;
 public interface IEventObservingExceptionCallback extends ICallback
 {
   /**
-   * Handle the thrown exception.
+   * Handle the thrown exception. Logging is performed automatically!
    *
    * @param aThrowable
    *        The thrown exception. May not be <code>null</code>.

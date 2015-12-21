@@ -19,7 +19,6 @@ package com.helger.event.dispatch.async;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +27,6 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.event.IEvent;
 import com.helger.event.observer.EEventObserverHandlerType;
 import com.helger.event.observer.IEventObserver;
-import com.helger.event.observer.exception.EventObservingExceptionCallback;
 import com.helger.event.observer.exception.EventObservingExceptionWrapper;
 import com.helger.event.observer.exception.IEventObservingExceptionCallback;
 
@@ -43,7 +41,7 @@ final class AsyncSerialDispatcherThread extends Thread
   AsyncSerialDispatcherThread (@Nonnull final IEvent aEvent,
                                @Nonnull final Map <IEventObserver, EEventObserverHandlerType> aHandlingObservers,
                                final AsynchronousEventResultCollector aLocalResultCallback,
-                               @Nullable final IEventObservingExceptionCallback aExceptionHandler)
+                               @Nonnull final IEventObservingExceptionCallback aExceptionHandler)
   {
     super ("serial-event-dispatcher-thread");
     ValueEnforcer.notNull (aEvent, "Event");
@@ -51,8 +49,7 @@ final class AsyncSerialDispatcherThread extends Thread
     m_aEvent = aEvent;
     m_aHandlingObservers = aHandlingObservers;
     m_aLocalResultCallback = aLocalResultCallback;
-    m_aExceptionHandler = aExceptionHandler != null ? aExceptionHandler
-                                                    : EventObservingExceptionCallback.getInstance ();
+    m_aExceptionHandler = aExceptionHandler;
   }
 
   private void _callSingleObserver (final IEventObserver aObserver, final boolean bHasReturnValue)
