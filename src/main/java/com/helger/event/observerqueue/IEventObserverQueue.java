@@ -23,7 +23,6 @@ import javax.annotation.Nonnull;
 
 import com.helger.commons.annotation.MustImplementEqualsAndHashcode;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.factory.IFactory;
 import com.helger.commons.state.EChange;
 import com.helger.event.observer.IEventObserver;
 
@@ -83,10 +82,10 @@ public interface IEventObserverQueue extends Serializable
   {}
 
   @Nonnull
-  static IFactory <? extends IEventObserverQueue> createDefaultFactory ()
+  static IEventObserverQueue createDefault ()
   {
     // By default a non-weak set is used, because observers are quite regular
     // inline classes which tend to be garbage collected very easily!
-    return () -> new EventObserverQueueOrderedSet ();
+    return new EventObserverQueueOrderedSet ();
   }
 }

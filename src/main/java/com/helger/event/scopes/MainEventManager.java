@@ -34,9 +34,9 @@ final class MainEventManager extends BidirectionalSynchronousMulticastEventManag
 {
   public MainEventManager ()
   {
-    super (IEventObserverQueue.createDefaultFactory (),
-           SynchronousEventHelper.createSynchronousEventDispatcherFactory (new DispatchResultAggregatorBooleanAnd (),
-                                                                           new ScopedEventObservingExceptionCallback ()));
+    super (IEventObserverQueue.createDefault (),
+           SynchronousEventHelper.createSynchronousEventDispatcher (new DispatchResultAggregatorBooleanAnd (),
+                                                                    new ScopedEventObservingExceptionCallback ()));
   }
 
   public void onBeforeScopeDestruction (@Nonnull final IScope aScopeToBeDestroyed) throws Exception

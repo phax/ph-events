@@ -21,7 +21,6 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.aggregate.IAggregator;
-import com.helger.commons.factory.IFactory;
 import com.helger.event.dispatch.sync.ISynchronousEventDispatcher;
 import com.helger.event.dispatch.sync.SynchronousEventDispatcher;
 import com.helger.event.observer.exception.IEventObservingExceptionCallback;
@@ -34,37 +33,37 @@ public final class SynchronousEventHelper
   {}
 
   @Nonnull
-  public static IFactory <ISynchronousEventDispatcher> createSynchronousEventDispatcherFactory (@Nonnull final IAggregator <Object, ?> aResultAggregator,
-                                                                                                @Nullable final IEventObservingExceptionCallback aExceptionHandler)
+  public static ISynchronousEventDispatcher createSynchronousEventDispatcher (@Nonnull final IAggregator <Object, ?> aResultAggregator,
+                                                                              @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
-    return () -> new SynchronousEventDispatcher (aResultAggregator, aExceptionHandler);
+    return new SynchronousEventDispatcher (aResultAggregator, aExceptionHandler);
   }
 
   @Nonnull
-  public static IFactory <ISynchronousEventDispatcher> createSynchronousEventDispatcherFactory ()
+  public static ISynchronousEventDispatcher createSynchronousEventDispatcher ()
   {
-    return createSynchronousEventDispatcherFactory (IAggregator.createUseFirst (), null);
+    return createSynchronousEventDispatcher (IAggregator.createUseFirst (), null);
   }
 
   @Nonnull
   public static UnidirectionalSynchronousUnicastEventManager createUnidirectionalUnicastEventManager ()
   {
     // No need for aggregation here
-    return new UnidirectionalSynchronousUnicastEventManager (createSynchronousEventDispatcherFactory ());
+    return new UnidirectionalSynchronousUnicastEventManager (createSynchronousEventDispatcher ());
   }
 
   @Nonnull
   public static BidirectionalSynchronousUnicastEventManager createBidirectionalUnicastEventManager ()
   {
     // No need for aggregation here
-    return new BidirectionalSynchronousUnicastEventManager (createSynchronousEventDispatcherFactory ());
+    return new BidirectionalSynchronousUnicastEventManager (createSynchronousEventDispatcher ());
   }
 
   @Nonnull
   public static UnidirectionalSynchronousMulticastEventManager createUnidirectionalMulticastEventManager ()
   {
-    return new UnidirectionalSynchronousMulticastEventManager (IEventObserverQueue.createDefaultFactory (),
-                                                               createSynchronousEventDispatcherFactory ());
+    return new UnidirectionalSynchronousMulticastEventManager (IEventObserverQueue.createDefault (),
+                                                               createSynchronousEventDispatcher ());
   }
 
   @Nonnull
@@ -77,8 +76,8 @@ public final class SynchronousEventHelper
   public static BidirectionalSynchronousMulticastEventManager createBidirectionalMulticastEventManager (@Nonnull final IAggregator <Object, ?> aResultAggregator,
                                                                                                         @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
-    return new BidirectionalSynchronousMulticastEventManager (IEventObserverQueue.createDefaultFactory (),
-                                                              createSynchronousEventDispatcherFactory (aResultAggregator,
-                                                                                                       aExceptionHandler));
+    return new BidirectionalSynchronousMulticastEventManager (IEventObserverQueue.createDefault (),
+                                                              createSynchronousEventDispatcher (aResultAggregator,
+                                                                                                aExceptionHandler));
   }
 }

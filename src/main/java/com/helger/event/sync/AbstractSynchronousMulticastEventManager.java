@@ -19,7 +19,6 @@ package com.helger.event.sync;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.factory.IFactory;
 import com.helger.commons.state.EChange;
 import com.helger.event.dispatch.sync.ISynchronousEventDispatcher;
 import com.helger.event.mgr.IMulticastEventManager;
@@ -37,18 +36,14 @@ public abstract class AbstractSynchronousMulticastEventManager implements IMulti
   private final IEventObserverQueue m_aObserverQueue;
   private final ISynchronousEventDispatcher m_aEventDispatcher;
 
-  public AbstractSynchronousMulticastEventManager (@Nonnull final IFactory <? extends IEventObserverQueue> aObserverQueueFactory,
-                                                   @Nonnull final IFactory <? extends ISynchronousEventDispatcher> aEventDispatcherFactory)
+  public AbstractSynchronousMulticastEventManager (@Nonnull final IEventObserverQueue aObserverQueue,
+                                                   @Nonnull final ISynchronousEventDispatcher aEventDispatcher)
   {
-    ValueEnforcer.notNull (aObserverQueueFactory, "ObserverQueueFactory");
-    ValueEnforcer.notNull (aEventDispatcherFactory, "EventDispatcherFactory");
+    ValueEnforcer.notNull (aObserverQueue, "ObserverQueue");
+    ValueEnforcer.notNull (aEventDispatcher, "EventDispatcher");
 
-    m_aObserverQueue = aObserverQueueFactory.get ();
-    if (m_aObserverQueue == null)
-      throw new IllegalStateException ("No observer queue was created!");
-    m_aEventDispatcher = aEventDispatcherFactory.get ();
-    if (m_aEventDispatcher == null)
-      throw new IllegalStateException ("No event dispatcher was created!");
+    m_aObserverQueue = aObserverQueue;
+    m_aEventDispatcher = aEventDispatcher;
   }
 
   @Nonnull

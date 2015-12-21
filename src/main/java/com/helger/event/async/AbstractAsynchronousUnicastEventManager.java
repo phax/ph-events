@@ -19,7 +19,6 @@ package com.helger.event.async;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.factory.IFactory;
 import com.helger.commons.state.EChange;
 import com.helger.event.dispatch.async.IAsynchronousEventDispatcher;
 import com.helger.event.mgr.IUnicastEventManager;
@@ -37,13 +36,11 @@ public abstract class AbstractAsynchronousUnicastEventManager implements IUnicas
   private final IEventObserverQueue m_aObserverQueue = new EventObserverQueueSingleElement ();
   private final IAsynchronousEventDispatcher m_aEventDispatcher;
 
-  public AbstractAsynchronousUnicastEventManager (@Nonnull final IFactory <IAsynchronousEventDispatcher> aEventDispatcherFactory)
+  public AbstractAsynchronousUnicastEventManager (@Nonnull final IAsynchronousEventDispatcher aEventDispatcher)
   {
-    ValueEnforcer.notNull (aEventDispatcherFactory, "EventDispatcherFactory");
+    ValueEnforcer.notNull (aEventDispatcher, "EventDispatcher");
 
-    m_aEventDispatcher = aEventDispatcherFactory.get ();
-    if (m_aEventDispatcher == null)
-      throw new IllegalStateException ("An illegal event dispatcher was created");
+    m_aEventDispatcher = aEventDispatcher;
   }
 
   @Nonnull

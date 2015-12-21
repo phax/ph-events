@@ -18,7 +18,6 @@ package com.helger.event.sync;
 
 import javax.annotation.Nonnull;
 
-import com.helger.commons.factory.IFactory;
 import com.helger.event.IEvent;
 import com.helger.event.dispatch.sync.ISynchronousEventDispatcher;
 import com.helger.event.mgr.IUnidirectionalEventManager;
@@ -27,9 +26,9 @@ import com.helger.event.observerqueue.IEventObserverQueue;
 public class UnidirectionalSynchronousUnicastEventManager extends AbstractSynchronousUnicastEventManager
                                                           implements IUnidirectionalEventManager
 {
-  public UnidirectionalSynchronousUnicastEventManager (final IFactory <? extends ISynchronousEventDispatcher> aEventDispatcherFactory)
+  public UnidirectionalSynchronousUnicastEventManager (final ISynchronousEventDispatcher aEventDispatcher)
   {
-    super (aEventDispatcherFactory);
+    super (aEventDispatcher);
   }
 
   public void trigger (@Nonnull final IEvent aEvent)

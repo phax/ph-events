@@ -16,7 +16,6 @@
  */
 package com.helger.event.async;
 
-import com.helger.commons.factory.IFactory;
 import com.helger.event.IEvent;
 import com.helger.event.dispatch.async.IAsynchronousEventDispatcher;
 import com.helger.event.mgr.IUnidirectionalEventManager;
@@ -25,9 +24,9 @@ import com.helger.event.observerqueue.IEventObserverQueue;
 public class UnidirectionalAsynchronousUnicastEventManager extends AbstractAsynchronousUnicastEventManager
                                                            implements IUnidirectionalEventManager
 {
-  public UnidirectionalAsynchronousUnicastEventManager (final IFactory <IAsynchronousEventDispatcher> aEventDispatcherFactory)
+  public UnidirectionalAsynchronousUnicastEventManager (final IAsynchronousEventDispatcher aEventDispatcher)
   {
-    super (aEventDispatcherFactory);
+    super (aEventDispatcher);
   }
 
   public void trigger (final IEvent aEvent)

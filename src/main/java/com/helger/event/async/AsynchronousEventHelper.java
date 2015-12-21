@@ -22,7 +22,6 @@ import javax.annotation.Nullable;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.concurrent.IExecutorServiceFactory;
-import com.helger.commons.factory.IFactory;
 import com.helger.event.dispatch.async.IAsynchronousEventDispatcher;
 import com.helger.event.dispatch.async.parallel.AsynchronousParallelEventDispatcher;
 import com.helger.event.dispatch.async.queue.AsynchronousQueueEventDispatcher;
@@ -55,8 +54,8 @@ public final class AsynchronousEventHelper
   }
 
   @Nonnull
-  public static IFactory <IAsynchronousEventDispatcher> createEventDispFactory (@Nonnull final IAggregator <Object, ?> aResultAggregator,
-                                                                                @Nullable final IEventObservingExceptionCallback aExceptionHandler)
+  public static IAsynchronousEventDispatcher createEventDispatcher (@Nonnull final IAggregator <Object, ?> aResultAggregator,
+                                                                    @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
     ValueEnforcer.notNull (aResultAggregator, "ResultAggregateFactory");
 
@@ -64,13 +63,13 @@ public final class AsynchronousEventHelper
     switch (_getDefaultDispatcherType ())
     {
       case QUEUE:
-        return () -> new AsynchronousQueueEventDispatcher (aResultAggregator, aExceptionHandler);
+        return new AsynchronousQueueEventDispatcher (aResultAggregator, aExceptionHandler);
       case SERIAL:
-        return () -> new AsynchronousSerialEventDispatcher (aResultAggregator, aExceptionHandler);
+        return new AsynchronousSerialEventDispatcher (aResultAggregator, aExceptionHandler);
       case PARALLEL:
-        return () -> new AsynchronousParallelEventDispatcher (aResultAggregator,
-                                                              createExecutorServiceFactory (),
-                                                              aExceptionHandler);
+        return new AsynchronousParallelEventDispatcher (aResultAggregator,
+                                                        createExecutorServiceFactory (),
+                                                        aExceptionHandler);
       default:
         throw new IllegalStateException ("Illegal event dispatcher type!");
     }
@@ -80,24 +79,24 @@ public final class AsynchronousEventHelper
   public static UnidirectionalAsynchronousUnicastEventManager createUnidirectionalUnicastEventManager ()
   {
     // No need for aggregation here
-    return new UnidirectionalAsynchronousUnicastEventManager (createEventDispFactory (IAggregator.createUseFirst (),
-                                                                                      null));
+    return new UnidirectionalAsynchronousUnicastEventManager (createEventDispatcher (IAggregator.createUseFirst (),
+                                                                                     null));
   }
 
   @Nonnull
   public static BidirectionalAsynchronousUnicastEventManager createBidirectionalUnicastEventManager ()
   {
-    return new BidirectionalAsynchronousUnicastEventManager (createEventDispFactory (IAggregator.createUseFirst (),
-                                                                                     null));
+    return new BidirectionalAsynchronousUnicastEventManager (createEventDispatcher (IAggregator.createUseFirst (),
+                                                                                    null));
   }
 
   @Nonnull
   public static UnidirectionalAsynchronousMulticastEventManager createUnidirectionalMulticastEventManager ()
   {
     // No need for aggregation here
-    return new UnidirectionalAsynchronousMulticastEventManager (IEventObserverQueue.createDefaultFactory (),
-                                                                createEventDispFactory (IAggregator.createUseFirst (),
-                                                                                        null));
+    return new UnidirectionalAsynchronousMulticastEventManager (IEventObserverQueue.createDefault (),
+                                                                createEventDispatcher (IAggregator.createUseFirst (),
+                                                                                       null));
   }
 
   @Nonnull
@@ -110,8 +109,8 @@ public final class AsynchronousEventHelper
   public static BidirectionalAsynchronousMulticastEventManager createBidirectionalMulticastEventManager (@Nonnull final IAggregator <Object, ?> aResultAggregator,
                                                                                                          @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
-    return new BidirectionalAsynchronousMulticastEventManager (IEventObserverQueue.createDefaultFactory (),
-                                                               createEventDispFactory (aResultAggregator,
-                                                                                       aExceptionHandler));
+    return new BidirectionalAsynchronousMulticastEventManager (IEventObserverQueue.createDefault (),
+                                                               createEventDispatcher (aResultAggregator,
+                                                                                      aExceptionHandler));
   }
 }

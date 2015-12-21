@@ -20,7 +20,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
-import com.helger.commons.factory.IFactory;
 import com.helger.event.IEvent;
 import com.helger.event.dispatch.async.IAsynchronousEventDispatcher;
 import com.helger.event.mgr.IBidirectionalAsynchronousEventManager;
@@ -29,10 +28,10 @@ import com.helger.event.observerqueue.IEventObserverQueue;
 public class BidirectionalAsynchronousMulticastEventManager extends AbstractAsynchronousMulticastEventManager
                                                             implements IBidirectionalAsynchronousEventManager
 {
-  public BidirectionalAsynchronousMulticastEventManager (final IFactory <? extends IEventObserverQueue> aObserverQueueFactory,
-                                                         final IFactory <? extends IAsynchronousEventDispatcher> aEventDispatcherFactory)
+  public BidirectionalAsynchronousMulticastEventManager (final IEventObserverQueue aObserverQueue,
+                                                         final IAsynchronousEventDispatcher aEventDispatcher)
   {
-    super (aObserverQueueFactory, aEventDispatcherFactory);
+    super (aObserverQueue, aEventDispatcher);
   }
 
   public void trigger (@Nonnull final IEvent aEvent,

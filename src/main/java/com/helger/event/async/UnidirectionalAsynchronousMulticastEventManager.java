@@ -18,7 +18,6 @@ package com.helger.event.async;
 
 import javax.annotation.Nonnull;
 
-import com.helger.commons.factory.IFactory;
 import com.helger.event.IEvent;
 import com.helger.event.dispatch.async.IAsynchronousEventDispatcher;
 import com.helger.event.mgr.IUnidirectionalEventManager;
@@ -27,10 +26,10 @@ import com.helger.event.observerqueue.IEventObserverQueue;
 public class UnidirectionalAsynchronousMulticastEventManager extends AbstractAsynchronousMulticastEventManager
                                                              implements IUnidirectionalEventManager
 {
-  public UnidirectionalAsynchronousMulticastEventManager (final IFactory <? extends IEventObserverQueue> aObserverQueueFactory,
-                                                          final IFactory <? extends IAsynchronousEventDispatcher> aEventDispatcherFactory)
+  public UnidirectionalAsynchronousMulticastEventManager (final IEventObserverQueue aObserverQueue,
+                                                          final IAsynchronousEventDispatcher aEventDispatcher)
   {
-    super (aObserverQueueFactory, aEventDispatcherFactory);
+    super (aObserverQueue, aEventDispatcher);
   }
 
   public void trigger (@Nonnull final IEvent aEvent)

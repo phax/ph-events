@@ -20,7 +20,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
-import com.helger.commons.factory.IFactory;
 import com.helger.event.IEvent;
 import com.helger.event.dispatch.async.IAsynchronousEventDispatcher;
 import com.helger.event.mgr.IBidirectionalAsynchronousEventManager;
@@ -29,9 +28,9 @@ import com.helger.event.observerqueue.IEventObserverQueue;
 public class BidirectionalAsynchronousUnicastEventManager extends AbstractAsynchronousUnicastEventManager
                                                           implements IBidirectionalAsynchronousEventManager
 {
-  public BidirectionalAsynchronousUnicastEventManager (final IFactory <IAsynchronousEventDispatcher> aEventDispatcherFactory)
+  public BidirectionalAsynchronousUnicastEventManager (final IAsynchronousEventDispatcher aEventDispatcher)
   {
-    super (aEventDispatcherFactory);
+    super (aEventDispatcher);
   }
 
   public void trigger (@Nonnull final IEvent aEvent,
