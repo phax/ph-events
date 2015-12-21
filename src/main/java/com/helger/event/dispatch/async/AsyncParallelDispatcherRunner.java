@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.event.dispatch.async.parallel;
+package com.helger.event.dispatch.async;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -24,7 +24,6 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.event.IEvent;
-import com.helger.event.dispatch.async.AsynchronousEventResultCollector;
 import com.helger.event.observer.IEventObserver;
 import com.helger.event.observer.exception.EventObservingExceptionCallback;
 import com.helger.event.observer.exception.EventObservingExceptionWrapper;

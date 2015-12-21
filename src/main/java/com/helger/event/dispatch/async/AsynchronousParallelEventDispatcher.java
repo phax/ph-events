@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.event.dispatch.async.parallel;
+package com.helger.event.dispatch.async;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +34,6 @@ import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.event.IEvent;
 import com.helger.event.dispatch.EffectiveEventObserverList;
-import com.helger.event.dispatch.async.AsynchronousEventResultCollector;
-import com.helger.event.dispatch.async.IAsynchronousEventDispatcher;
 import com.helger.event.observer.EEventObserverHandlerType;
 import com.helger.event.observer.IEventObserver;
 import com.helger.event.observer.exception.IEventObservingExceptionCallback;

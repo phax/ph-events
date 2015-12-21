@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.event.dispatch.async.serial;
+package com.helger.event.dispatch.async;
 
 import java.util.Map;
 
@@ -26,7 +26,6 @@ import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.event.IEvent;
-import com.helger.event.dispatch.async.AsynchronousEventResultCollector;
 import com.helger.event.observer.EEventObserverHandlerType;
 import com.helger.event.observer.IEventObserver;
 import com.helger.event.observer.exception.EventObservingExceptionCallback;

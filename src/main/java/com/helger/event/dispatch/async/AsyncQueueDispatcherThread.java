@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.event.dispatch.async.queue;
+package com.helger.event.dispatch.async;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -26,7 +26,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.event.IEvent;
-import com.helger.event.dispatch.async.AsynchronousEventResultCollector;
 import com.helger.event.observer.IEventObserver;
 import com.helger.event.observer.exception.EventObservingExceptionCallback;
 import com.helger.event.observer.exception.EventObservingExceptionWrapper;

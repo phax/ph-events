@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.event.dispatch.async.queue;
+package com.helger.event.dispatch.async;
 
 import java.util.Map;
 
@@ -23,32 +23,30 @@ import javax.annotation.Nullable;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
-import com.helger.commons.concurrent.SimpleLock;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.event.IEvent;
 import com.helger.event.dispatch.EffectiveEventObserverList;
-import com.helger.event.dispatch.async.AsynchronousEventResultCollector;
-import com.helger.event.dispatch.async.IAsynchronousEventDispatcher;
 import com.helger.event.observer.EEventObserverHandlerType;
 import com.helger.event.observer.IEventObserver;
+import com.helger.event.observer.exception.EventObservingExceptionCallback;
 import com.helger.event.observer.exception.IEventObservingExceptionCallback;
 import com.helger.event.observerqueue.IEventObserverQueue;
 
 /**
- * Dispatch events based on a {@link java.util.concurrent.BlockingQueue}.
+ * Event dispatcher that spawns a thread for each triggered event and notifies
+ * all observers in a serial way.
  *
  * @author Philip Helger
  */
-public final class AsynchronousQueueEventDispatcher implements IAsynchronousEventDispatcher
+public class AsynchronousSerialEventDispatcher implements IAsynchronousEventDispatcher
 {
-  private final SimpleLock m_aLock = new SimpleLock ();
-  private final AsyncQueueDispatcherThread m_aQueueThread;
+  private final IEventObservingExceptionCallback m_aExceptionHandler;
 
-  public AsynchronousQueueEventDispatcher (@Nullable final IEventObservingExceptionCallback aExceptionHandler)
+  public AsynchronousSerialEventDispatcher (@Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
-    m_aQueueThread = new AsyncQueueDispatcherThread (aExceptionHandler);
-    m_aQueueThread.start ();
+    m_aExceptionHandler = aExceptionHandler != null ? aExceptionHandler
+                                                    : EventObservingExceptionCallback.getInstance ();
   }
 
   public void dispatch (@Nonnull final IEvent aEvent,
@@ -67,46 +65,35 @@ public final class AsynchronousQueueEventDispatcher implements IAsynchronousEven
 
     if (!aHandlingObservers.isEmpty ())
     {
-      m_aLock.locked ( () -> {
-        // At least one handler was found
-        AsynchronousEventResultCollector aLocalResultCallback = null;
-        if (nHandlingObserverCountWithReturnValue > 0)
-        {
-          // If we have handling observers, we need an overall result callback!
-          if (aOverallResultCallback == null)
-            throw new IllegalStateException ("Are you possibly using a unicast event manager and sending an event that has a return value?");
+      // At least one handler was found
+      AsynchronousEventResultCollector aLocalResultCallback = null;
+      if (nHandlingObserverCountWithReturnValue > 0)
+      {
+        // If we have handling observers, we need an overall result callback!
+        if (aOverallResultCallback == null)
+          throw new IllegalStateException ("Are you possibly using a unicast event manager and sending an event that has a return value?");
 
-          // Create collector and start thread only if we expect a result
-          aLocalResultCallback = new AsynchronousEventResultCollector (nHandlingObserverCountWithReturnValue,
-                                                                       aEvent.getResultAggregator (),
-                                                                       aOverallResultCallback);
-          aLocalResultCallback.start ();
-        }
+        // Create collector and start thread only if we expect a result
+        aLocalResultCallback = new AsynchronousEventResultCollector (nHandlingObserverCountWithReturnValue,
+                                                                     aEvent.getResultAggregator (),
+                                                                     aOverallResultCallback);
+        aLocalResultCallback.start ();
+      }
 
-        // Iterate all handling observers
-        for (final Map.Entry <IEventObserver, EEventObserverHandlerType> aEntry : aHandlingObservers.entrySet ())
-        {
-          m_aQueueThread.addToQueue (aEvent,
-                                     aEntry.getKey (),
-                                     aEntry.getValue ().hasReturnValue () ? aLocalResultCallback : null);
-        }
-      });
+      // Spawn a separate thread for each event that is triggered
+      new AsyncSerialDispatcherThread (aEvent, aHandlingObservers, aLocalResultCallback, m_aExceptionHandler).start ();
     }
   }
 
-  @Nonnull
   public EChange stop ()
   {
-    // Interrupt the dispatcher thread
-    if (m_aQueueThread.isInterrupted ())
-      return EChange.UNCHANGED;
-    m_aQueueThread.interrupt ();
-    return EChange.CHANGED;
+    // Nothing to do in here
+    return EChange.UNCHANGED;
   }
 
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("QueueThread", m_aQueueThread).toString ();
+    return new ToStringGenerator (this).append ("ExceptionHandler", m_aExceptionHandler).toString ();
   }
 }
