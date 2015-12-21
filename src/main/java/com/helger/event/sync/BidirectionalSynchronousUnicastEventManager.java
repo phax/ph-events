@@ -27,7 +27,7 @@ import com.helger.event.mgr.IBidirectionalSynchronousEventManager;
 public class BidirectionalSynchronousUnicastEventManager extends AbstractSynchronousUnicastEventManager
                                                          implements IBidirectionalSynchronousEventManager
 {
-  public BidirectionalSynchronousUnicastEventManager (final IFactory <ISynchronousEventDispatcher> aEventDispatcherFactory)
+  public BidirectionalSynchronousUnicastEventManager (final IFactory <? extends ISynchronousEventDispatcher> aEventDispatcherFactory)
   {
     super (aEventDispatcherFactory);
   }
@@ -35,12 +35,12 @@ public class BidirectionalSynchronousUnicastEventManager extends AbstractSynchro
   @Nullable
   public Object trigger (@Nonnull final IEvent aEvent)
   {
-    if (m_aObserver.isEmpty ())
+    if (m_aObserverQueue.isEmpty ())
       return null;
 
-    m_aObserver.beforeDispatch ();
-    final Object ret = m_aEventDispatcher.dispatch (aEvent, m_aObserver);
-    m_aObserver.afterDispatch ();
+    m_aObserverQueue.beforeDispatch ();
+    final Object ret = m_aEventDispatcher.dispatch (aEvent, m_aObserverQueue);
+    m_aObserverQueue.afterDispatch ();
 
     return ret;
   }

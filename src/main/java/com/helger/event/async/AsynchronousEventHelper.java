@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.event.helper;
+package com.helger.event.async;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -23,11 +23,6 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.concurrent.IExecutorServiceFactory;
 import com.helger.commons.factory.IFactory;
-import com.helger.event.async.BidirectionalAsynchronousMulticastEventManager;
-import com.helger.event.async.BidirectionalAsynchronousUnicastEventManager;
-import com.helger.event.async.NewThreadPoolExecutorServiceFactory;
-import com.helger.event.async.UnidirectionalAsynchronousMulticastEventManager;
-import com.helger.event.async.UnidirectionalAsynchronousUnicastEventManager;
 import com.helger.event.dispatch.async.IAsynchronousEventDispatcher;
 import com.helger.event.dispatch.async.parallel.AsynchronousParallelEventDispatcher;
 import com.helger.event.dispatch.async.queue.AsynchronousQueueEventDispatcher;

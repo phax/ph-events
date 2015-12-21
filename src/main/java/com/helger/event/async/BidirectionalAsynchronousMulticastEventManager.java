@@ -38,11 +38,12 @@ public class BidirectionalAsynchronousMulticastEventManager extends AbstractAsyn
   public void trigger (@Nonnull final IEvent aEvent,
                        @Nullable final INonThrowingRunnableWithParameter <Object> aResultCallback)
   {
-    if (!m_aObserverQueue.isEmpty ())
+    final IEventObserverQueue aObserverQueue = getObserverQueue ();
+    if (!aObserverQueue.isEmpty ())
     {
-      m_aObserverQueue.beforeDispatch ();
-      m_aEventDispatcher.dispatch (aEvent, m_aObserverQueue, aResultCallback);
-      m_aObserverQueue.afterDispatch ();
+      aObserverQueue.beforeDispatch ();
+      getEventDispatcher ().dispatch (aEvent, aObserverQueue, aResultCallback);
+      aObserverQueue.afterDispatch ();
     }
   }
 }

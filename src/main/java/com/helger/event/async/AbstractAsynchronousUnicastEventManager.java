@@ -26,6 +26,7 @@ import com.helger.event.dispatch.async.IAsynchronousEventDispatcher;
 import com.helger.event.mgr.IUnicastEventManager;
 import com.helger.event.observer.IEventObserver;
 import com.helger.event.observerqueue.EventObserverQueueSingleElement;
+import com.helger.event.observerqueue.IEventObserverQueue;
 
 /**
  * Abstract base class for asynchronous unicast event managers.
@@ -34,8 +35,8 @@ import com.helger.event.observerqueue.EventObserverQueueSingleElement;
  */
 public abstract class AbstractAsynchronousUnicastEventManager implements IUnicastEventManager, IStoppable
 {
-  protected final IAsynchronousEventDispatcher m_aEventDispatcher;
-  protected EventObserverQueueSingleElement m_aObserver;
+  private final IEventObserverQueue m_aObserverQueue = new EventObserverQueueSingleElement ();
+  private final IAsynchronousEventDispatcher m_aEventDispatcher;
 
   public AbstractAsynchronousUnicastEventManager (@Nonnull final IFactory <IAsynchronousEventDispatcher> aEventDispatcherFactory)
   {
@@ -44,13 +45,23 @@ public abstract class AbstractAsynchronousUnicastEventManager implements IUnicas
     m_aEventDispatcher = aEventDispatcherFactory.get ();
     if (m_aEventDispatcher == null)
       throw new IllegalStateException ("An illegal event dispatcher was created");
+  }
 
-    m_aObserver = new EventObserverQueueSingleElement ();
+  @Nonnull
+  protected final IEventObserverQueue getObserverQueue ()
+  {
+    return m_aObserverQueue;
+  }
+
+  @Nonnull
+  protected final IAsynchronousEventDispatcher getEventDispatcher ()
+  {
+    return m_aEventDispatcher;
   }
 
   public final void setObserver (@Nonnull final IEventObserver aObserver)
   {
-    m_aObserver.addObserver (aObserver);
+    m_aObserverQueue.addObserver (aObserver);
   }
 
   @Nonnull

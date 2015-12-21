@@ -26,6 +26,7 @@ import com.helger.event.dispatch.sync.ISynchronousEventDispatcher;
 import com.helger.event.mgr.IUnicastEventManager;
 import com.helger.event.observer.IEventObserver;
 import com.helger.event.observerqueue.EventObserverQueueSingleElement;
+import com.helger.event.observerqueue.IEventObserverQueue;
 
 /**
  * Abstract base class for synchronous unicast event managers. Unicast means
@@ -35,22 +36,21 @@ import com.helger.event.observerqueue.EventObserverQueueSingleElement;
  */
 public abstract class AbstractSynchronousUnicastEventManager implements IUnicastEventManager, IStoppable
 {
+  protected final IEventObserverQueue m_aObserverQueue = new EventObserverQueueSingleElement ();
   protected final ISynchronousEventDispatcher m_aEventDispatcher;
-  protected final EventObserverQueueSingleElement m_aObserver;
 
-  public AbstractSynchronousUnicastEventManager (@Nonnull final IFactory <ISynchronousEventDispatcher> aEventDispatcherFactory)
+  public AbstractSynchronousUnicastEventManager (@Nonnull final IFactory <? extends ISynchronousEventDispatcher> aEventDispatcherFactory)
   {
     ValueEnforcer.notNull (aEventDispatcherFactory, "EventDispatcherFactory");
 
     m_aEventDispatcher = aEventDispatcherFactory.get ();
     if (m_aEventDispatcher == null)
       throw new IllegalStateException ("An illegal event dispatcher was created");
-    m_aObserver = new EventObserverQueueSingleElement ();
   }
 
   public final void setObserver (@Nonnull final IEventObserver aObserver)
   {
-    m_aObserver.addObserver (aObserver);
+    m_aObserverQueue.addObserver (aObserver);
   }
 
   @Nonnull

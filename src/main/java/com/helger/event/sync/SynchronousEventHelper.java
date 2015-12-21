@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.event.helper;
+package com.helger.event.sync;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -26,10 +26,6 @@ import com.helger.event.dispatch.sync.ISynchronousEventDispatcher;
 import com.helger.event.dispatch.sync.SynchronousEventDispatcher;
 import com.helger.event.observer.exception.IEventObservingExceptionCallback;
 import com.helger.event.observerqueue.IEventObserverQueue;
-import com.helger.event.sync.BidirectionalSynchronousMulticastEventManager;
-import com.helger.event.sync.BidirectionalSynchronousUnicastEventManager;
-import com.helger.event.sync.UnidirectionalSynchronousMulticastEventManager;
-import com.helger.event.sync.UnidirectionalSynchronousUnicastEventManager;
 
 @Immutable
 public final class SynchronousEventHelper

@@ -21,9 +21,9 @@ import javax.annotation.Nonnull;
 import com.helger.commons.scope.IScope;
 import com.helger.commons.scope.IScopeDestructionAware;
 import com.helger.event.helper.DispatchResultAggregatorBooleanAnd;
-import com.helger.event.helper.SynchronousEventHelper;
 import com.helger.event.observerqueue.IEventObserverQueue;
 import com.helger.event.sync.BidirectionalSynchronousMulticastEventManager;
+import com.helger.event.sync.SynchronousEventHelper;
 
 /**
  * Wraps the main event manager so that it becomes scope destruction aware

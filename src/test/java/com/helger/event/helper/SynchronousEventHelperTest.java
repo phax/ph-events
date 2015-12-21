@@ -35,9 +35,9 @@ import com.helger.event.BaseEvent;
 import com.helger.event.EventTypeRegistry;
 import com.helger.event.IEvent;
 import com.helger.event.IEventType;
-import com.helger.event.helper.SynchronousEventHelper;
 import com.helger.event.observer.AbstractEventObserver;
 import com.helger.event.sync.BidirectionalSynchronousMulticastEventManager;
+import com.helger.event.sync.SynchronousEventHelper;
 import com.helger.event.sync.UnidirectionalSynchronousMulticastEventManager;
 import com.helger.event.sync.UnidirectionalSynchronousUnicastEventManager;
 

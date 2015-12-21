@@ -19,7 +19,6 @@ package com.helger.event.async;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.factory.IFactory;
-import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.event.IEvent;
 import com.helger.event.dispatch.async.IAsynchronousEventDispatcher;
 import com.helger.event.mgr.IUnidirectionalEventManager;
@@ -36,28 +35,12 @@ public class UnidirectionalAsynchronousMulticastEventManager extends AbstractAsy
 
   public void trigger (@Nonnull final IEvent aEvent)
   {
-    if (!m_aObserverQueue.isEmpty ())
+    final IEventObserverQueue aObserverQueue = getObserverQueue ();
+    if (!aObserverQueue.isEmpty ())
     {
-      m_aObserverQueue.beforeDispatch ();
-      m_aEventDispatcher.dispatch (aEvent, m_aObserverQueue, null);
-      m_aObserverQueue.afterDispatch ();
+      aObserverQueue.beforeDispatch ();
+      getEventDispatcher ().dispatch (aEvent, aObserverQueue, null);
+      aObserverQueue.afterDispatch ();
     }
-  }
-
-  @Override
-  public boolean equals (final Object o)
-  {
-    if (o == this)
-      return true;
-    if (o == null || !getClass ().equals (o.getClass ()))
-      return false;
-    final UnidirectionalAsynchronousMulticastEventManager rhs = (UnidirectionalAsynchronousMulticastEventManager) o;
-    return m_aObserverQueue.equals (rhs.m_aObserverQueue) && m_aEventDispatcher.equals (rhs.m_aEventDispatcher);
-  }
-
-  @Override
-  public int hashCode ()
-  {
-    return new HashCodeGenerator (this).append (m_aObserverQueue).append (m_aEventDispatcher).getHashCode ();
   }
 }

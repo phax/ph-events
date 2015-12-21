@@ -24,6 +24,7 @@ import com.helger.commons.factory.IFactory;
 import com.helger.event.IEvent;
 import com.helger.event.dispatch.async.IAsynchronousEventDispatcher;
 import com.helger.event.mgr.IBidirectionalAsynchronousEventManager;
+import com.helger.event.observerqueue.IEventObserverQueue;
 
 public class BidirectionalAsynchronousUnicastEventManager extends AbstractAsynchronousUnicastEventManager
                                                           implements IBidirectionalAsynchronousEventManager
@@ -36,11 +37,12 @@ public class BidirectionalAsynchronousUnicastEventManager extends AbstractAsynch
   public void trigger (@Nonnull final IEvent aEvent,
                        @Nullable final INonThrowingRunnableWithParameter <Object> aResultCallback)
   {
-    if (!m_aObserver.isEmpty ())
+    final IEventObserverQueue aObserverQueue = getObserverQueue ();
+    if (!aObserverQueue.isEmpty ())
     {
-      m_aObserver.beforeDispatch ();
-      m_aEventDispatcher.dispatch (aEvent, m_aObserver, aResultCallback);
-      m_aObserver.afterDispatch ();
+      aObserverQueue.beforeDispatch ();
+      getEventDispatcher ().dispatch (aEvent, aObserverQueue, aResultCallback);
+      aObserverQueue.afterDispatch ();
     }
   }
 }
