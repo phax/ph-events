@@ -21,25 +21,29 @@ import javax.annotation.Nonnull;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.state.EChange;
 import com.helger.event.dispatch.sync.ISynchronousEventDispatcher;
-import com.helger.event.mgr.IUnicastEventManager;
+import com.helger.event.mgr.IEventManager;
 import com.helger.event.observer.IEventObserver;
-import com.helger.event.observerqueue.EventObserverQueueSingleElement;
 import com.helger.event.observerqueue.IEventObserverQueue;
 
 /**
- * Abstract base class for synchronous unicast event managers. Unicast means
- * having only a single event observer.
+ * Abstract base class for synchronous multicast event managers. Multicast means
+ * having multiple event observers to inform.
  *
  * @author Philip Helger
  */
-public abstract class AbstractSynchronousUnicastEventManager implements IUnicastEventManager
+public abstract class AbstractSynchronousEventManager implements IEventManager
 {
-  private final IEventObserverQueue m_aObserverQueue = new EventObserverQueueSingleElement ();
+  private final IEventObserverQueue m_aObserverQueue;
   private final ISynchronousEventDispatcher m_aEventDispatcher;
 
-  public AbstractSynchronousUnicastEventManager (@Nonnull final ISynchronousEventDispatcher aEventDispatcher)
+  public AbstractSynchronousEventManager (@Nonnull final IEventObserverQueue aObserverQueue,
+                                                   @Nonnull final ISynchronousEventDispatcher aEventDispatcher)
   {
-    m_aEventDispatcher = ValueEnforcer.notNull (aEventDispatcher, "EventDispatcher");
+    ValueEnforcer.notNull (aObserverQueue, "ObserverQueue");
+    ValueEnforcer.notNull (aEventDispatcher, "EventDispatcher");
+
+    m_aObserverQueue = aObserverQueue;
+    m_aEventDispatcher = aEventDispatcher;
   }
 
   @Nonnull
@@ -54,9 +58,16 @@ public abstract class AbstractSynchronousUnicastEventManager implements IUnicast
     return m_aEventDispatcher;
   }
 
-  public final void setObserver (@Nonnull final IEventObserver aObserver)
+  @Nonnull
+  public final EChange registerObserver (@Nonnull final IEventObserver aObserver)
   {
-    m_aObserverQueue.addObserver (aObserver);
+    return m_aObserverQueue.addObserver (aObserver);
+  }
+
+  @Nonnull
+  public final EChange unregisterObserver (@Nonnull final IEventObserver aObserver)
+  {
+    return m_aObserverQueue.removeObserver (aObserver);
   }
 
   @Nonnull

@@ -19,14 +19,15 @@ package com.helger.event.async;
 import com.helger.event.IEvent;
 import com.helger.event.dispatch.async.IAsynchronousEventDispatcher;
 import com.helger.event.mgr.IUnidirectionalEventManager;
+import com.helger.event.observerqueue.EventObserverQueueSingleElement;
 import com.helger.event.observerqueue.IEventObserverQueue;
 
-public class UnidirectionalAsynchronousUnicastEventManager extends AbstractAsynchronousUnicastEventManager
+public class UnidirectionalAsynchronousUnicastEventManager extends AbstractAsynchronousEventManager
                                                            implements IUnidirectionalEventManager
 {
   public UnidirectionalAsynchronousUnicastEventManager (final IAsynchronousEventDispatcher aEventDispatcher)
   {
-    super (aEventDispatcher);
+    super (new EventObserverQueueSingleElement (), aEventDispatcher);
   }
 
   public void trigger (final IEvent aEvent)

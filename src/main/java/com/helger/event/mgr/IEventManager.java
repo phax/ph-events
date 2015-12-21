@@ -16,7 +16,11 @@
  */
 package com.helger.event.mgr;
 
+import javax.annotation.Nonnull;
+
+import com.helger.commons.state.EChange;
 import com.helger.commons.state.IStoppable;
+import com.helger.event.observer.IEventObserver;
 
 /**
  * Base interface for a all event managers.
@@ -25,5 +29,25 @@ import com.helger.commons.state.IStoppable;
  */
 public interface IEventManager extends IStoppable
 {
-  /* empty */
+  /**
+   * Register an additional observer.
+   *
+   * @param aObserver
+   *        The observer to be registered. May not be <code>null</code>.
+   * @return {@link EChange}
+   * @see com.helger.event.observerqueue.IEventObserverQueue
+   */
+  @Nonnull
+  EChange registerObserver (@Nonnull IEventObserver aObserver);
+
+  /**
+   * Unregister an existing observer.
+   *
+   * @param aObserver
+   *        The observer to be unregistered. May not be <code>null</code>.
+   * @return {@link EChange}
+   * @see com.helger.event.observerqueue.IEventObserverQueue
+   */
+  @Nonnull
+  EChange unregisterObserver (@Nonnull IEventObserver aObserver);
 }

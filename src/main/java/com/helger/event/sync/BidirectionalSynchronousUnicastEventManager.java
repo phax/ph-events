@@ -22,14 +22,15 @@ import javax.annotation.Nullable;
 import com.helger.event.IEvent;
 import com.helger.event.dispatch.sync.ISynchronousEventDispatcher;
 import com.helger.event.mgr.IBidirectionalSynchronousEventManager;
+import com.helger.event.observerqueue.EventObserverQueueSingleElement;
 import com.helger.event.observerqueue.IEventObserverQueue;
 
-public class BidirectionalSynchronousUnicastEventManager extends AbstractSynchronousUnicastEventManager
+public class BidirectionalSynchronousUnicastEventManager extends AbstractSynchronousEventManager
                                                          implements IBidirectionalSynchronousEventManager
 {
   public BidirectionalSynchronousUnicastEventManager (final ISynchronousEventDispatcher aEventDispatcher)
   {
-    super (aEventDispatcher);
+    super (new EventObserverQueueSingleElement (), aEventDispatcher);
   }
 
   @Nullable

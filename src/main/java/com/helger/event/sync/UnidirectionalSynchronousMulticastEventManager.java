@@ -23,7 +23,7 @@ import com.helger.event.dispatch.sync.ISynchronousEventDispatcher;
 import com.helger.event.mgr.IUnidirectionalEventManager;
 import com.helger.event.observerqueue.IEventObserverQueue;
 
-public class UnidirectionalSynchronousMulticastEventManager extends AbstractSynchronousMulticastEventManager
+public class UnidirectionalSynchronousMulticastEventManager extends AbstractSynchronousEventManager
                                                             implements IUnidirectionalEventManager
 {
   public UnidirectionalSynchronousMulticastEventManager (final IEventObserverQueue aObserverQueue,

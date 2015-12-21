@@ -23,13 +23,10 @@ import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.state.EChange;
 import com.helger.event.IEvent;
 import com.helger.event.mgr.IBidirectionalSynchronousEventManager;
-import com.helger.event.mgr.IMulticastEventManager;
 import com.helger.event.observer.IEventObserver;
 import com.helger.event.sync.BidirectionalSynchronousMulticastEventManager;
 
-public class WrappedBidirectionalSynchronousMulticastEventManager implements
-                                                                  IBidirectionalSynchronousEventManager,
-                                                                  IMulticastEventManager
+public class WrappedBidirectionalSynchronousMulticastEventManager implements IBidirectionalSynchronousEventManager
 {
   private final BidirectionalSynchronousMulticastEventManager m_aEvtMgr;
 

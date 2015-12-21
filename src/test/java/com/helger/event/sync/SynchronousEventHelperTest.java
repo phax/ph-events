@@ -46,7 +46,7 @@ public final class SynchronousEventHelperTest
   public void testUnidirectionalUnicastEventManager ()
   {
     final UnidirectionalSynchronousUnicastEventManager mgr = SynchronousEventHelper.createUnidirectionalUnicastEventManager ();
-    mgr.setObserver (new AbstractEventObserver (false, EV_TYPE)
+    mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
     {
       public void onEvent (@Nonnull final IEvent aEvent,
                            @Nullable final INonThrowingRunnableWithParameter <Object> aResultCallback)

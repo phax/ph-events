@@ -22,14 +22,11 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.state.EChange;
 import com.helger.event.IEvent;
-import com.helger.event.mgr.IMulticastEventManager;
 import com.helger.event.mgr.IUnidirectionalEventManager;
 import com.helger.event.observer.IEventObserver;
 import com.helger.event.sync.UnidirectionalSynchronousMulticastEventManager;
 
-public class WrappedUnidirectionalSynchronousMulticastEventManager implements
-                                                                   IUnidirectionalEventManager,
-                                                                   IMulticastEventManager
+public class WrappedUnidirectionalSynchronousMulticastEventManager implements IUnidirectionalEventManager
 {
   private final UnidirectionalSynchronousMulticastEventManager m_aEvtMgr;
 

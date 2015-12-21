@@ -21,25 +21,27 @@ import javax.annotation.Nonnull;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.state.EChange;
 import com.helger.event.dispatch.async.IAsynchronousEventDispatcher;
-import com.helger.event.mgr.IUnicastEventManager;
+import com.helger.event.mgr.IEventManager;
 import com.helger.event.observer.IEventObserver;
-import com.helger.event.observerqueue.EventObserverQueueSingleElement;
 import com.helger.event.observerqueue.IEventObserverQueue;
 
 /**
- * Abstract base class for asynchronous unicast event managers.
+ * Abstract base class for asynchronous multicast event managers.
  *
  * @author Philip Helger
  */
-public abstract class AbstractAsynchronousUnicastEventManager implements IUnicastEventManager
+public abstract class AbstractAsynchronousEventManager implements IEventManager
 {
-  private final IEventObserverQueue m_aObserverQueue = new EventObserverQueueSingleElement ();
+  private final IEventObserverQueue m_aObserverQueue;
   private final IAsynchronousEventDispatcher m_aEventDispatcher;
 
-  public AbstractAsynchronousUnicastEventManager (@Nonnull final IAsynchronousEventDispatcher aEventDispatcher)
+  public AbstractAsynchronousEventManager (@Nonnull final IEventObserverQueue aObserverQueue,
+                                                    @Nonnull final IAsynchronousEventDispatcher aEventDispatcher)
   {
+    ValueEnforcer.notNull (aObserverQueue, "ObserverQueue");
     ValueEnforcer.notNull (aEventDispatcher, "EventDispatcher");
 
+    m_aObserverQueue = aObserverQueue;
     m_aEventDispatcher = aEventDispatcher;
   }
 
@@ -55,9 +57,14 @@ public abstract class AbstractAsynchronousUnicastEventManager implements IUnicas
     return m_aEventDispatcher;
   }
 
-  public final void setObserver (@Nonnull final IEventObserver aObserver)
+  public final EChange registerObserver (final IEventObserver aObserver)
   {
-    m_aObserverQueue.addObserver (aObserver);
+    return m_aObserverQueue.addObserver (aObserver);
+  }
+
+  public final EChange unregisterObserver (final IEventObserver aObserver)
+  {
+    return m_aObserverQueue.removeObserver (aObserver);
   }
 
   @Nonnull

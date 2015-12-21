@@ -38,10 +38,6 @@ import com.helger.event.BaseEvent;
 import com.helger.event.EventTypeRegistry;
 import com.helger.event.IEvent;
 import com.helger.event.IEventType;
-import com.helger.event.async.AsynchronousEventHelper;
-import com.helger.event.async.BidirectionalAsynchronousMulticastEventManager;
-import com.helger.event.async.BidirectionalAsynchronousUnicastEventManager;
-import com.helger.event.async.UnidirectionalAsynchronousUnicastEventManager;
 import com.helger.event.observer.AbstractEventObserver;
 
 public final class AsynchronousEventHelperTest
@@ -54,7 +50,7 @@ public final class AsynchronousEventHelperTest
   public void testUnidirectionalUnicastEventManager ()
   {
     final UnidirectionalAsynchronousUnicastEventManager mgr = AsynchronousEventHelper.createUnidirectionalUnicastEventManager ();
-    mgr.setObserver (new AbstractEventObserver (false, EV_TYPE)
+    mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
     {
       public void onEvent (final IEvent aEvent,
                            @Nullable final INonThrowingRunnableWithParameter <Object> aResultCallback)
@@ -71,7 +67,7 @@ public final class AsynchronousEventHelperTest
   {
     final CountDownLatch aCountDown = new CountDownLatch (1);
     final BidirectionalAsynchronousUnicastEventManager mgr = AsynchronousEventHelper.createBidirectionalUnicastEventManager ();
-    mgr.setObserver (new AbstractEventObserver (true, EV_TYPE)
+    mgr.registerObserver (new AbstractEventObserver (true, EV_TYPE)
     {
       public void onEvent (final IEvent aEvent,
                            @Nullable final INonThrowingRunnableWithParameter <Object> aResultCallback)
@@ -89,7 +85,7 @@ public final class AsynchronousEventHelperTest
 
     // Try triggering the event that throws an exception
     final CountDownLatch aCountDown2 = new CountDownLatch (1);
-    mgr.setObserver (new AbstractEventObserver (true, EV_TYPE)
+    mgr.registerObserver (new AbstractEventObserver (true, EV_TYPE)
     {
       public void onEvent (@Nonnull final IEvent aEvent,
                            @Nullable final INonThrowingRunnableWithParameter <Object> aResultCallback)
@@ -137,7 +133,7 @@ public final class AsynchronousEventHelperTest
   public void testUnidirectionalUnicastEventManagerMultiple ()
   {
     final UnidirectionalAsynchronousUnicastEventManager mgr = AsynchronousEventHelper.createUnidirectionalUnicastEventManager ();
-    mgr.setObserver (new AbstractEventObserver (false, EV_TYPE)
+    mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
     {
       public void onEvent (@Nonnull final IEvent aEvent,
                            @Nullable final INonThrowingRunnableWithParameter <Object> aResultCallback)

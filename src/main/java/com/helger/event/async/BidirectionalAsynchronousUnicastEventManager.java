@@ -23,14 +23,15 @@ import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.event.IEvent;
 import com.helger.event.dispatch.async.IAsynchronousEventDispatcher;
 import com.helger.event.mgr.IBidirectionalAsynchronousEventManager;
+import com.helger.event.observerqueue.EventObserverQueueSingleElement;
 import com.helger.event.observerqueue.IEventObserverQueue;
 
-public class BidirectionalAsynchronousUnicastEventManager extends AbstractAsynchronousUnicastEventManager
+public class BidirectionalAsynchronousUnicastEventManager extends AbstractAsynchronousEventManager
                                                           implements IBidirectionalAsynchronousEventManager
 {
   public BidirectionalAsynchronousUnicastEventManager (final IAsynchronousEventDispatcher aEventDispatcher)
   {
-    super (aEventDispatcher);
+    super (new EventObserverQueueSingleElement (), aEventDispatcher);
   }
 
   public void trigger (@Nonnull final IEvent aEvent,
