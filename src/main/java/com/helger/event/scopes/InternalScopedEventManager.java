@@ -14,44 +14,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.event.crud;
+package com.helger.event.scopes;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
-import com.helger.commons.annotation.Nonempty;
-import com.helger.commons.id.IHasID;
-import com.helger.commons.lang.EnumHelper;
+import com.helger.commons.scope.IScope;
+import com.helger.commons.scope.IScopeDestructionAware;
+import com.helger.event.mgr.EventManager;
 
 /**
- * Determines the 4 different CRUD states.
+ * Wraps the main event manager so that it becomes scope destruction aware
  *
  * @author Philip Helger
  */
-public enum EEventCRUD implements IHasID <String>
+final class InternalScopedEventManager extends EventManager implements IScopeDestructionAware
 {
-  CREATE ("create"),
-  READ ("read"),
-  UPDATE ("update"),
-  DELETE ("delete");
-
-  private final String m_sID;
-
-  private EEventCRUD (@Nonnull @Nonempty final String sID)
+  public InternalScopedEventManager ()
   {
-    m_sID = sID;
+    super (new ScopedEventObservingExceptionCallback ());
   }
 
-  @Nonnull
-  @Nonempty
-  public String getID ()
-  {
-    return m_sID;
-  }
+  public void onBeforeScopeDestruction (@Nonnull final IScope aScopeToBeDestroyed) throws Exception
+  {}
 
-  @Nullable
-  public static EEventCRUD getFromIDOrNull (@Nullable final String sID)
+  public void onScopeDestruction (@Nonnull final IScope aScopeInDestruction) throws Exception
   {
-    return EnumHelper.getFromIDOrNull (EEventCRUD.class, sID);
+    // Stop the event manager
+    stop ();
   }
 }

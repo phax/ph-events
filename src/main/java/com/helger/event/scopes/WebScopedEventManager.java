@@ -65,7 +65,7 @@ public final class WebScopedEventManager
   }
 
   @Nullable
-  private static MainEventManager _getEventMgr (@Nonnull final IWebScope aScope)
+  private static InternalScopedEventManager _getEventMgr (@Nonnull final IWebScope aScope)
   {
     ValueEnforcer.notNull (aScope, "Scope");
 
@@ -73,16 +73,16 @@ public final class WebScopedEventManager
   }
 
   @Nonnull
-  private static MainEventManager _getOrCreateEventMgr (@Nonnull final IWebScope aScope)
+  private static InternalScopedEventManager _getOrCreateEventMgr (@Nonnull final IWebScope aScope)
   {
     ValueEnforcer.notNull (aScope, "Scope");
 
     // Does the scope already contain an event manager?
-    MainEventManager aEventMgr = _getEventMgr (aScope);
+    InternalScopedEventManager aEventMgr = _getEventMgr (aScope);
     if (aEventMgr == null)
     {
       // Build the event manager
-      aEventMgr = new MainEventManager ();
+      aEventMgr = new InternalScopedEventManager ();
 
       // put it in scope and register the cleanup handler
       aScope.setAttribute (ATTR_EVENT_MANAGER, aEventMgr);
@@ -114,7 +114,7 @@ public final class WebScopedEventManager
     final IWebScope aScope = _getScope (eScope, false);
     if (aScope != null)
     {
-      final MainEventManager aEventMgr = _getEventMgr (aScope);
+      final InternalScopedEventManager aEventMgr = _getEventMgr (aScope);
       if (aEventMgr != null)
         return aEventMgr.unregisterObserver (aObserver);
     }
@@ -139,7 +139,7 @@ public final class WebScopedEventManager
       if (aScope != null)
       {
         // get event manager (may be null)
-        final MainEventManager aEventMgr = _getEventMgr (aScope);
+        final InternalScopedEventManager aEventMgr = _getEventMgr (aScope);
         if (aEventMgr != null)
         {
           // main event trigger
@@ -169,7 +169,7 @@ public final class WebScopedEventManager
       if (aScope != null)
       {
         // get event manager (may be null)
-        final MainEventManager aEventMgr = _getEventMgr (aScope);
+        final InternalScopedEventManager aEventMgr = _getEventMgr (aScope);
         if (aEventMgr != null)
         {
           // main event trigger

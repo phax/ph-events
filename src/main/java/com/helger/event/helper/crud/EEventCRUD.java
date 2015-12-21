@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.event.crud;
+package com.helger.event.helper.crud;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -24,18 +24,20 @@ import com.helger.commons.id.IHasID;
 import com.helger.commons.lang.EnumHelper;
 
 /**
- * Determine the point in time, when an event is triggered.
+ * Determines the 4 different CRUD states.
  *
  * @author Philip Helger
  */
-public enum EEventPointInTime implements IHasID <String>
+public enum EEventCRUD implements IHasID <String>
 {
-  BEFORE ("before"),
-  AFTER ("after");
+  CREATE ("create"),
+  READ ("read"),
+  UPDATE ("update"),
+  DELETE ("delete");
 
   private final String m_sID;
 
-  private EEventPointInTime (@Nonnull @Nonempty final String sID)
+  private EEventCRUD (@Nonnull @Nonempty final String sID)
   {
     m_sID = sID;
   }
@@ -47,19 +49,9 @@ public enum EEventPointInTime implements IHasID <String>
     return m_sID;
   }
 
-  public boolean isBefore ()
-  {
-    return this == BEFORE;
-  }
-
-  public boolean isAfter ()
-  {
-    return this == AFTER;
-  }
-
   @Nullable
-  public static EEventPointInTime getFromIDOrNull (@Nullable final String sID)
+  public static EEventCRUD getFromIDOrNull (@Nullable final String sID)
   {
-    return EnumHelper.getFromIDOrNull (EEventPointInTime.class, sID);
+    return EnumHelper.getFromIDOrNull (EEventCRUD.class, sID);
   }
 }
