@@ -17,9 +17,12 @@
 package com.helger.event.mgr;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.commons.state.EChange;
 import com.helger.commons.state.IStoppable;
+import com.helger.event.IEvent;
 import com.helger.event.observer.IEventObserver;
 
 /**
@@ -50,4 +53,11 @@ public interface IEventManager extends IStoppable
    */
   @Nonnull
   EChange unregisterObserver (@Nonnull IEventObserver aObserver);
+
+  default void trigger (@Nonnull final IEvent aEvent)
+  {
+    trigger (aEvent, null);
+  }
+
+  void trigger (@Nonnull IEvent aEvent, @Nullable INonThrowingRunnableWithParameter <Object> aResultCallback);
 }

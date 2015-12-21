@@ -14,31 +14,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.event.sync;
+package com.helger.event.async;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.event.IEvent;
-import com.helger.event.dispatch.sync.ISynchronousEventDispatcher;
-import com.helger.event.mgr.IUnidirectionalEventManager;
-import com.helger.event.observerqueue.EventObserverQueueSingleElement;
+import com.helger.event.dispatch.async.IAsynchronousEventDispatcher;
 import com.helger.event.observerqueue.IEventObserverQueue;
 
-public class UnidirectionalSynchronousUnicastEventManager extends AbstractSynchronousEventManager
-                                                          implements IUnidirectionalEventManager
+public class AsynchronousEventManager extends AbstractAsynchronousEventManager
 {
-  public UnidirectionalSynchronousUnicastEventManager (final ISynchronousEventDispatcher aEventDispatcher)
+  public AsynchronousEventManager (final IEventObserverQueue aObserverQueue,
+                                   final IAsynchronousEventDispatcher aEventDispatcher)
   {
-    super (new EventObserverQueueSingleElement (), aEventDispatcher);
+    super (aObserverQueue, aEventDispatcher);
   }
 
-  public void trigger (@Nonnull final IEvent aEvent)
+  public void trigger (@Nonnull final IEvent aEvent,
+                       @Nullable final INonThrowingRunnableWithParameter <Object> aResultCallback)
   {
     final IEventObserverQueue aObserverQueue = getObserverQueue ();
     if (!aObserverQueue.isEmpty ())
     {
       aObserverQueue.beforeDispatch ();
-      getEventDispatcher ().dispatch (aEvent, aObserverQueue);
+      getEventDispatcher ().dispatch (aEvent, aObserverQueue, aResultCallback);
       aObserverQueue.afterDispatch ();
     }
   }

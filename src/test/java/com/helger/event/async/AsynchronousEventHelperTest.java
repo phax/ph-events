@@ -49,7 +49,7 @@ public final class AsynchronousEventHelperTest
   @Test
   public void testUnidirectionalUnicastEventManager ()
   {
-    final UnidirectionalAsynchronousUnicastEventManager mgr = AsynchronousEventHelper.createUnidirectionalUnicastEventManager ();
+    final AsynchronousEventManager mgr = AsynchronousEventHelper.createUnidirectionalUnicastEventManager ();
     mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
     {
       public void onEvent (final IEvent aEvent,
@@ -66,7 +66,7 @@ public final class AsynchronousEventHelperTest
   public void testBidirectionalUnicastEventManager () throws InterruptedException
   {
     final CountDownLatch aCountDown = new CountDownLatch (1);
-    final BidirectionalAsynchronousUnicastEventManager mgr = AsynchronousEventHelper.createBidirectionalUnicastEventManager ();
+    final AsynchronousEventManager mgr = AsynchronousEventHelper.createBidirectionalUnicastEventManager ();
     mgr.registerObserver (new AbstractEventObserver (true, EV_TYPE)
     {
       public void onEvent (final IEvent aEvent,
@@ -103,7 +103,7 @@ public final class AsynchronousEventHelperTest
   {
     final int EXECUTIONS = 100000;
     final CountDownLatch aCountDown = new CountDownLatch (EXECUTIONS);
-    final BidirectionalAsynchronousMulticastEventManager mgr = AsynchronousEventHelper.createBidirectionalMulticastEventManager (RES_AGG);
+    final AsynchronousEventManager mgr = AsynchronousEventHelper.createBidirectionalMulticastEventManager (RES_AGG);
     for (int i = 0; i < EXECUTIONS; ++i)
       mgr.registerObserver (new AbstractEventObserver (true, EV_TYPE)
       {
@@ -132,7 +132,7 @@ public final class AsynchronousEventHelperTest
   @Test
   public void testUnidirectionalUnicastEventManagerMultiple ()
   {
-    final UnidirectionalAsynchronousUnicastEventManager mgr = AsynchronousEventHelper.createUnidirectionalUnicastEventManager ();
+    final AsynchronousEventManager mgr = AsynchronousEventHelper.createUnidirectionalUnicastEventManager ();
     mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
     {
       public void onEvent (@Nonnull final IEvent aEvent,
@@ -179,7 +179,7 @@ public final class AsynchronousEventHelperTest
   @Test
   public void testBidirectionalMulticastEventManagerOnlyOnce ()
   {
-    final BidirectionalAsynchronousMulticastEventManager mgr = AsynchronousEventHelper.createBidirectionalMulticastEventManager (RES_AGG);
+    final AsynchronousEventManager mgr = AsynchronousEventHelper.createBidirectionalMulticastEventManager (RES_AGG);
     mgr.registerObserver (new MockAsyncObserver ("Hallo"));
     mgr.registerObserver (new MockAsyncObserverOnlyOnce ("Welt"));
     // trigger for the first time

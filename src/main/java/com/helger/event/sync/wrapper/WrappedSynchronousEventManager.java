@@ -17,20 +17,22 @@
 package com.helger.event.sync.wrapper;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.state.EChange;
 import com.helger.event.IEvent;
-import com.helger.event.mgr.IUnidirectionalEventManager;
+import com.helger.event.mgr.IEventManager;
 import com.helger.event.observer.IEventObserver;
-import com.helger.event.sync.UnidirectionalSynchronousMulticastEventManager;
+import com.helger.event.sync.SynchronousEventManager;
 
-public class WrappedUnidirectionalSynchronousMulticastEventManager implements IUnidirectionalEventManager
+public class WrappedSynchronousEventManager implements IEventManager
 {
-  private final UnidirectionalSynchronousMulticastEventManager m_aEvtMgr;
+  private final SynchronousEventManager m_aEvtMgr;
 
-  public WrappedUnidirectionalSynchronousMulticastEventManager (@Nonnull final UnidirectionalSynchronousMulticastEventManager aEvtMgr)
+  public WrappedSynchronousEventManager (@Nonnull final SynchronousEventManager aEvtMgr)
   {
     ValueEnforcer.notNull (aEvtMgr, "EvtMgr");
     m_aEvtMgr = aEvtMgr;
@@ -48,9 +50,10 @@ public class WrappedUnidirectionalSynchronousMulticastEventManager implements IU
     return m_aEvtMgr.unregisterObserver (aObserver);
   }
 
-  public void trigger (@Nonnull final IEvent aEvent)
+  public void trigger (@Nonnull final IEvent aEvent,
+                       @Nullable final INonThrowingRunnableWithParameter <Object> aResultCallback)
   {
-    m_aEvtMgr.trigger (aEvent);
+    m_aEvtMgr.trigger (aEvent, aResultCallback);
   }
 
   @Nonnull
@@ -66,7 +69,7 @@ public class WrappedUnidirectionalSynchronousMulticastEventManager implements IU
       return true;
     if (o == null || !getClass ().equals (o.getClass ()))
       return false;
-    final WrappedUnidirectionalSynchronousMulticastEventManager rhs = (WrappedUnidirectionalSynchronousMulticastEventManager) o;
+    final WrappedSynchronousEventManager rhs = (WrappedSynchronousEventManager) o;
     return m_aEvtMgr.equals (rhs.m_aEvtMgr);
   }
 

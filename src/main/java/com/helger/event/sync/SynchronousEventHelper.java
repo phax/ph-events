@@ -24,6 +24,7 @@ import com.helger.commons.aggregate.IAggregator;
 import com.helger.event.dispatch.sync.ISynchronousEventDispatcher;
 import com.helger.event.dispatch.sync.SynchronousEventDispatcher;
 import com.helger.event.observer.exception.IEventObservingExceptionCallback;
+import com.helger.event.observerqueue.EventObserverQueueSingleElement;
 import com.helger.event.observerqueue.IEventObserverQueue;
 
 @Immutable
@@ -46,38 +47,28 @@ public final class SynchronousEventHelper
   }
 
   @Nonnull
-  public static UnidirectionalSynchronousUnicastEventManager createUnidirectionalUnicastEventManager ()
+  public static SynchronousEventManager createUnidirectionalUnicastEventManager ()
   {
-    // No need for aggregation here
-    return new UnidirectionalSynchronousUnicastEventManager (createSynchronousEventDispatcher ());
+    return new SynchronousEventManager (new EventObserverQueueSingleElement (), createSynchronousEventDispatcher ());
   }
 
   @Nonnull
-  public static BidirectionalSynchronousUnicastEventManager createBidirectionalUnicastEventManager ()
+  public static SynchronousEventManager createUnidirectionalMulticastEventManager ()
   {
-    // No need for aggregation here
-    return new BidirectionalSynchronousUnicastEventManager (createSynchronousEventDispatcher ());
+    return new SynchronousEventManager (IEventObserverQueue.createDefault (), createSynchronousEventDispatcher ());
   }
 
   @Nonnull
-  public static UnidirectionalSynchronousMulticastEventManager createUnidirectionalMulticastEventManager ()
-  {
-    return new UnidirectionalSynchronousMulticastEventManager (IEventObserverQueue.createDefault (),
-                                                               createSynchronousEventDispatcher ());
-  }
-
-  @Nonnull
-  public static BidirectionalSynchronousMulticastEventManager createBidirectionalMulticastEventManager (@Nonnull final IAggregator <Object, ?> aResultAggregator)
+  public static SynchronousEventManager createBidirectionalMulticastEventManager (@Nonnull final IAggregator <Object, ?> aResultAggregator)
   {
     return createBidirectionalMulticastEventManager (aResultAggregator, null);
   }
 
   @Nonnull
-  public static BidirectionalSynchronousMulticastEventManager createBidirectionalMulticastEventManager (@Nonnull final IAggregator <Object, ?> aResultAggregator,
-                                                                                                        @Nullable final IEventObservingExceptionCallback aExceptionHandler)
+  public static SynchronousEventManager createBidirectionalMulticastEventManager (@Nonnull final IAggregator <Object, ?> aResultAggregator,
+                                                                                  @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
-    return new BidirectionalSynchronousMulticastEventManager (IEventObserverQueue.createDefault (),
-                                                              createSynchronousEventDispatcher (aResultAggregator,
-                                                                                                aExceptionHandler));
+    return new SynchronousEventManager (IEventObserverQueue.createDefault (),
+                                        createSynchronousEventDispatcher (aResultAggregator, aExceptionHandler));
   }
 }

@@ -22,7 +22,7 @@ import com.helger.commons.scope.IScope;
 import com.helger.commons.scope.IScopeDestructionAware;
 import com.helger.event.helper.DispatchResultAggregatorBooleanAnd;
 import com.helger.event.observerqueue.IEventObserverQueue;
-import com.helger.event.sync.BidirectionalSynchronousMulticastEventManager;
+import com.helger.event.sync.SynchronousEventManager;
 import com.helger.event.sync.SynchronousEventHelper;
 
 /**
@@ -30,7 +30,7 @@ import com.helger.event.sync.SynchronousEventHelper;
  *
  * @author Philip Helger
  */
-final class MainEventManager extends BidirectionalSynchronousMulticastEventManager implements IScopeDestructionAware
+final class MainEventManager extends SynchronousEventManager implements IScopeDestructionAware
 {
   public MainEventManager ()
   {

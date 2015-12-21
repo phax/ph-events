@@ -45,7 +45,7 @@ public final class SynchronousEventHelperTest
   @Test
   public void testUnidirectionalUnicastEventManager ()
   {
-    final UnidirectionalSynchronousUnicastEventManager mgr = SynchronousEventHelper.createUnidirectionalUnicastEventManager ();
+    final SynchronousEventManager mgr = SynchronousEventHelper.createUnidirectionalUnicastEventManager ();
     mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
     {
       public void onEvent (@Nonnull final IEvent aEvent,
@@ -62,7 +62,7 @@ public final class SynchronousEventHelperTest
   @Test
   public void testUnidirectionalMulticastEventManager ()
   {
-    final UnidirectionalSynchronousMulticastEventManager mgr = SynchronousEventHelper.createUnidirectionalMulticastEventManager ();
+    final SynchronousEventManager mgr = SynchronousEventHelper.createUnidirectionalMulticastEventManager ();
     mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
     {
       public void onEvent (@Nonnull final IEvent aEvent,
@@ -98,7 +98,7 @@ public final class SynchronousEventHelperTest
   @Test
   public void testBidirectionalMulticastEventManager ()
   {
-    final BidirectionalSynchronousMulticastEventManager mgr = SynchronousEventHelper.createBidirectionalMulticastEventManager (RES_AGG);
+    final SynchronousEventManager mgr = SynchronousEventHelper.createBidirectionalMulticastEventManager (RES_AGG);
     mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
     {
       public void onEvent (@Nonnull final IEvent aEvent,
@@ -139,6 +139,6 @@ public final class SynchronousEventHelperTest
         throw new MockRuntimeException ();
       }
     });
-    s_aLogger.info ("Trigger result = " + mgr.trigger (new BaseEvent (EV_TYPE)));
+    mgr.trigger (new BaseEvent (EV_TYPE), ret -> s_aLogger.info ("Trigger result = " + ret));
   }
 }

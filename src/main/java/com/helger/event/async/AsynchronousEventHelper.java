@@ -27,6 +27,7 @@ import com.helger.event.dispatch.async.parallel.AsynchronousParallelEventDispatc
 import com.helger.event.dispatch.async.queue.AsynchronousQueueEventDispatcher;
 import com.helger.event.dispatch.async.serial.AsynchronousSerialEventDispatcher;
 import com.helger.event.observer.exception.IEventObservingExceptionCallback;
+import com.helger.event.observerqueue.EventObserverQueueSingleElement;
 import com.helger.event.observerqueue.IEventObserverQueue;
 
 public final class AsynchronousEventHelper
@@ -76,41 +77,38 @@ public final class AsynchronousEventHelper
   }
 
   @Nonnull
-  public static UnidirectionalAsynchronousUnicastEventManager createUnidirectionalUnicastEventManager ()
+  public static AsynchronousEventManager createUnidirectionalUnicastEventManager ()
   {
     // No need for aggregation here
-    return new UnidirectionalAsynchronousUnicastEventManager (createEventDispatcher (IAggregator.createUseFirst (),
-                                                                                     null));
+    return new AsynchronousEventManager (new EventObserverQueueSingleElement (),
+                                         createEventDispatcher (IAggregator.createUseFirst (), null));
   }
 
   @Nonnull
-  public static BidirectionalAsynchronousUnicastEventManager createBidirectionalUnicastEventManager ()
+  public static AsynchronousEventManager createBidirectionalUnicastEventManager ()
   {
-    return new BidirectionalAsynchronousUnicastEventManager (createEventDispatcher (IAggregator.createUseFirst (),
-                                                                                    null));
+    return new AsynchronousEventManager (new EventObserverQueueSingleElement (),
+                                         createEventDispatcher (IAggregator.createUseFirst (), null));
   }
 
   @Nonnull
-  public static UnidirectionalAsynchronousMulticastEventManager createUnidirectionalMulticastEventManager ()
+  public static AsynchronousEventManager createUnidirectionalMulticastEventManager ()
   {
-    // No need for aggregation here
-    return new UnidirectionalAsynchronousMulticastEventManager (IEventObserverQueue.createDefault (),
-                                                                createEventDispatcher (IAggregator.createUseFirst (),
-                                                                                       null));
+    return new AsynchronousEventManager (IEventObserverQueue.createDefault (),
+                                         createEventDispatcher (IAggregator.createUseFirst (), null));
   }
 
   @Nonnull
-  public static BidirectionalAsynchronousMulticastEventManager createBidirectionalMulticastEventManager (@Nonnull final IAggregator <Object, ?> aResultAggregator)
+  public static AsynchronousEventManager createBidirectionalMulticastEventManager (@Nonnull final IAggregator <Object, ?> aResultAggregator)
   {
     return createBidirectionalMulticastEventManager (aResultAggregator, null);
   }
 
   @Nonnull
-  public static BidirectionalAsynchronousMulticastEventManager createBidirectionalMulticastEventManager (@Nonnull final IAggregator <Object, ?> aResultAggregator,
-                                                                                                         @Nullable final IEventObservingExceptionCallback aExceptionHandler)
+  public static AsynchronousEventManager createBidirectionalMulticastEventManager (@Nonnull final IAggregator <Object, ?> aResultAggregator,
+                                                                                   @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
-    return new BidirectionalAsynchronousMulticastEventManager (IEventObserverQueue.createDefault (),
-                                                               createEventDispatcher (aResultAggregator,
-                                                                                      aExceptionHandler));
+    return new AsynchronousEventManager (IEventObserverQueue.createDefault (),
+                                         createEventDispatcher (aResultAggregator, aExceptionHandler));
   }
 }

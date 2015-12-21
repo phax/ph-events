@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.commons.scope.IScope;
 import com.helger.commons.scope.mgr.EScope;
 import com.helger.commons.state.EChange;
@@ -124,11 +125,13 @@ public final class ScopedEventManager
    *
    * @param aEventType
    *        The event type for which an event should be triggered
-   * @return <code>true</code> if no observer vetoed against the event
+   * @param aResultCallback
+   *        Optional result callback
    */
-  public static boolean notifyObservers (final @Nonnull IEventType aEventType)
+  public static void notifyObservers (final @Nonnull IEventType aEventType,
+                                      @Nullable final INonThrowingRunnableWithParameter <Object> aResultCallback)
   {
-    return notifyObservers (new BaseEvent (aEventType));
+    notifyObservers (new BaseEvent (aEventType), aResultCallback);
   }
 
   /**
@@ -136,12 +139,12 @@ public final class ScopedEventManager
    *
    * @param aEvent
    *        The event on which observers should be notified.
-   * @return <code>true</code> if no observer vetoed against the event
+   * @param aResultCallback
+   *        Optional result callback
    */
-  public static boolean notifyObservers (@Nonnull final IEvent aEvent)
+  public static void notifyObservers (@Nonnull final IEvent aEvent,
+                                      @Nullable final INonThrowingRunnableWithParameter <Object> aResultCallback)
   {
-    boolean bReturn = true;
-
     // for all scopes
     for (final EScope eCurrentScope : EScope.values ())
     {
@@ -154,12 +157,9 @@ public final class ScopedEventManager
         if (aEventMgr != null)
         {
           // main event trigger
-          final Object aReturn = aEventMgr.trigger (aEvent);
-          if (aReturn instanceof Boolean)
-            bReturn = ((Boolean) aReturn).booleanValue ();
+          aEventMgr.trigger (aEvent, aResultCallback);
         }
       }
     }
-    return bReturn;
   }
 }

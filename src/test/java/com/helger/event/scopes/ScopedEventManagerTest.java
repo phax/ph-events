@@ -55,7 +55,7 @@ public final class ScopedEventManagerTest
       assertEquals (0, aRequest.getInvocationCount ());
 
       // process
-      assertTrue (ScopedEventManager.notifyObservers (new BaseEvent (MockCountingObserver.TOPIC)));
+      ScopedEventManager.notifyObservers (new BaseEvent (MockCountingObserver.TOPIC), null);
 
       // check postconditions
       assertEquals (1, aGlobal.getInvocationCount ());
