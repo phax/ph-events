@@ -23,8 +23,6 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.ToStringGenerator;
-import com.helger.event.EventTypeRegistry;
-import com.helger.event.IEventType;
 
 /**
  * Default implementation if the {@link ICRUDEventType} interface.
@@ -32,9 +30,9 @@ import com.helger.event.IEventType;
  * @author Philip Helger
  */
 @Immutable
-public final class CRUDEventType implements ICRUDEventType
+public class CRUDEventType implements ICRUDEventType
 {
-  private final IEventType m_aEventType;
+  private final String m_sEventName;
   private final EEventPointInTime m_ePointInTime;
   private final EEventCRUD m_eCRUD;
 
@@ -44,9 +42,7 @@ public final class CRUDEventType implements ICRUDEventType
   {
     ValueEnforcer.notNull (ePointInTime, "PointInTime");
     ValueEnforcer.notNull (eCRUD, "CRUD");
-    // Ensure that the name is unique!
-    final String sEventName = sBaseName + '.' + ePointInTime.getID () + '.' + eCRUD.getID ();
-    m_aEventType = EventTypeRegistry.createEventType (sEventName);
+    m_sEventName = sBaseName + '.' + ePointInTime.getID () + '.' + eCRUD.getID ();
     m_ePointInTime = ePointInTime;
     m_eCRUD = eCRUD;
   }
@@ -55,7 +51,7 @@ public final class CRUDEventType implements ICRUDEventType
   @Nonempty
   public String getName ()
   {
-    return m_aEventType.getName ();
+    return m_sEventName;
   }
 
   @Nonnull
@@ -78,22 +74,20 @@ public final class CRUDEventType implements ICRUDEventType
     if (o == null || !getClass ().equals (o.getClass ()))
       return false;
     final CRUDEventType rhs = (CRUDEventType) o;
-    return m_aEventType.equals (rhs.m_aEventType) &&
-           m_ePointInTime.equals (rhs.m_ePointInTime) &&
-           m_eCRUD.equals (rhs.m_eCRUD);
+    return m_sEventName.equals (rhs.m_sEventName);
   }
 
   @Override
   public int hashCode ()
   {
-    return new HashCodeGenerator (this).append (m_aEventType).append (m_ePointInTime).append (m_eCRUD).getHashCode ();
+    return new HashCodeGenerator (this).append (m_sEventName).getHashCode ();
   }
 
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("name", getName ())
-                                       .append ("pointInTime", m_ePointInTime)
+    return new ToStringGenerator (this).append ("Name", m_sEventName)
+                                       .append ("PointInTime", m_ePointInTime)
                                        .append ("CRUD", m_eCRUD)
                                        .toString ();
   }

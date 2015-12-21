@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.event.async;
+package com.helger.event.mgr;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -31,7 +31,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.commons.exception.mock.MockRuntimeException;
 import com.helger.event.BaseEvent;
@@ -41,11 +40,10 @@ import com.helger.event.IEventType;
 import com.helger.event.mgr.EventManager;
 import com.helger.event.observer.AbstractEventObserver;
 
-public final class AsynchronousEventHelperTest
+public final class AsyncFuncTest
 {
-  private static IAggregator <Object, ?> RES_AGG = IAggregator.createUseAll ();
-  private static final IEventType EV_TYPE = EventTypeRegistry.createEventType (AsynchronousEventHelperTest.class.getName ());
-  private static final Logger s_aLogger = LoggerFactory.getLogger (AsynchronousEventHelperTest.class);
+  private static final IEventType EV_TYPE = EventTypeRegistry.createEventType (AsyncFuncTest.class.getName ());
+  private static final Logger s_aLogger = LoggerFactory.getLogger (AsyncFuncTest.class);
 
   @Test
   public void testUnidirectionalUnicastEventManager ()

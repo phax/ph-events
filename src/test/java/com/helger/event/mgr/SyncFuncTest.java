@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.event.sync;
+package com.helger.event.mgr;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -35,15 +35,13 @@ import com.helger.event.BaseEvent;
 import com.helger.event.EventTypeRegistry;
 import com.helger.event.IEvent;
 import com.helger.event.IEventType;
-import com.helger.event.mgr.EventManager;
 import com.helger.event.observer.AbstractEventObserver;
 import com.helger.event.observer.exception.EventObservingExceptionWrapper;
 
-public final class SynchronousEventHelperTest
+public final class SyncFuncTest
 {
-  private static IAggregator <Object, ?> RES_AGG = IAggregator.createUseAll ();
-  private static final IEventType EV_TYPE = EventTypeRegistry.createEventType (SynchronousEventHelperTest.class.getName ());
-  private static final Logger s_aLogger = LoggerFactory.getLogger (SynchronousEventHelperTest.class);
+  private static final IEventType EV_TYPE = EventTypeRegistry.createEventType (SyncFuncTest.class.getName ());
+  private static final Logger s_aLogger = LoggerFactory.getLogger (SyncFuncTest.class);
 
   @Test
   public void testUnidirectionalUnicastEventManager ()
