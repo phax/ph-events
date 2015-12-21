@@ -18,6 +18,7 @@ package com.helger.event.sync.dispatch;
 
 import com.helger.commons.factory.IFactory;
 
+@FunctionalInterface
 public interface ISynchronousEventDispatcherFactory extends IFactory <ISynchronousEventDispatcher>
 {
   /* empty */

@@ -44,7 +44,7 @@ public final class DefaultEventObserverQueueFactory implements IEventObserverQue
   }
 
   @Nonnull
-  public IEventObserverQueue create ()
+  public IEventObserverQueue get ()
   {
     // By default a non-weak set is used, because observers are quite regular
     // inline classes which tend to be garbage collected very easily!

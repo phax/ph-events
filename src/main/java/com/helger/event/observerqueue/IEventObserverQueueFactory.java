@@ -23,6 +23,7 @@ import com.helger.commons.factory.IFactory;
  *
  * @author Philip Helger
  */
+@FunctionalInterface
 public interface IEventObserverQueueFactory extends IFactory <IEventObserverQueue>
 {
   /* empty */

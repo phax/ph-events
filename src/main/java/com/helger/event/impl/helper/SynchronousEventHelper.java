@@ -21,8 +21,8 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.aggregate.IAggregator;
+import com.helger.commons.factory.IFactory;
 import com.helger.event.IEventObservingExceptionCallback;
-import com.helger.event.resultaggregator.impl.DispatchResultAggregatorUseFirst;
 import com.helger.event.sync.dispatch.ISynchronousEventDispatcherFactory;
 import com.helger.event.sync.dispatch.impl.DefaultSynchronousEventDispatcherFactory;
 import com.helger.event.sync.mgr.impl.BidirectionalSynchronousMulticastEventManager;
@@ -37,17 +37,16 @@ public final class SynchronousEventHelper extends AbstractEventHelper
   {}
 
   @Nonnull
-  public static ISynchronousEventDispatcherFactory createSynchronousEventDispatcherFactory (@Nonnull final Class <? extends IAggregator <Object, ?>> aClass,
+  public static ISynchronousEventDispatcherFactory createSynchronousEventDispatcherFactory (@Nonnull final IFactory <IAggregator <Object, ?>> aFactory,
                                                                                             @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
-    return new DefaultSynchronousEventDispatcherFactory (createDispatchResultAggregatorFactory (aClass),
-                                                         aExceptionHandler);
+    return new DefaultSynchronousEventDispatcherFactory (aFactory, aExceptionHandler);
   }
 
   @Nonnull
   public static ISynchronousEventDispatcherFactory createSynchronousEventDispatcherFactory ()
   {
-    return createSynchronousEventDispatcherFactory (DispatchResultAggregatorUseFirst.class, null);
+    return createSynchronousEventDispatcherFactory ( () -> IAggregator.createUseFirst (), null);
   }
 
   @Nonnull
@@ -72,17 +71,17 @@ public final class SynchronousEventHelper extends AbstractEventHelper
   }
 
   @Nonnull
-  public static BidirectionalSynchronousMulticastEventManager createBidirectionalMulticastEventManager (@Nonnull final Class <? extends IAggregator <Object, ?>> aAggregatorClass)
+  public static BidirectionalSynchronousMulticastEventManager createBidirectionalMulticastEventManager (@Nonnull final IFactory <IAggregator <Object, ?>> aFactory)
   {
-    return createBidirectionalMulticastEventManager (aAggregatorClass, null);
+    return createBidirectionalMulticastEventManager (aFactory, null);
   }
 
   @Nonnull
-  public static BidirectionalSynchronousMulticastEventManager createBidirectionalMulticastEventManager (@Nonnull final Class <? extends IAggregator <Object, ?>> aAggregatorClass,
+  public static BidirectionalSynchronousMulticastEventManager createBidirectionalMulticastEventManager (@Nonnull final IFactory <IAggregator <Object, ?>> aFactory,
                                                                                                         @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
     return new BidirectionalSynchronousMulticastEventManager (getObserverQueueFactory (),
-                                                              createSynchronousEventDispatcherFactory (aAggregatorClass,
+                                                              createSynchronousEventDispatcherFactory (aFactory,
                                                                                                        aExceptionHandler));
   }
 }

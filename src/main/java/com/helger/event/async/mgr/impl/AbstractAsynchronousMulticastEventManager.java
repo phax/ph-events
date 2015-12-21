@@ -44,10 +44,10 @@ public abstract class AbstractAsynchronousMulticastEventManager implements IMult
     ValueEnforcer.notNull (aObserverQueueFactory, "ObserverQueueFactory");
     ValueEnforcer.notNull (aEventDispatcherFactory, "EventDispatcherFactory");
 
-    m_aObserverQueue = aObserverQueueFactory.create ();
+    m_aObserverQueue = aObserverQueueFactory.get ();
     if (m_aObserverQueue == null)
       throw new IllegalStateException ("No observer queue was created!");
-    m_aEventDispatcher = aEventDispatcherFactory.create ();
+    m_aEventDispatcher = aEventDispatcherFactory.get ();
     if (m_aEventDispatcher == null)
       throw new IllegalStateException ("No event dispatcher was created!");
   }

@@ -25,8 +25,8 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.collection.pair.IPair;
 import com.helger.commons.collection.pair.ReadOnlyPair;
+import com.helger.commons.factory.IFactory;
 import com.helger.event.EEventObserverHandlerType;
-import com.helger.event.IAggregatorFactory;
 import com.helger.event.IEvent;
 import com.helger.event.IEventObserver;
 import com.helger.event.IOnlyOnceEventObserver;
@@ -34,13 +34,13 @@ import com.helger.event.observerqueue.IEventObserverQueue;
 
 public abstract class AbstractEventDispatcher
 {
-  protected final IAggregator <Object, Object> m_aResultAggregator;
+  protected final IAggregator <Object, ?> m_aResultAggregator;
 
-  public AbstractEventDispatcher (@Nonnull final IAggregatorFactory <Object, Object> aResultAggregatorFactory)
+  public AbstractEventDispatcher (@Nonnull final IFactory <IAggregator <Object, ?>> aResultAggregatorFactory)
   {
     ValueEnforcer.notNull (aResultAggregatorFactory, "ResultAggregatorFactory");
 
-    m_aResultAggregator = aResultAggregatorFactory.create ();
+    m_aResultAggregator = aResultAggregatorFactory.get ();
     if (m_aResultAggregator == null)
       throw new IllegalArgumentException ("No dispatch result aggregator was created");
   }

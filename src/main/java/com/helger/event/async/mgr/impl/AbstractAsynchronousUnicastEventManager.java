@@ -41,7 +41,7 @@ public abstract class AbstractAsynchronousUnicastEventManager implements IUnicas
   {
     ValueEnforcer.notNull (aEventDispatcherFactory, "EventDispatcherFactory");
 
-    m_aEventDispatcher = aEventDispatcherFactory.create ();
+    m_aEventDispatcher = aEventDispatcherFactory.get ();
     if (m_aEventDispatcher == null)
       throw new IllegalStateException ("An illegal event dispatcher was created");
 

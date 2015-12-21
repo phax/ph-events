@@ -20,17 +20,18 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.event.IAggregatorFactory;
+import com.helger.commons.aggregate.IAggregator;
+import com.helger.commons.factory.IFactory;
 import com.helger.event.IEventObservingExceptionCallback;
 import com.helger.event.async.dispatch.IAsynchronousEventDispatcher;
 import com.helger.event.async.dispatch.IAsynchronousEventDispatcherFactory;
 
 public class DefaultAsynchronousQueueEventDispatcherFactory implements IAsynchronousEventDispatcherFactory
 {
-  private final IAggregatorFactory <Object, Object> m_aResultAggregateFactory;
+  private final IFactory <IAggregator <Object, ?>> m_aResultAggregateFactory;
   private final IEventObservingExceptionCallback m_aExceptionHandler;
 
-  public DefaultAsynchronousQueueEventDispatcherFactory (@Nonnull final IAggregatorFactory <Object, Object> aResultAggregateFactory,
+  public DefaultAsynchronousQueueEventDispatcherFactory (@Nonnull final IFactory <IAggregator <Object, ?>> aResultAggregateFactory,
                                                          @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
     ValueEnforcer.notNull (aResultAggregateFactory, "ResultAggregateFactory");
@@ -39,7 +40,7 @@ public class DefaultAsynchronousQueueEventDispatcherFactory implements IAsynchro
   }
 
   @Nonnull
-  public IAsynchronousEventDispatcher create ()
+  public IAsynchronousEventDispatcher get ()
   {
     return new AsynchronousQueueEventDispatcher (m_aResultAggregateFactory, m_aExceptionHandler);
   }

@@ -27,13 +27,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.commons.exception.mock.IMockException;
+import com.helger.commons.factory.IFactory;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.event.EEventObserverHandlerType;
-import com.helger.event.IAggregatorFactory;
 import com.helger.event.IEvent;
 import com.helger.event.IEventObserver;
 import com.helger.event.IEventObservingExceptionCallback;
@@ -49,7 +50,7 @@ public class SynchronousEventDispatcher extends AbstractEventDispatcher implemen
 
   private final IEventObservingExceptionCallback m_aExceptionHandler;
 
-  public SynchronousEventDispatcher (@Nonnull final IAggregatorFactory <Object, Object> aResultAggregatorFactory,
+  public SynchronousEventDispatcher (@Nonnull final IFactory <IAggregator <Object, ?>> aResultAggregatorFactory,
                                      @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
     super (aResultAggregatorFactory);
