@@ -18,17 +18,18 @@ package com.helger.event.sync.mgr.impl;
 
 import javax.annotation.Nonnull;
 
+import com.helger.commons.factory.IFactory;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.event.IEvent;
 import com.helger.event.mgr.IUnidirectionalEventManager;
-import com.helger.event.observerqueue.IEventObserverQueueFactory;
-import com.helger.event.sync.dispatch.ISynchronousEventDispatcherFactory;
+import com.helger.event.observerqueue.IEventObserverQueue;
+import com.helger.event.sync.dispatch.ISynchronousEventDispatcher;
 
 public class UnidirectionalSynchronousMulticastEventManager extends AbstractSynchronousMulticastEventManager
                                                             implements IUnidirectionalEventManager
 {
-  public UnidirectionalSynchronousMulticastEventManager (final IEventObserverQueueFactory aObserverQueueFactory,
-                                                         final ISynchronousEventDispatcherFactory aEventDispatcherFactory)
+  public UnidirectionalSynchronousMulticastEventManager (final IFactory <IEventObserverQueue> aObserverQueueFactory,
+                                                         final IFactory <ISynchronousEventDispatcher> aEventDispatcherFactory)
   {
     super (aObserverQueueFactory, aEventDispatcherFactory);
   }

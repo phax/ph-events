@@ -16,15 +16,16 @@
  */
 package com.helger.event.async.mgr.impl;
 
+import com.helger.commons.factory.IFactory;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.event.IEvent;
-import com.helger.event.async.dispatch.IAsynchronousEventDispatcherFactory;
+import com.helger.event.async.dispatch.IAsynchronousEventDispatcher;
 import com.helger.event.mgr.IUnidirectionalEventManager;
 
 public class UnidirectionalAsynchronousUnicastEventManager extends AbstractAsynchronousUnicastEventManager
                                                            implements IUnidirectionalEventManager
 {
-  public UnidirectionalAsynchronousUnicastEventManager (final IAsynchronousEventDispatcherFactory aEventDispatcherFactory)
+  public UnidirectionalAsynchronousUnicastEventManager (final IFactory <IAsynchronousEventDispatcher> aEventDispatcherFactory)
   {
     super (aEventDispatcherFactory);
   }

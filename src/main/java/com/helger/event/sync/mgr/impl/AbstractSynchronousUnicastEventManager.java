@@ -19,13 +19,13 @@ package com.helger.event.sync.mgr.impl;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.factory.IFactory;
 import com.helger.commons.state.EChange;
 import com.helger.commons.state.IStoppable;
 import com.helger.event.IEventObserver;
 import com.helger.event.mgr.IUnicastEventManager;
 import com.helger.event.observerqueue.impl.EventObserverQueueSingleElement;
 import com.helger.event.sync.dispatch.ISynchronousEventDispatcher;
-import com.helger.event.sync.dispatch.ISynchronousEventDispatcherFactory;
 
 /**
  * Abstract base class for synchronous unicast event managers. Unicast means
@@ -38,7 +38,7 @@ public abstract class AbstractSynchronousUnicastEventManager implements IUnicast
   protected final ISynchronousEventDispatcher m_aEventDispatcher;
   protected final EventObserverQueueSingleElement m_aObserver;
 
-  public AbstractSynchronousUnicastEventManager (@Nonnull final ISynchronousEventDispatcherFactory aEventDispatcherFactory)
+  public AbstractSynchronousUnicastEventManager (@Nonnull final IFactory <ISynchronousEventDispatcher> aEventDispatcherFactory)
   {
     ValueEnforcer.notNull (aEventDispatcherFactory, "EventDispatcherFactory");
 

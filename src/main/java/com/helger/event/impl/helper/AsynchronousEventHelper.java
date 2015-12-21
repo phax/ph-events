@@ -23,7 +23,7 @@ import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.concurrent.IExecutorServiceFactory;
 import com.helger.commons.factory.IFactory;
 import com.helger.event.IEventObservingExceptionCallback;
-import com.helger.event.async.dispatch.IAsynchronousEventDispatcherFactory;
+import com.helger.event.async.dispatch.IAsynchronousEventDispatcher;
 import com.helger.event.async.dispatch.impl.parallel.DefaultAsynchronousParallelEventDispatcherFactory;
 import com.helger.event.async.dispatch.impl.queue.DefaultAsynchronousQueueEventDispatcherFactory;
 import com.helger.event.async.dispatch.impl.serial.DefaultAsynchronousSerialEventDispatcherFactory;
@@ -58,8 +58,8 @@ public final class AsynchronousEventHelper extends AbstractEventHelper
   }
 
   @Nonnull
-  public static IAsynchronousEventDispatcherFactory createEventDispFactory (@Nonnull final IFactory <IAggregator <Object, ?>> aFactory,
-                                                                            @Nullable final IEventObservingExceptionCallback aExceptionHandler)
+  public static IFactory <IAsynchronousEventDispatcher> createEventDispFactory (@Nonnull final IFactory <IAggregator <Object, ?>> aFactory,
+                                                                                @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
     // switch between parallel, serial and queue
     switch (_getDefaultDispatcherType ())

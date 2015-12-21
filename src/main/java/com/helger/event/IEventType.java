@@ -16,6 +16,8 @@
  */
 package com.helger.event;
 
+import java.io.Serializable;
+
 import com.helger.commons.annotation.MustImplementEqualsAndHashcode;
 import com.helger.commons.name.IHasName;
 
@@ -25,7 +27,7 @@ import com.helger.commons.name.IHasName;
  * @author Philip Helger
  */
 @MustImplementEqualsAndHashcode
-public interface IEventType extends IHasName
+public interface IEventType extends IHasName, Serializable
 {
   /* empty */
 }

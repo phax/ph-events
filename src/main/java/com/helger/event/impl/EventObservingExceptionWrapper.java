@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.event.IEvent;
@@ -36,12 +37,9 @@ public final class EventObservingExceptionWrapper
                                          @Nonnull final IEvent aEvent,
                                          @Nonnull final Throwable aThrowable)
   {
-    if (aObserver == null)
-      throw new IllegalArgumentException ("observer");
-    if (aEvent == null)
-      throw new IllegalArgumentException ("event");
-    if (aThrowable == null)
-      throw new IllegalArgumentException ("throwable");
+    ValueEnforcer.notNull (aObserver, "Observer");
+    ValueEnforcer.notNull (aEvent, "Event");
+    ValueEnforcer.notNull (aThrowable, "Throwable");
 
     m_sMessage = "Failed to notify " + aObserver;
     m_aEvent = aEvent;
@@ -72,9 +70,9 @@ public final class EventObservingExceptionWrapper
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("msg", m_sMessage)
-                                       .append ("event", m_aEvent)
-                                       .append ("throwable", m_aThrowable)
+    return new ToStringGenerator (this).append ("Message", m_sMessage)
+                                       .append ("Event", m_aEvent)
+                                       .append ("Throwable", m_aThrowable)
                                        .toString ();
   }
 }

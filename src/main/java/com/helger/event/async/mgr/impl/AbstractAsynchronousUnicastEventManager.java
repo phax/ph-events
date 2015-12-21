@@ -19,11 +19,11 @@ package com.helger.event.async.mgr.impl;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.factory.IFactory;
 import com.helger.commons.state.EChange;
 import com.helger.commons.state.IStoppable;
 import com.helger.event.IEventObserver;
 import com.helger.event.async.dispatch.IAsynchronousEventDispatcher;
-import com.helger.event.async.dispatch.IAsynchronousEventDispatcherFactory;
 import com.helger.event.mgr.IUnicastEventManager;
 import com.helger.event.observerqueue.impl.EventObserverQueueSingleElement;
 
@@ -37,7 +37,7 @@ public abstract class AbstractAsynchronousUnicastEventManager implements IUnicas
   protected final IAsynchronousEventDispatcher m_aEventDispatcher;
   protected EventObserverQueueSingleElement m_aObserver;
 
-  public AbstractAsynchronousUnicastEventManager (@Nonnull final IAsynchronousEventDispatcherFactory aEventDispatcherFactory)
+  public AbstractAsynchronousUnicastEventManager (@Nonnull final IFactory <IAsynchronousEventDispatcher> aEventDispatcherFactory)
   {
     ValueEnforcer.notNull (aEventDispatcherFactory, "EventDispatcherFactory");
 

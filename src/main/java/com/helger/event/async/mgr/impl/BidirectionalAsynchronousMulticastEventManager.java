@@ -20,16 +20,17 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
+import com.helger.commons.factory.IFactory;
 import com.helger.event.IEvent;
-import com.helger.event.async.dispatch.IAsynchronousEventDispatcherFactory;
+import com.helger.event.async.dispatch.IAsynchronousEventDispatcher;
 import com.helger.event.mgr.IBidirectionalAsynchronousEventManager;
-import com.helger.event.observerqueue.IEventObserverQueueFactory;
+import com.helger.event.observerqueue.IEventObserverQueue;
 
 public class BidirectionalAsynchronousMulticastEventManager extends AbstractAsynchronousMulticastEventManager
                                                             implements IBidirectionalAsynchronousEventManager
 {
-  public BidirectionalAsynchronousMulticastEventManager (final IEventObserverQueueFactory aObserverQueueFactory,
-                                                         final IAsynchronousEventDispatcherFactory aEventDispatcherFactory)
+  public BidirectionalAsynchronousMulticastEventManager (final IFactory <IEventObserverQueue> aObserverQueueFactory,
+                                                         final IFactory <IAsynchronousEventDispatcher> aEventDispatcherFactory)
   {
     super (aObserverQueueFactory, aEventDispatcherFactory);
   }

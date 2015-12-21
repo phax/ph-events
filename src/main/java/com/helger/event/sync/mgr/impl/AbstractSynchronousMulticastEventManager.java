@@ -19,14 +19,13 @@ package com.helger.event.sync.mgr.impl;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.factory.IFactory;
 import com.helger.commons.state.EChange;
 import com.helger.commons.state.IStoppable;
 import com.helger.event.IEventObserver;
 import com.helger.event.mgr.IMulticastEventManager;
 import com.helger.event.observerqueue.IEventObserverQueue;
-import com.helger.event.observerqueue.IEventObserverQueueFactory;
 import com.helger.event.sync.dispatch.ISynchronousEventDispatcher;
-import com.helger.event.sync.dispatch.ISynchronousEventDispatcherFactory;
 
 /**
  * Abstract base class for synchronous multicast event managers. Multicast means
@@ -39,8 +38,8 @@ public abstract class AbstractSynchronousMulticastEventManager implements IMulti
   protected final IEventObserverQueue m_aObserverQueue;
   protected final ISynchronousEventDispatcher m_aEventDispatcher;
 
-  public AbstractSynchronousMulticastEventManager (@Nonnull final IEventObserverQueueFactory aObserverQueueFactory,
-                                                   @Nonnull final ISynchronousEventDispatcherFactory aEventDispatcherFactory)
+  public AbstractSynchronousMulticastEventManager (@Nonnull final IFactory <IEventObserverQueue> aObserverQueueFactory,
+                                                   @Nonnull final IFactory <ISynchronousEventDispatcher> aEventDispatcherFactory)
   {
     ValueEnforcer.notNull (aObserverQueueFactory, "ObserverQueueFactory");
     ValueEnforcer.notNull (aEventDispatcherFactory, "EventDispatcherFactory");

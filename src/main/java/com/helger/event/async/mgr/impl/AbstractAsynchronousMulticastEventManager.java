@@ -19,14 +19,13 @@ package com.helger.event.async.mgr.impl;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.factory.IFactory;
 import com.helger.commons.state.EChange;
 import com.helger.commons.state.IStoppable;
 import com.helger.event.IEventObserver;
 import com.helger.event.async.dispatch.IAsynchronousEventDispatcher;
-import com.helger.event.async.dispatch.IAsynchronousEventDispatcherFactory;
 import com.helger.event.mgr.IMulticastEventManager;
 import com.helger.event.observerqueue.IEventObserverQueue;
-import com.helger.event.observerqueue.IEventObserverQueueFactory;
 
 /**
  * Abstract base class for asynchronous multicast event managers.
@@ -38,8 +37,8 @@ public abstract class AbstractAsynchronousMulticastEventManager implements IMult
   protected final IEventObserverQueue m_aObserverQueue;
   protected final IAsynchronousEventDispatcher m_aEventDispatcher;
 
-  public AbstractAsynchronousMulticastEventManager (@Nonnull final IEventObserverQueueFactory aObserverQueueFactory,
-                                                    @Nonnull final IAsynchronousEventDispatcherFactory aEventDispatcherFactory)
+  public AbstractAsynchronousMulticastEventManager (@Nonnull final IFactory <IEventObserverQueue> aObserverQueueFactory,
+                                                    @Nonnull final IFactory <IAsynchronousEventDispatcher> aEventDispatcherFactory)
   {
     ValueEnforcer.notNull (aObserverQueueFactory, "ObserverQueueFactory");
     ValueEnforcer.notNull (aEventDispatcherFactory, "EventDispatcherFactory");

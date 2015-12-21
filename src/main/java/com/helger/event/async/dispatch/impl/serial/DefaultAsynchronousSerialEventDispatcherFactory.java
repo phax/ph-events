@@ -24,9 +24,8 @@ import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.factory.IFactory;
 import com.helger.event.IEventObservingExceptionCallback;
 import com.helger.event.async.dispatch.IAsynchronousEventDispatcher;
-import com.helger.event.async.dispatch.IAsynchronousEventDispatcherFactory;
 
-public class DefaultAsynchronousSerialEventDispatcherFactory implements IAsynchronousEventDispatcherFactory
+public class DefaultAsynchronousSerialEventDispatcherFactory implements IFactory <IAsynchronousEventDispatcher>
 {
   private final IFactory <IAggregator <Object, ?>> m_aResultAggregateFactory;
   private final IEventObservingExceptionCallback m_aExceptionHandler;

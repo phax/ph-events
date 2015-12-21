@@ -19,7 +19,8 @@ package com.helger.event.impl.helper;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
-import com.helger.event.observerqueue.IEventObserverQueueFactory;
+import com.helger.commons.factory.IFactory;
+import com.helger.event.observerqueue.IEventObserverQueue;
 import com.helger.event.observerqueue.impl.DefaultEventObserverQueueFactory;
 
 @Immutable
@@ -32,7 +33,7 @@ public abstract class AbstractEventHelper
    * @return The event observer queue factory to use.
    */
   @Nonnull
-  public static final IEventObserverQueueFactory getObserverQueueFactory ()
+  public static final IFactory <IEventObserverQueue> getObserverQueueFactory ()
   {
     return DefaultEventObserverQueueFactory.getInstance ();
   }

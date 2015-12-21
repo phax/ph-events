@@ -19,18 +19,18 @@ package com.helger.event.observerqueue.impl;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
+import com.helger.commons.factory.IFactory;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.event.observerqueue.IEventObserverQueue;
-import com.helger.event.observerqueue.IEventObserverQueueFactory;
 
 /**
- * Default implementation of {@link IEventObserverQueueFactory} always returning
- * an {@link EventObserverQueueOrderedSet}.
+ * Default implementation of {@link IFactory} for {@link IEventObserverQueue}
+ * always returning an {@link EventObserverQueueOrderedSet}.
  *
  * @author Philip Helger
  */
 @Immutable
-public final class DefaultEventObserverQueueFactory implements IEventObserverQueueFactory
+public final class DefaultEventObserverQueueFactory implements IFactory <IEventObserverQueue>
 {
   private static final DefaultEventObserverQueueFactory s_aInstance = new DefaultEventObserverQueueFactory ();
 

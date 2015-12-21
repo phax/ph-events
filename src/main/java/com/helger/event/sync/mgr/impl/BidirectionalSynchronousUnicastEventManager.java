@@ -19,14 +19,15 @@ package com.helger.event.sync.mgr.impl;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.helger.commons.factory.IFactory;
 import com.helger.event.IEvent;
 import com.helger.event.mgr.IBidirectionalSynchronousEventManager;
-import com.helger.event.sync.dispatch.ISynchronousEventDispatcherFactory;
+import com.helger.event.sync.dispatch.ISynchronousEventDispatcher;
 
 public class BidirectionalSynchronousUnicastEventManager extends AbstractSynchronousUnicastEventManager
                                                          implements IBidirectionalSynchronousEventManager
 {
-  public BidirectionalSynchronousUnicastEventManager (final ISynchronousEventDispatcherFactory aEventDispatcherFactory)
+  public BidirectionalSynchronousUnicastEventManager (final IFactory <ISynchronousEventDispatcher> aEventDispatcherFactory)
   {
     super (aEventDispatcherFactory);
   }

@@ -16,6 +16,8 @@
  */
 package com.helger.event;
 
+import java.io.Serializable;
+
 import javax.annotation.Nonnull;
 
 /**
@@ -23,7 +25,7 @@ import javax.annotation.Nonnull;
  *
  * @author Philip Helger
  */
-public interface IEvent
+public interface IEvent extends Serializable
 {
   /**
    * @return The type of the event. May never be <code>null</code> nor empty.
