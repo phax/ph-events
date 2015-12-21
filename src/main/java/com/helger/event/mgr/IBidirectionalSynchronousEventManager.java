@@ -28,7 +28,7 @@ import com.helger.event.IEvent;
  *
  * @author Philip Helger
  */
-public interface IBidirectionalSynchronousEventManager
+public interface IBidirectionalSynchronousEventManager extends IEventManager
 {
   @Nullable
   Object trigger (@Nonnull IEvent aEvent);

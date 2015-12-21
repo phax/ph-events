@@ -16,17 +16,14 @@
  */
 package com.helger.event.mgr;
 
-import javax.annotation.Nonnull;
-
-import com.helger.event.IEvent;
+import com.helger.commons.state.IStoppable;
 
 /**
- * Interface for an unidirectional event manager. Unidirectional means that not
- * response is provided.
+ * Base interface for a all event managers.
  *
  * @author Philip Helger
  */
-public interface IUnidirectionalEventManager extends IEventManager
+public interface IEventManager extends IStoppable
 {
-  void trigger (@Nonnull IEvent aEvent);
+  /* empty */
 }

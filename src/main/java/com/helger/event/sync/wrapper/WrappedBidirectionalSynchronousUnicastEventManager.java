@@ -21,7 +21,6 @@ import javax.annotation.Nonnull;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.state.EChange;
-import com.helger.commons.state.IStoppable;
 import com.helger.event.IEvent;
 import com.helger.event.mgr.IBidirectionalSynchronousEventManager;
 import com.helger.event.mgr.IUnicastEventManager;
@@ -30,8 +29,7 @@ import com.helger.event.sync.BidirectionalSynchronousUnicastEventManager;
 
 public class WrappedBidirectionalSynchronousUnicastEventManager implements
                                                                 IBidirectionalSynchronousEventManager,
-                                                                IUnicastEventManager,
-                                                                IStoppable
+                                                                IUnicastEventManager
 {
   private final BidirectionalSynchronousUnicastEventManager m_aEvtMgr;
 

@@ -29,7 +29,7 @@ import com.helger.event.IEvent;
  *
  * @author Philip Helger
  */
-public interface IBidirectionalAsynchronousEventManager
+public interface IBidirectionalAsynchronousEventManager extends IEventManager
 {
   void trigger (@Nonnull IEvent aEvent, @Nullable INonThrowingRunnableWithParameter <Object> aResultCallback);
 }

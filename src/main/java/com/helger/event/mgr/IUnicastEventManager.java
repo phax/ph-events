@@ -26,7 +26,7 @@ import com.helger.event.observer.IEventObserver;
  *
  * @author Philip Helger
  */
-public interface IUnicastEventManager
+public interface IUnicastEventManager extends IEventManager
 {
   /**
    * Set the observer to be used.

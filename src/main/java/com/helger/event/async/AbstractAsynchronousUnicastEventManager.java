@@ -21,7 +21,6 @@ import javax.annotation.Nonnull;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.factory.IFactory;
 import com.helger.commons.state.EChange;
-import com.helger.commons.state.IStoppable;
 import com.helger.event.dispatch.async.IAsynchronousEventDispatcher;
 import com.helger.event.mgr.IUnicastEventManager;
 import com.helger.event.observer.IEventObserver;
@@ -33,7 +32,7 @@ import com.helger.event.observerqueue.IEventObserverQueue;
  *
  * @author Philip Helger
  */
-public abstract class AbstractAsynchronousUnicastEventManager implements IUnicastEventManager, IStoppable
+public abstract class AbstractAsynchronousUnicastEventManager implements IUnicastEventManager
 {
   private final IEventObserverQueue m_aObserverQueue = new EventObserverQueueSingleElement ();
   private final IAsynchronousEventDispatcher m_aEventDispatcher;

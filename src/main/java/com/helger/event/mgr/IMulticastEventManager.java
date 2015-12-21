@@ -27,7 +27,7 @@ import com.helger.event.observer.IEventObserver;
  *
  * @author Philip Helger
  */
-public interface IMulticastEventManager
+public interface IMulticastEventManager extends IEventManager
 {
   /**
    * Register an additional observer.
