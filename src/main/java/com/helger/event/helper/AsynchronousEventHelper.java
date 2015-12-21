@@ -19,6 +19,7 @@ package com.helger.event.helper;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.concurrent.IExecutorServiceFactory;
 import com.helger.commons.factory.IFactory;
@@ -28,9 +29,9 @@ import com.helger.event.async.NewThreadPoolExecutorServiceFactory;
 import com.helger.event.async.UnidirectionalAsynchronousMulticastEventManager;
 import com.helger.event.async.UnidirectionalAsynchronousUnicastEventManager;
 import com.helger.event.dispatch.async.IAsynchronousEventDispatcher;
-import com.helger.event.dispatch.async.parallel.DefaultAsynchronousParallelEventDispatcherFactory;
-import com.helger.event.dispatch.async.queue.DefaultAsynchronousQueueEventDispatcherFactory;
-import com.helger.event.dispatch.async.serial.DefaultAsynchronousSerialEventDispatcherFactory;
+import com.helger.event.dispatch.async.parallel.AsynchronousParallelEventDispatcher;
+import com.helger.event.dispatch.async.queue.AsynchronousQueueEventDispatcher;
+import com.helger.event.dispatch.async.serial.AsynchronousSerialEventDispatcher;
 import com.helger.event.observer.exception.IEventObservingExceptionCallback;
 import com.helger.event.observerqueue.IEventObserverQueue;
 
@@ -59,20 +60,22 @@ public final class AsynchronousEventHelper
   }
 
   @Nonnull
-  public static IFactory <IAsynchronousEventDispatcher> createEventDispFactory (@Nonnull final IFactory <IAggregator <Object, ?>> aFactory,
+  public static IFactory <IAsynchronousEventDispatcher> createEventDispFactory (@Nonnull final IFactory <IAggregator <Object, ?>> aResultAggregateFactory,
                                                                                 @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
+    ValueEnforcer.notNull (aResultAggregateFactory, "ResultAggregateFactory");
+
     // switch between parallel, serial and queue
     switch (_getDefaultDispatcherType ())
     {
       case QUEUE:
-        return new DefaultAsynchronousQueueEventDispatcherFactory (aFactory, aExceptionHandler);
+        return () -> new AsynchronousQueueEventDispatcher (aResultAggregateFactory, aExceptionHandler);
       case SERIAL:
-        return new DefaultAsynchronousSerialEventDispatcherFactory (aFactory, aExceptionHandler);
+        return () -> new AsynchronousSerialEventDispatcher (aResultAggregateFactory, aExceptionHandler);
       case PARALLEL:
-        return new DefaultAsynchronousParallelEventDispatcherFactory (aFactory,
-                                                                      createExecutorServiceFactory (),
-                                                                      aExceptionHandler);
+        return () -> new AsynchronousParallelEventDispatcher (aResultAggregateFactory,
+                                                              createExecutorServiceFactory (),
+                                                              aExceptionHandler);
       default:
         throw new IllegalStateException ("Illegal event dispatcher type!");
     }

@@ -22,8 +22,8 @@ import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.factory.IFactory;
-import com.helger.event.dispatch.sync.DefaultSynchronousEventDispatcherFactory;
 import com.helger.event.dispatch.sync.ISynchronousEventDispatcher;
+import com.helger.event.dispatch.sync.SynchronousEventDispatcher;
 import com.helger.event.observer.exception.IEventObservingExceptionCallback;
 import com.helger.event.observerqueue.IEventObserverQueue;
 import com.helger.event.sync.BidirectionalSynchronousMulticastEventManager;
@@ -41,7 +41,7 @@ public final class SynchronousEventHelper
   public static IFactory <ISynchronousEventDispatcher> createSynchronousEventDispatcherFactory (@Nonnull final IFactory <IAggregator <Object, ?>> aFactory,
                                                                                                 @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
-    return new DefaultSynchronousEventDispatcherFactory (aFactory, aExceptionHandler);
+    return () -> new SynchronousEventDispatcher (aFactory, aExceptionHandler);
   }
 
   @Nonnull

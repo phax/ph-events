@@ -22,7 +22,6 @@ import javax.annotation.Nonnull;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.aggregate.IAggregator;
-import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.event.observer.exception.EventObservingExceptionWrapper;
 
 /**
@@ -31,11 +30,8 @@ import com.helger.event.observer.exception.EventObservingExceptionWrapper;
  *
  * @author Philip Helger
  */
-public final class DispatchResultAggregatorBooleanAnd implements IAggregator <Object, Object>
+public final class DispatchResultAggregatorBooleanAnd implements IAggregator <Object, Boolean>
 {
-  public DispatchResultAggregatorBooleanAnd ()
-  {}
-
   @Nonnull
   public Boolean aggregate (@Nonnull final Collection <Object> aResults)
   {
@@ -52,21 +48,5 @@ public final class DispatchResultAggregatorBooleanAnd implements IAggregator <Ob
           break;
       }
     return Boolean.valueOf (bResult);
-  }
-
-  @Override
-  public boolean equals (final Object o)
-  {
-    if (o == this)
-      return true;
-    if (o == null || !getClass ().equals (o.getClass ()))
-      return false;
-    return true;
-  }
-
-  @Override
-  public int hashCode ()
-  {
-    return new HashCodeGenerator (this).getHashCode ();
   }
 }
