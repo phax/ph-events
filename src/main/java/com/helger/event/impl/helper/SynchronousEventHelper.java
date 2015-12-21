@@ -22,7 +22,8 @@ import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.factory.IFactory;
-import com.helger.event.observer.IEventObservingExceptionCallback;
+import com.helger.event.observer.exception.IEventObservingExceptionCallback;
+import com.helger.event.observerqueue.IEventObserverQueue;
 import com.helger.event.sync.dispatch.ISynchronousEventDispatcher;
 import com.helger.event.sync.dispatch.impl.DefaultSynchronousEventDispatcherFactory;
 import com.helger.event.sync.mgr.impl.BidirectionalSynchronousMulticastEventManager;
@@ -31,7 +32,7 @@ import com.helger.event.sync.mgr.impl.UnidirectionalSynchronousMulticastEventMan
 import com.helger.event.sync.mgr.impl.UnidirectionalSynchronousUnicastEventManager;
 
 @Immutable
-public final class SynchronousEventHelper extends AbstractEventHelper
+public final class SynchronousEventHelper
 {
   private SynchronousEventHelper ()
   {}
@@ -66,7 +67,7 @@ public final class SynchronousEventHelper extends AbstractEventHelper
   @Nonnull
   public static UnidirectionalSynchronousMulticastEventManager createUnidirectionalMulticastEventManager ()
   {
-    return new UnidirectionalSynchronousMulticastEventManager (getObserverQueueFactory (),
+    return new UnidirectionalSynchronousMulticastEventManager (IEventObserverQueue.createDefaultFactory (),
                                                                createSynchronousEventDispatcherFactory ());
   }
 
@@ -80,7 +81,7 @@ public final class SynchronousEventHelper extends AbstractEventHelper
   public static BidirectionalSynchronousMulticastEventManager createBidirectionalMulticastEventManager (@Nonnull final IFactory <IAggregator <Object, ?>> aFactory,
                                                                                                         @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
-    return new BidirectionalSynchronousMulticastEventManager (getObserverQueueFactory (),
+    return new BidirectionalSynchronousMulticastEventManager (IEventObserverQueue.createDefaultFactory (),
                                                               createSynchronousEventDispatcherFactory (aFactory,
                                                                                                        aExceptionHandler));
   }

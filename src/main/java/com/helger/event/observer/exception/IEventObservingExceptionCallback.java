@@ -14,16 +14,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.event.observer;
+package com.helger.event.observer.exception;
+
+import javax.annotation.Nonnull;
+
+import com.helger.commons.callback.ICallback;
 
 /**
- * This is a marker interface that identifies exceptions that are thrown from
- * within the event observer. This is necessary because normally the event
- * listener catches all exceptions and simply returns an error code.
+ * Implement this interface to instruct an event dispatcher what to do with
+ * exceptions thrown by event observers.
  *
  * @author Philip Helger
  */
-public interface IEventObserverExceptionAware
+public interface IEventObservingExceptionCallback extends ICallback
 {
-  /* empty */
+  /**
+   * Handle the thrown exception.
+   *
+   * @param aThrowable
+   *        The thrown exception. May not be <code>null</code>.
+   */
+  void handleObservingException (@Nonnull Throwable aThrowable);
 }

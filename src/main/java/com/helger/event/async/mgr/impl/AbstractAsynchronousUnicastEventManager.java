@@ -25,7 +25,7 @@ import com.helger.commons.state.IStoppable;
 import com.helger.event.async.dispatch.IAsynchronousEventDispatcher;
 import com.helger.event.mgr.IUnicastEventManager;
 import com.helger.event.observer.IEventObserver;
-import com.helger.event.observerqueue.impl.EventObserverQueueSingleElement;
+import com.helger.event.observerqueue.EventObserverQueueSingleElement;
 
 /**
  * Abstract base class for asynchronous unicast event managers.

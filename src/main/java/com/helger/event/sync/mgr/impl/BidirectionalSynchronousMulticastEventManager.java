@@ -28,8 +28,8 @@ import com.helger.event.sync.dispatch.ISynchronousEventDispatcher;
 public class BidirectionalSynchronousMulticastEventManager extends AbstractSynchronousMulticastEventManager
                                                            implements IBidirectionalSynchronousEventManager
 {
-  public BidirectionalSynchronousMulticastEventManager (@Nonnull final IFactory <IEventObserverQueue> aObserverQueueFactory,
-                                                        @Nonnull final IFactory <ISynchronousEventDispatcher> aEventDispatcherFactory)
+  public BidirectionalSynchronousMulticastEventManager (@Nonnull final IFactory <? extends IEventObserverQueue> aObserverQueueFactory,
+                                                        @Nonnull final IFactory <? extends ISynchronousEventDispatcher> aEventDispatcherFactory)
   {
     super (aObserverQueueFactory, aEventDispatcherFactory);
   }

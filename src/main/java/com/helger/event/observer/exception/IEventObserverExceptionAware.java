@@ -14,29 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.event.observerqueue.impl;
-
-import com.helger.commons.annotation.OverrideOnDemand;
-import com.helger.event.observerqueue.IEventObserverQueue;
+package com.helger.event.observer.exception;
 
 /**
- * Abstract base implementation of {@link IEventObserverQueue}
+ * This is a marker interface that identifies exceptions that are thrown from
+ * within the event observer. This is necessary because normally the event
+ * listener catches all exceptions and simply returns an error code.
  *
  * @author Philip Helger
  */
-public abstract class AbstractEventObserverQueue implements IEventObserverQueue
+public interface IEventObserverExceptionAware
 {
-  @OverrideOnDemand
-  public void beforeDispatch ()
-  {}
-
-  @OverrideOnDemand
-  public void afterDispatch ()
-  {}
-
-  @Override
-  public abstract boolean equals (Object o);
-
-  @Override
-  public abstract int hashCode ();
+  /* empty */
 }

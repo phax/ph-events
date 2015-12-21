@@ -14,13 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.event.observerqueue.impl;
+package com.helger.event.observerqueue;
 
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
@@ -28,25 +24,20 @@ import javax.annotation.concurrent.ThreadSafe;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.concurrent.SimpleReadWriteLock;
+import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.event.observer.IEventObserver;
-import com.helger.event.observerqueue.IEventObserverQueue;
 
-/**
- * Implementation of {@link IEventObserverQueue} based on a
- * {@link LinkedHashSet}. Order of observers is maintained!
- *
- * @author Philip Helger
- */
 @ThreadSafe
-public final class EventObserverQueueOrderedSet extends AbstractEventObserverQueue
+public final class EventObserverQueueSingleElement implements IEventObserverQueue
 {
-  private final ReadWriteLock m_aRWLock = new ReentrantReadWriteLock ();
-  private final Set <IEventObserver> m_aSet = new LinkedHashSet <IEventObserver> ();
+  private final SimpleReadWriteLock m_aRWLock = new SimpleReadWriteLock ();
+  private IEventObserver m_aObserver;
 
-  public EventObserverQueueOrderedSet ()
+  public EventObserverQueueSingleElement ()
   {}
 
   @Nonnull
@@ -54,15 +45,8 @@ public final class EventObserverQueueOrderedSet extends AbstractEventObserverQue
   {
     ValueEnforcer.notNull (aObserver, "Observer");
 
-    m_aRWLock.writeLock ().lock ();
-    try
-    {
-      return EChange.valueOf (m_aSet.add (aObserver));
-    }
-    finally
-    {
-      m_aRWLock.writeLock ().unlock ();
-    }
+    m_aRWLock.writeLocked ( () -> m_aObserver = aObserver);
+    return EChange.CHANGED;
   }
 
   @Nonnull
@@ -70,43 +54,24 @@ public final class EventObserverQueueOrderedSet extends AbstractEventObserverQue
   {
     ValueEnforcer.notNull (aObserver, "Observer");
 
-    m_aRWLock.writeLock ().lock ();
-    try
-    {
-      return EChange.valueOf (m_aSet.remove (aObserver));
-    }
-    finally
-    {
-      m_aRWLock.writeLock ().unlock ();
-    }
-  }
-
-  public boolean isEmpty ()
-  {
-    m_aRWLock.readLock ().lock ();
-    try
-    {
-      return m_aSet.isEmpty ();
-    }
-    finally
-    {
-      m_aRWLock.readLock ().unlock ();
-    }
+    return m_aRWLock.writeLocked ( () -> {
+      if (!EqualsHelper.equals (m_aObserver, aObserver))
+        return EChange.UNCHANGED;
+      m_aObserver = null;
+      return EChange.CHANGED;
+    });
   }
 
   @Nonnull
   @ReturnsMutableCopy
   public List <IEventObserver> getAllObservers ()
   {
-    m_aRWLock.readLock ().lock ();
-    try
-    {
-      return CollectionHelper.newList (m_aSet);
-    }
-    finally
-    {
-      m_aRWLock.readLock ().unlock ();
-    }
+    return m_aRWLock.readLocked ( () -> CollectionHelper.newList (m_aObserver));
+  }
+
+  public boolean isEmpty ()
+  {
+    return m_aRWLock.readLocked ( () -> m_aObserver == null);
   }
 
   @Override
@@ -116,19 +81,19 @@ public final class EventObserverQueueOrderedSet extends AbstractEventObserverQue
       return true;
     if (o == null || !getClass ().equals (o.getClass ()))
       return false;
-    final EventObserverQueueOrderedSet rhs = (EventObserverQueueOrderedSet) o;
-    return m_aSet.equals (rhs.m_aSet);
+    final EventObserverQueueSingleElement rhs = (EventObserverQueueSingleElement) o;
+    return EqualsHelper.equals (m_aObserver, rhs.m_aObserver);
   }
 
   @Override
   public int hashCode ()
   {
-    return new HashCodeGenerator (this).append (m_aSet).getHashCode ();
+    return new HashCodeGenerator (this).append (m_aObserver).getHashCode ();
   }
 
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("set", m_aSet).toString ();
+    return new ToStringGenerator (this).append ("observer", m_aObserver).toString ();
   }
 }

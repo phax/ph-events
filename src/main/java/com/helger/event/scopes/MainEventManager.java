@@ -20,8 +20,8 @@ import javax.annotation.Nonnull;
 
 import com.helger.commons.scope.IScope;
 import com.helger.commons.scope.IScopeDestructionAware;
-import com.helger.event.impl.helper.AbstractEventHelper;
 import com.helger.event.impl.helper.SynchronousEventHelper;
+import com.helger.event.observerqueue.IEventObserverQueue;
 import com.helger.event.resultaggregator.impl.DispatchResultAggregatorBooleanAnd;
 import com.helger.event.sync.mgr.impl.BidirectionalSynchronousMulticastEventManager;
 
@@ -34,7 +34,7 @@ final class MainEventManager extends BidirectionalSynchronousMulticastEventManag
 {
   public MainEventManager ()
   {
-    super (AbstractEventHelper.getObserverQueueFactory (),
+    super (IEventObserverQueue.createDefaultFactory (),
            SynchronousEventHelper.createSynchronousEventDispatcherFactory ( () -> new DispatchResultAggregatorBooleanAnd (),
                                                                             new ScopedEventObservingExceptionCallback ()));
   }

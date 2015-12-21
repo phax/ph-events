@@ -28,9 +28,9 @@ import org.slf4j.LoggerFactory;
 import com.helger.event.IEvent;
 import com.helger.event.async.dispatch.impl.AsynchronousEventResultCollector;
 import com.helger.event.observer.IEventObserver;
-import com.helger.event.observer.IEventObservingExceptionCallback;
-import com.helger.event.observer.impl.EventObservingExceptionCallback;
-import com.helger.event.observer.impl.EventObservingExceptionWrapper;
+import com.helger.event.observer.exception.EventObservingExceptionCallback;
+import com.helger.event.observer.exception.EventObservingExceptionWrapper;
+import com.helger.event.observer.exception.IEventObservingExceptionCallback;
 
 final class AsyncQueueDispatcherThread extends Thread
 {

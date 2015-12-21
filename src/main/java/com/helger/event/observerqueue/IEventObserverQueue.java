@@ -16,11 +16,14 @@
  */
 package com.helger.event.observerqueue;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import com.helger.commons.annotation.MustImplementEqualsAndHashcode;
 import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.factory.IFactory;
 import com.helger.commons.state.EChange;
 import com.helger.event.observer.IEventObserver;
 
@@ -29,7 +32,8 @@ import com.helger.event.observer.IEventObserver;
  *
  * @author Philip Helger
  */
-public interface IEventObserverQueue
+@MustImplementEqualsAndHashcode
+public interface IEventObserverQueue extends Serializable
 {
   /**
    * Add a new observer.
@@ -68,11 +72,21 @@ public interface IEventObserverQueue
    * This method is called before the main dispatching takes place. It is called
    * before each dispatch.
    */
-  void beforeDispatch ();
+  default void beforeDispatch ()
+  {}
 
   /**
    * This method is called after the main dispatching took place. It is called
    * after each dispatch.
    */
-  void afterDispatch ();
+  default void afterDispatch ()
+  {}
+
+  @Nonnull
+  static IFactory <? extends IEventObserverQueue> createDefaultFactory ()
+  {
+    // By default a non-weak set is used, because observers are quite regular
+    // inline classes which tend to be garbage collected very easily!
+    return () -> new EventObserverQueueOrderedSet ();
+  }
 }

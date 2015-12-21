@@ -42,7 +42,7 @@ import com.helger.event.async.mgr.impl.BidirectionalAsynchronousUnicastEventMana
 import com.helger.event.async.mgr.impl.UnidirectionalAsynchronousUnicastEventManager;
 import com.helger.event.impl.BaseEvent;
 import com.helger.event.impl.EventTypeRegistry;
-import com.helger.event.observer.impl.AbstractEventObserver;
+import com.helger.event.observer.AbstractEventObserver;
 
 public final class AsynchronousEventHelperTest
 {

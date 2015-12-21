@@ -37,8 +37,8 @@ public abstract class AbstractAsynchronousMulticastEventManager implements IMult
   protected final IEventObserverQueue m_aObserverQueue;
   protected final IAsynchronousEventDispatcher m_aEventDispatcher;
 
-  public AbstractAsynchronousMulticastEventManager (@Nonnull final IFactory <IEventObserverQueue> aObserverQueueFactory,
-                                                    @Nonnull final IFactory <IAsynchronousEventDispatcher> aEventDispatcherFactory)
+  public AbstractAsynchronousMulticastEventManager (@Nonnull final IFactory <? extends IEventObserverQueue> aObserverQueueFactory,
+                                                    @Nonnull final IFactory <? extends IAsynchronousEventDispatcher> aEventDispatcherFactory)
   {
     ValueEnforcer.notNull (aObserverQueueFactory, "ObserverQueueFactory");
     ValueEnforcer.notNull (aEventDispatcherFactory, "EventDispatcherFactory");

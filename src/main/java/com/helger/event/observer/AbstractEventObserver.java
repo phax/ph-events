@@ -14,20 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.event.observer.impl;
+package com.helger.event.observer;
 
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.DevelopersNote;
 import com.helger.commons.annotation.UnsupportedOperation;
-import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.collection.CollectionHelper;
 import com.helger.event.IEvent;
 import com.helger.event.IEventType;
-import com.helger.event.observer.EEventObserverHandlerType;
-import com.helger.event.observer.IEventObserver;
 
 /**
  * Abstract base class for a simple event observer.
@@ -53,22 +51,17 @@ public abstract class AbstractEventObserver implements IEventObserver
 
   public AbstractEventObserver (final boolean bWithReturnValue, @Nonnull final IEventType... aHandledEventTypes)
   {
-    if (ArrayHelper.isEmpty (aHandledEventTypes))
-      throw new IllegalArgumentException ("No event type is passed");
-    if (ArrayHelper.containsAnyNullElement (aHandledEventTypes))
-      throw new IllegalArgumentException ("Event types contain an illegal event type");
+    ValueEnforcer.notEmptyNoNullValue (aHandledEventTypes, "HandledEventTypes");
 
     m_eHandlerType = bWithReturnValue ? EEventObserverHandlerType.HANDLE_RETURN_VALUE
                                       : EEventObserverHandlerType.HANDLE_NO_RETURN;
     m_aHandledEventTypes = CollectionHelper.newSet (aHandledEventTypes);
   }
 
-  public AbstractEventObserver (final boolean bWithReturnValue, @Nonnull final Iterable <IEventType> aHandledEventTypes)
+  public AbstractEventObserver (final boolean bWithReturnValue,
+                                @Nonnull final Iterable <? extends IEventType> aHandledEventTypes)
   {
-    if (CollectionHelper.isEmpty (aHandledEventTypes))
-      throw new IllegalArgumentException ("No event type is passed");
-    if (CollectionHelper.containsAnyNullElement (aHandledEventTypes))
-      throw new IllegalArgumentException ("Event types contain an illegal event type");
+    ValueEnforcer.notEmptyNoNullValue (aHandledEventTypes, "HandledEventTypes");
 
     m_eHandlerType = bWithReturnValue ? EEventObserverHandlerType.HANDLE_RETURN_VALUE
                                       : EEventObserverHandlerType.HANDLE_NO_RETURN;

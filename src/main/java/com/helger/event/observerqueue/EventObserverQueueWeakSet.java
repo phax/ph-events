@@ -14,14 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.event.observerqueue.impl;
+package com.helger.event.observerqueue;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
@@ -29,11 +27,11 @@ import javax.annotation.concurrent.ThreadSafe;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.event.observer.IEventObserver;
-import com.helger.event.observerqueue.IEventObserverQueue;
 
 /**
  * Implementation of {@link IEventObserverQueue} based on a {@link WeakHashMap}
@@ -42,9 +40,9 @@ import com.helger.event.observerqueue.IEventObserverQueue;
  * @author Philip Helger
  */
 @ThreadSafe
-public final class EventObserverQueueWeakSet extends AbstractEventObserverQueue
+public final class EventObserverQueueWeakSet implements IEventObserverQueue
 {
-  private final ReadWriteLock m_aRWLock = new ReentrantReadWriteLock ();
+  private final SimpleReadWriteLock m_aRWLock = new SimpleReadWriteLock ();
   private final Map <IEventObserver, Boolean> m_aWeakMap = new WeakHashMap <IEventObserver, Boolean> ();
 
   public EventObserverQueueWeakSet ()
@@ -55,15 +53,7 @@ public final class EventObserverQueueWeakSet extends AbstractEventObserverQueue
   {
     ValueEnforcer.notNull (aObserver, "Observer");
 
-    m_aRWLock.writeLock ().lock ();
-    try
-    {
-      return EChange.valueOf (m_aWeakMap.put (aObserver, Boolean.TRUE) == null);
-    }
-    finally
-    {
-      m_aRWLock.writeLock ().unlock ();
-    }
+    return EChange.valueOf (m_aRWLock.writeLocked ( () -> m_aWeakMap.put (aObserver, Boolean.TRUE) == null));
   }
 
   @Nonnull
@@ -71,43 +61,20 @@ public final class EventObserverQueueWeakSet extends AbstractEventObserverQueue
   {
     ValueEnforcer.notNull (aObserver, "Observer");
 
-    m_aRWLock.writeLock ().lock ();
-    try
-    {
-      return EChange.valueOf (m_aWeakMap.remove (aObserver) != null);
-    }
-    finally
-    {
-      m_aRWLock.writeLock ().unlock ();
-    }
+    return EChange.valueOf (m_aRWLock.writeLocked ( () -> m_aWeakMap.remove (aObserver) != null));
   }
 
   public boolean isEmpty ()
   {
-    m_aRWLock.readLock ().lock ();
-    try
-    {
-      return m_aWeakMap.isEmpty ();
-    }
-    finally
-    {
-      m_aRWLock.readLock ().unlock ();
-    }
+    return m_aRWLock.readLocked ( () -> m_aWeakMap.isEmpty ());
+
   }
 
   @Nonnull
   @ReturnsMutableCopy
   public List <IEventObserver> getAllObservers ()
   {
-    m_aRWLock.readLock ().lock ();
-    try
-    {
-      return CollectionHelper.newList (m_aWeakMap.keySet ());
-    }
-    finally
-    {
-      m_aRWLock.readLock ().unlock ();
-    }
+    return m_aRWLock.readLocked ( () -> CollectionHelper.newList (m_aWeakMap.keySet ()));
   }
 
   @Override
@@ -130,6 +97,6 @@ public final class EventObserverQueueWeakSet extends AbstractEventObserverQueue
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("set", m_aWeakMap).toString ();
+    return new ToStringGenerator (this).append ("WeakMap", m_aWeakMap).toString ();
   }
 }

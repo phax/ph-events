@@ -17,7 +17,7 @@
 package com.helger.event.scopes;
 
 import com.helger.commons.exception.InitializationException;
-import com.helger.event.observer.impl.EventObservingExceptionCallback;
+import com.helger.event.observer.exception.EventObservingExceptionCallback;
 
 /**
  * Specialized exception handler

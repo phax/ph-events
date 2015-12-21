@@ -38,8 +38,8 @@ public abstract class AbstractSynchronousMulticastEventManager implements IMulti
   protected final IEventObserverQueue m_aObserverQueue;
   protected final ISynchronousEventDispatcher m_aEventDispatcher;
 
-  public AbstractSynchronousMulticastEventManager (@Nonnull final IFactory <IEventObserverQueue> aObserverQueueFactory,
-                                                   @Nonnull final IFactory <ISynchronousEventDispatcher> aEventDispatcherFactory)
+  public AbstractSynchronousMulticastEventManager (@Nonnull final IFactory <? extends IEventObserverQueue> aObserverQueueFactory,
+                                                   @Nonnull final IFactory <? extends ISynchronousEventDispatcher> aEventDispatcherFactory)
   {
     ValueEnforcer.notNull (aObserverQueueFactory, "ObserverQueueFactory");
     ValueEnforcer.notNull (aEventDispatcherFactory, "EventDispatcherFactory");

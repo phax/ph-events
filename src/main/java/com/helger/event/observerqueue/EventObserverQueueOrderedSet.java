@@ -14,11 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.event.observerqueue.impl;
+package com.helger.event.observerqueue;
 
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
@@ -26,19 +26,25 @@ import javax.annotation.concurrent.ThreadSafe;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.collection.CollectionHelper;
-import com.helger.commons.equals.EqualsHelper;
+import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.event.observer.IEventObserver;
 
+/**
+ * Implementation of {@link IEventObserverQueue} based on a
+ * {@link LinkedHashSet}. Order of observers is maintained!
+ *
+ * @author Philip Helger
+ */
 @ThreadSafe
-public final class EventObserverQueueSingleElement extends AbstractEventObserverQueue
+public class EventObserverQueueOrderedSet implements IEventObserverQueue
 {
-  private final ReadWriteLock m_aRWLock = new ReentrantReadWriteLock ();
-  private IEventObserver m_aObserver;
+  private final SimpleReadWriteLock m_aRWLock = new SimpleReadWriteLock ();
+  private final Set <IEventObserver> m_aSet = new LinkedHashSet <> ();
 
-  public EventObserverQueueSingleElement ()
+  public EventObserverQueueOrderedSet ()
   {}
 
   @Nonnull
@@ -46,16 +52,7 @@ public final class EventObserverQueueSingleElement extends AbstractEventObserver
   {
     ValueEnforcer.notNull (aObserver, "Observer");
 
-    m_aRWLock.writeLock ().lock ();
-    try
-    {
-      m_aObserver = aObserver;
-      return EChange.CHANGED;
-    }
-    finally
-    {
-      m_aRWLock.writeLock ().unlock ();
-    }
+    return EChange.valueOf (m_aRWLock.writeLocked ( () -> m_aSet.add (aObserver)));
   }
 
   @Nonnull
@@ -63,46 +60,19 @@ public final class EventObserverQueueSingleElement extends AbstractEventObserver
   {
     ValueEnforcer.notNull (aObserver, "Observer");
 
-    m_aRWLock.writeLock ().lock ();
-    try
-    {
-      if (!EqualsHelper.equals (m_aObserver, aObserver))
-        return EChange.UNCHANGED;
-      m_aObserver = null;
-      return EChange.CHANGED;
-    }
-    finally
-    {
-      m_aRWLock.writeLock ().unlock ();
-    }
+    return EChange.valueOf (m_aRWLock.writeLocked ( () -> m_aSet.remove (aObserver)));
+  }
+
+  public boolean isEmpty ()
+  {
+    return m_aRWLock.readLocked ( () -> m_aSet.isEmpty ());
   }
 
   @Nonnull
   @ReturnsMutableCopy
   public List <IEventObserver> getAllObservers ()
   {
-    m_aRWLock.readLock ().lock ();
-    try
-    {
-      return CollectionHelper.newList (m_aObserver);
-    }
-    finally
-    {
-      m_aRWLock.readLock ().unlock ();
-    }
-  }
-
-  public boolean isEmpty ()
-  {
-    m_aRWLock.readLock ().lock ();
-    try
-    {
-      return m_aObserver == null;
-    }
-    finally
-    {
-      m_aRWLock.readLock ().unlock ();
-    }
+    return m_aRWLock.readLocked ( () -> CollectionHelper.newList (m_aSet));
   }
 
   @Override
@@ -112,19 +82,19 @@ public final class EventObserverQueueSingleElement extends AbstractEventObserver
       return true;
     if (o == null || !getClass ().equals (o.getClass ()))
       return false;
-    final EventObserverQueueSingleElement rhs = (EventObserverQueueSingleElement) o;
-    return EqualsHelper.equals (m_aObserver, rhs.m_aObserver);
+    final EventObserverQueueOrderedSet rhs = (EventObserverQueueOrderedSet) o;
+    return m_aSet.equals (rhs.m_aSet);
   }
 
   @Override
   public int hashCode ()
   {
-    return new HashCodeGenerator (this).append (m_aObserver).getHashCode ();
+    return new HashCodeGenerator (this).append (m_aSet).getHashCode ();
   }
 
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("observer", m_aObserver).toString ();
+    return new ToStringGenerator (this).append ("set", m_aSet).toString ();
   }
 }

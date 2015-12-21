@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.hashcode.HashCodeGenerator;
-import com.helger.event.observer.impl.EventObservingExceptionWrapper;
+import com.helger.event.observer.exception.EventObservingExceptionWrapper;
 
 /**
  * Aggregate a list of Boolean result values by combining them with a logical

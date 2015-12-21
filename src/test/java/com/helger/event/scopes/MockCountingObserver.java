@@ -24,7 +24,7 @@ import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.event.IEvent;
 import com.helger.event.IEventType;
 import com.helger.event.impl.EventTypeRegistry;
-import com.helger.event.observer.impl.AbstractEventObserver;
+import com.helger.event.observer.AbstractEventObserver;
 
 /**
  * Dummy observer.

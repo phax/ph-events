@@ -41,7 +41,7 @@ import com.helger.event.async.dispatch.impl.AsynchronousEventResultCollector;
 import com.helger.event.impl.AbstractEventDispatcher;
 import com.helger.event.observer.EEventObserverHandlerType;
 import com.helger.event.observer.IEventObserver;
-import com.helger.event.observer.IEventObservingExceptionCallback;
+import com.helger.event.observer.exception.IEventObservingExceptionCallback;
 import com.helger.event.observerqueue.IEventObserverQueue;
 
 /**

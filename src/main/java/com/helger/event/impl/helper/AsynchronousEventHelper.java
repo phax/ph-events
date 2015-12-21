@@ -31,9 +31,10 @@ import com.helger.event.async.mgr.impl.BidirectionalAsynchronousMulticastEventMa
 import com.helger.event.async.mgr.impl.BidirectionalAsynchronousUnicastEventManager;
 import com.helger.event.async.mgr.impl.UnidirectionalAsynchronousMulticastEventManager;
 import com.helger.event.async.mgr.impl.UnidirectionalAsynchronousUnicastEventManager;
-import com.helger.event.observer.IEventObservingExceptionCallback;
+import com.helger.event.observer.exception.IEventObservingExceptionCallback;
+import com.helger.event.observerqueue.IEventObserverQueue;
 
-public final class AsynchronousEventHelper extends AbstractEventHelper
+public final class AsynchronousEventHelper
 {
   private enum EAsyncDispatcher
   {
@@ -96,7 +97,7 @@ public final class AsynchronousEventHelper extends AbstractEventHelper
   public static UnidirectionalAsynchronousMulticastEventManager createUnidirectionalMulticastEventManager ()
   {
     // No need for aggregation here
-    return new UnidirectionalAsynchronousMulticastEventManager (getObserverQueueFactory (),
+    return new UnidirectionalAsynchronousMulticastEventManager (IEventObserverQueue.createDefaultFactory (),
                                                                 createEventDispFactory ( () -> IAggregator.createUseFirst (),
                                                                                          null));
   }
@@ -111,7 +112,7 @@ public final class AsynchronousEventHelper extends AbstractEventHelper
   public static BidirectionalAsynchronousMulticastEventManager createBidirectionalMulticastEventManager (@Nonnull final IFactory <IAggregator <Object, ?>> aFactory,
                                                                                                          @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
-    return new BidirectionalAsynchronousMulticastEventManager (getObserverQueueFactory (),
+    return new BidirectionalAsynchronousMulticastEventManager (IEventObserverQueue.createDefaultFactory (),
                                                                createEventDispFactory (aFactory, aExceptionHandler));
   }
 }

@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.factory.IFactory;
-import com.helger.event.observer.IEventObservingExceptionCallback;
+import com.helger.event.observer.exception.IEventObservingExceptionCallback;
 import com.helger.event.sync.dispatch.ISynchronousEventDispatcher;
 
 public class DefaultSynchronousEventDispatcherFactory implements IFactory <ISynchronousEventDispatcher>

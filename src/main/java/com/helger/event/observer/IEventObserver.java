@@ -16,6 +16,8 @@
  */
 package com.helger.event.observer;
 
+import java.io.Serializable;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -27,7 +29,7 @@ import com.helger.event.IEvent;
  *
  * @author Philip Helger
  */
-public interface IEventObserver
+public interface IEventObserver extends Serializable
 {
   /**
    * Identify observers that are interested only in a single observation.
