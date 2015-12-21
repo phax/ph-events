@@ -25,7 +25,6 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.commons.concurrent.SimpleLock;
-import com.helger.commons.factory.IFactory;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.event.IEvent;
@@ -49,10 +48,10 @@ public final class AsynchronousQueueEventDispatcher extends AbstractEventDispatc
   private final SimpleLock m_aLock = new SimpleLock ();
   private final AsyncQueueDispatcherThread m_aQueueThread;
 
-  public AsynchronousQueueEventDispatcher (@Nonnull final IFactory <IAggregator <Object, ?>> aResultAggregatorFactory,
+  public AsynchronousQueueEventDispatcher (@Nonnull final IAggregator <Object, ?> aResultAggregator,
                                            @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
-    super (aResultAggregatorFactory);
+    super (aResultAggregator);
 
     m_aQueueThread = new AsyncQueueDispatcherThread (aExceptionHandler);
     m_aQueueThread.start ();

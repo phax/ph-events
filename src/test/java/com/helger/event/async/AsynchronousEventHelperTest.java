@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.event.helper;
+package com.helger.event.async;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -34,7 +34,6 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.commons.exception.mock.MockRuntimeException;
-import com.helger.commons.factory.IFactory;
 import com.helger.event.BaseEvent;
 import com.helger.event.EventTypeRegistry;
 import com.helger.event.IEvent;
@@ -47,7 +46,7 @@ import com.helger.event.observer.AbstractEventObserver;
 
 public final class AsynchronousEventHelperTest
 {
-  private static IFactory <IAggregator <Object, ?>> RES_AGG_FACTORY = () -> IAggregator.createUseAll ();
+  private static IAggregator <Object, ?> RES_AGG = IAggregator.createUseAll ();
   private static final IEventType EV_TYPE = EventTypeRegistry.createEventType (AsynchronousEventHelperTest.class.getName ());
   private static final Logger s_aLogger = LoggerFactory.getLogger (AsynchronousEventHelperTest.class);
 
@@ -108,7 +107,7 @@ public final class AsynchronousEventHelperTest
   {
     final int EXECUTIONS = 100000;
     final CountDownLatch aCountDown = new CountDownLatch (EXECUTIONS);
-    final BidirectionalAsynchronousMulticastEventManager mgr = AsynchronousEventHelper.createBidirectionalMulticastEventManager (RES_AGG_FACTORY);
+    final BidirectionalAsynchronousMulticastEventManager mgr = AsynchronousEventHelper.createBidirectionalMulticastEventManager (RES_AGG);
     for (int i = 0; i < EXECUTIONS; ++i)
       mgr.registerObserver (new AbstractEventObserver (true, EV_TYPE)
       {
@@ -184,7 +183,7 @@ public final class AsynchronousEventHelperTest
   @Test
   public void testBidirectionalMulticastEventManagerOnlyOnce ()
   {
-    final BidirectionalAsynchronousMulticastEventManager mgr = AsynchronousEventHelper.createBidirectionalMulticastEventManager (RES_AGG_FACTORY);
+    final BidirectionalAsynchronousMulticastEventManager mgr = AsynchronousEventHelper.createBidirectionalMulticastEventManager (RES_AGG);
     mgr.registerObserver (new MockAsyncObserver ("Hallo"));
     mgr.registerObserver (new MockAsyncObserverOnlyOnce ("Welt"));
     // trigger for the first time

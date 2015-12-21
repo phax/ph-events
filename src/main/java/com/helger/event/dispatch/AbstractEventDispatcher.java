@@ -21,7 +21,6 @@ import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.aggregate.IAggregator;
-import com.helger.commons.factory.IFactory;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.ToStringGenerator;
 
@@ -30,13 +29,9 @@ public abstract class AbstractEventDispatcher implements IEventDispatcher
 {
   private final IAggregator <Object, ?> m_aResultAggregator;
 
-  public AbstractEventDispatcher (@Nonnull final IFactory <IAggregator <Object, ?>> aResultAggregatorFactory)
+  public AbstractEventDispatcher (@Nonnull final IAggregator <Object, ?> aResultAggregator)
   {
-    ValueEnforcer.notNull (aResultAggregatorFactory, "ResultAggregatorFactory");
-
-    m_aResultAggregator = aResultAggregatorFactory.get ();
-    if (m_aResultAggregator == null)
-      throw new IllegalArgumentException ("No dispatch result aggregator was created");
+    m_aResultAggregator = ValueEnforcer.notNull (aResultAggregator, "ResultAggregator");
   }
 
   @Nonnull

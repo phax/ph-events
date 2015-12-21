@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.event.helper;
+package com.helger.event.sync;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -30,20 +30,15 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.commons.exception.mock.MockRuntimeException;
-import com.helger.commons.factory.IFactory;
 import com.helger.event.BaseEvent;
 import com.helger.event.EventTypeRegistry;
 import com.helger.event.IEvent;
 import com.helger.event.IEventType;
 import com.helger.event.observer.AbstractEventObserver;
-import com.helger.event.sync.BidirectionalSynchronousMulticastEventManager;
-import com.helger.event.sync.SynchronousEventHelper;
-import com.helger.event.sync.UnidirectionalSynchronousMulticastEventManager;
-import com.helger.event.sync.UnidirectionalSynchronousUnicastEventManager;
 
 public final class SynchronousEventHelperTest
 {
-  private static IFactory <IAggregator <Object, ?>> RES_AGG_FACTORY = () -> IAggregator.createUseAll ();
+  private static IAggregator <Object, ?> RES_AGG = IAggregator.createUseAll ();
   private static final IEventType EV_TYPE = EventTypeRegistry.createEventType (SynchronousEventHelperTest.class.getName ());
   private static final Logger s_aLogger = LoggerFactory.getLogger (SynchronousEventHelperTest.class);
 
@@ -103,7 +98,7 @@ public final class SynchronousEventHelperTest
   @Test
   public void testBidirectionalMulticastEventManager ()
   {
-    final BidirectionalSynchronousMulticastEventManager mgr = SynchronousEventHelper.createBidirectionalMulticastEventManager (RES_AGG_FACTORY);
+    final BidirectionalSynchronousMulticastEventManager mgr = SynchronousEventHelper.createBidirectionalMulticastEventManager (RES_AGG);
     mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
     {
       public void onEvent (@Nonnull final IEvent aEvent,

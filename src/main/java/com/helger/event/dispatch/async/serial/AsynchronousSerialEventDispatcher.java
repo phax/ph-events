@@ -24,7 +24,6 @@ import javax.annotation.Nullable;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
-import com.helger.commons.factory.IFactory;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
@@ -48,10 +47,10 @@ public class AsynchronousSerialEventDispatcher extends AbstractEventDispatcher i
 {
   private final IEventObservingExceptionCallback m_aExceptionHandler;
 
-  public AsynchronousSerialEventDispatcher (@Nonnull final IFactory <IAggregator <Object, ?>> aResultAggregatorFactory,
+  public AsynchronousSerialEventDispatcher (@Nonnull final IAggregator <Object, ?> aResultAggregator,
                                             @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
-    super (aResultAggregatorFactory);
+    super (aResultAggregator);
     m_aExceptionHandler = aExceptionHandler;
   }
 

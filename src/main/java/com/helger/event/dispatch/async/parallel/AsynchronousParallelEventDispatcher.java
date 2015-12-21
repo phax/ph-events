@@ -31,7 +31,6 @@ import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.commons.concurrent.IExecutorServiceFactory;
 import com.helger.commons.concurrent.SimpleLock;
-import com.helger.commons.factory.IFactory;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.event.IEvent;
@@ -56,11 +55,11 @@ public class AsynchronousParallelEventDispatcher extends AbstractEventDispatcher
   private final IExecutorServiceFactory m_aExecutorServiceFactory;
   private final IEventObservingExceptionCallback m_aExceptionHandler;
 
-  public AsynchronousParallelEventDispatcher (@Nonnull final IFactory <IAggregator <Object, ?>> aResultAggregatorFactory,
+  public AsynchronousParallelEventDispatcher (@Nonnull final IAggregator <Object, ?> aResultAggregator,
                                               @Nonnull final IExecutorServiceFactory aExecutorServiceFactory,
                                               @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
-    super (aResultAggregatorFactory);
+    super (aResultAggregator);
 
     ValueEnforcer.notNull (aExecutorServiceFactory, "ExecutorServiceFactory");
     m_aExecutorServiceFactory = aExecutorServiceFactory;

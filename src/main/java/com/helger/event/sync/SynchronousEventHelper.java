@@ -34,16 +34,16 @@ public final class SynchronousEventHelper
   {}
 
   @Nonnull
-  public static IFactory <ISynchronousEventDispatcher> createSynchronousEventDispatcherFactory (@Nonnull final IFactory <IAggregator <Object, ?>> aFactory,
+  public static IFactory <ISynchronousEventDispatcher> createSynchronousEventDispatcherFactory (@Nonnull final IAggregator <Object, ?> aResultAggregator,
                                                                                                 @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
-    return () -> new SynchronousEventDispatcher (aFactory, aExceptionHandler);
+    return () -> new SynchronousEventDispatcher (aResultAggregator, aExceptionHandler);
   }
 
   @Nonnull
   public static IFactory <ISynchronousEventDispatcher> createSynchronousEventDispatcherFactory ()
   {
-    return createSynchronousEventDispatcherFactory ( () -> IAggregator.createUseFirst (), null);
+    return createSynchronousEventDispatcherFactory (IAggregator.createUseFirst (), null);
   }
 
   @Nonnull
@@ -68,17 +68,17 @@ public final class SynchronousEventHelper
   }
 
   @Nonnull
-  public static BidirectionalSynchronousMulticastEventManager createBidirectionalMulticastEventManager (@Nonnull final IFactory <IAggregator <Object, ?>> aFactory)
+  public static BidirectionalSynchronousMulticastEventManager createBidirectionalMulticastEventManager (@Nonnull final IAggregator <Object, ?> aResultAggregator)
   {
-    return createBidirectionalMulticastEventManager (aFactory, null);
+    return createBidirectionalMulticastEventManager (aResultAggregator, null);
   }
 
   @Nonnull
-  public static BidirectionalSynchronousMulticastEventManager createBidirectionalMulticastEventManager (@Nonnull final IFactory <IAggregator <Object, ?>> aFactory,
+  public static BidirectionalSynchronousMulticastEventManager createBidirectionalMulticastEventManager (@Nonnull final IAggregator <Object, ?> aResultAggregator,
                                                                                                         @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
     return new BidirectionalSynchronousMulticastEventManager (IEventObserverQueue.createDefaultFactory (),
-                                                              createSynchronousEventDispatcherFactory (aFactory,
+                                                              createSynchronousEventDispatcherFactory (aResultAggregator,
                                                                                                        aExceptionHandler));
   }
 }

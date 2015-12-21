@@ -30,7 +30,6 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.commons.exception.mock.IMockException;
-import com.helger.commons.factory.IFactory;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
@@ -50,10 +49,10 @@ public class SynchronousEventDispatcher extends AbstractEventDispatcher implemen
 
   private final IEventObservingExceptionCallback m_aExceptionHandler;
 
-  public SynchronousEventDispatcher (@Nonnull final IFactory <IAggregator <Object, ?>> aResultAggregatorFactory,
+  public SynchronousEventDispatcher (@Nonnull final IAggregator <Object, ?> aResultAggregator,
                                      @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
-    super (aResultAggregatorFactory);
+    super (aResultAggregator);
     m_aExceptionHandler = aExceptionHandler != null ? aExceptionHandler
                                                     : EventObservingExceptionCallback.getInstance ();
   }

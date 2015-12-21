@@ -55,20 +55,20 @@ public final class AsynchronousEventHelper
   }
 
   @Nonnull
-  public static IFactory <IAsynchronousEventDispatcher> createEventDispFactory (@Nonnull final IFactory <IAggregator <Object, ?>> aResultAggregateFactory,
+  public static IFactory <IAsynchronousEventDispatcher> createEventDispFactory (@Nonnull final IAggregator <Object, ?> aResultAggregator,
                                                                                 @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
-    ValueEnforcer.notNull (aResultAggregateFactory, "ResultAggregateFactory");
+    ValueEnforcer.notNull (aResultAggregator, "ResultAggregateFactory");
 
     // switch between parallel, serial and queue
     switch (_getDefaultDispatcherType ())
     {
       case QUEUE:
-        return () -> new AsynchronousQueueEventDispatcher (aResultAggregateFactory, aExceptionHandler);
+        return () -> new AsynchronousQueueEventDispatcher (aResultAggregator, aExceptionHandler);
       case SERIAL:
-        return () -> new AsynchronousSerialEventDispatcher (aResultAggregateFactory, aExceptionHandler);
+        return () -> new AsynchronousSerialEventDispatcher (aResultAggregator, aExceptionHandler);
       case PARALLEL:
-        return () -> new AsynchronousParallelEventDispatcher (aResultAggregateFactory,
+        return () -> new AsynchronousParallelEventDispatcher (aResultAggregator,
                                                               createExecutorServiceFactory (),
                                                               aExceptionHandler);
       default:
@@ -80,15 +80,15 @@ public final class AsynchronousEventHelper
   public static UnidirectionalAsynchronousUnicastEventManager createUnidirectionalUnicastEventManager ()
   {
     // No need for aggregation here
-    return new UnidirectionalAsynchronousUnicastEventManager (createEventDispFactory ( () -> IAggregator.createUseFirst (),
-                                                                                       null));
+    return new UnidirectionalAsynchronousUnicastEventManager (createEventDispFactory (IAggregator.createUseFirst (),
+                                                                                      null));
   }
 
   @Nonnull
   public static BidirectionalAsynchronousUnicastEventManager createBidirectionalUnicastEventManager ()
   {
-    return new BidirectionalAsynchronousUnicastEventManager (createEventDispFactory ( () -> IAggregator.createUseFirst (),
-                                                                                      null));
+    return new BidirectionalAsynchronousUnicastEventManager (createEventDispFactory (IAggregator.createUseFirst (),
+                                                                                     null));
   }
 
   @Nonnull
@@ -96,21 +96,22 @@ public final class AsynchronousEventHelper
   {
     // No need for aggregation here
     return new UnidirectionalAsynchronousMulticastEventManager (IEventObserverQueue.createDefaultFactory (),
-                                                                createEventDispFactory ( () -> IAggregator.createUseFirst (),
-                                                                                         null));
+                                                                createEventDispFactory (IAggregator.createUseFirst (),
+                                                                                        null));
   }
 
   @Nonnull
-  public static BidirectionalAsynchronousMulticastEventManager createBidirectionalMulticastEventManager (@Nonnull final IFactory <IAggregator <Object, ?>> aFactory)
+  public static BidirectionalAsynchronousMulticastEventManager createBidirectionalMulticastEventManager (@Nonnull final IAggregator <Object, ?> aResultAggregator)
   {
-    return createBidirectionalMulticastEventManager (aFactory, null);
+    return createBidirectionalMulticastEventManager (aResultAggregator, null);
   }
 
   @Nonnull
-  public static BidirectionalAsynchronousMulticastEventManager createBidirectionalMulticastEventManager (@Nonnull final IFactory <IAggregator <Object, ?>> aFactory,
+  public static BidirectionalAsynchronousMulticastEventManager createBidirectionalMulticastEventManager (@Nonnull final IAggregator <Object, ?> aResultAggregator,
                                                                                                          @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
     return new BidirectionalAsynchronousMulticastEventManager (IEventObserverQueue.createDefaultFactory (),
-                                                               createEventDispFactory (aFactory, aExceptionHandler));
+                                                               createEventDispFactory (aResultAggregator,
+                                                                                       aExceptionHandler));
   }
 }
