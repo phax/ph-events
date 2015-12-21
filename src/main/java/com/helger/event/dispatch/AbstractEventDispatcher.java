@@ -35,7 +35,7 @@ public abstract class AbstractEventDispatcher implements IEventDispatcher
   }
 
   @Nonnull
-  protected final IAggregator <Object, ?> getResultAggregator ()
+  public final IAggregator <Object, ?> getResultAggregator ()
   {
     return m_aResultAggregator;
   }

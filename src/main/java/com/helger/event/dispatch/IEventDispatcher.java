@@ -18,6 +18,9 @@ package com.helger.event.dispatch;
 
 import java.io.Serializable;
 
+import javax.annotation.Nonnull;
+
+import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.state.IStoppable;
 
 /**
@@ -27,5 +30,9 @@ import com.helger.commons.state.IStoppable;
  */
 public interface IEventDispatcher extends IStoppable, Serializable
 {
-  /* empty */
+  /**
+   * @return The result aggregator to be used.
+   */
+  @Nonnull
+  IAggregator <Object, ?> getResultAggregator ();
 }
