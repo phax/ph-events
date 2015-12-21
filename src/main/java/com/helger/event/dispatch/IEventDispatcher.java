@@ -14,27 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.event.observer.exception;
+package com.helger.event.dispatch;
 
-import javax.annotation.Nonnull;
+import java.io.Serializable;
 
-import com.helger.commons.annotation.MustImplementEqualsAndHashcode;
-import com.helger.commons.callback.ICallback;
+import com.helger.commons.state.IStoppable;
 
 /**
- * Implement this interface to instruct an event dispatcher what to do with
- * exceptions thrown by event observers.
+ * Base interface for sync and async event dispatcher
  *
  * @author Philip Helger
  */
-@MustImplementEqualsAndHashcode
-public interface IEventObservingExceptionCallback extends ICallback
+public interface IEventDispatcher extends IStoppable, Serializable
 {
-  /**
-   * Handle the thrown exception.
-   *
-   * @param aThrowable
-   *        The thrown exception. May not be <code>null</code>.
-   */
-  void handleObservingException (@Nonnull Throwable aThrowable);
+  /* empty */
 }

@@ -14,27 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.event.observer.exception;
+package com.helger.event.crud;
 
 import javax.annotation.Nonnull;
 
-import com.helger.commons.annotation.MustImplementEqualsAndHashcode;
-import com.helger.commons.callback.ICallback;
+import com.helger.event.IEventType;
 
-/**
- * Implement this interface to instruct an event dispatcher what to do with
- * exceptions thrown by event observers.
- *
- * @author Philip Helger
- */
-@MustImplementEqualsAndHashcode
-public interface IEventObservingExceptionCallback extends ICallback
+public interface ICRUDEventType extends IEventType
 {
   /**
-   * Handle the thrown exception.
+   * Determines whether the event happens "before" or "after" an action.
    *
-   * @param aThrowable
-   *        The thrown exception. May not be <code>null</code>.
+   * @return Never <code>null</code>.
    */
-  void handleObservingException (@Nonnull Throwable aThrowable);
+  @Nonnull
+  EEventPointInTime getPointInTime ();
+
+  /**
+   * The CRUD state for which this event is triggered.
+   *
+   * @return Never <code>null</code>.
+   */
+  @Nonnull
+  EEventCRUD getCRUD ();
 }

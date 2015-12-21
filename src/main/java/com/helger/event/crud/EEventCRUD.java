@@ -14,27 +14,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.event.observer.exception;
+package com.helger.event.crud;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import com.helger.commons.annotation.MustImplementEqualsAndHashcode;
-import com.helger.commons.callback.ICallback;
+import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.id.IHasID;
+import com.helger.commons.lang.EnumHelper;
 
 /**
- * Implement this interface to instruct an event dispatcher what to do with
- * exceptions thrown by event observers.
+ * Determines the 4 different CRUD states.
  *
  * @author Philip Helger
  */
-@MustImplementEqualsAndHashcode
-public interface IEventObservingExceptionCallback extends ICallback
+public enum EEventCRUD implements IHasID <String>
 {
-  /**
-   * Handle the thrown exception.
-   *
-   * @param aThrowable
-   *        The thrown exception. May not be <code>null</code>.
-   */
-  void handleObservingException (@Nonnull Throwable aThrowable);
+  CREATE ("create"),
+  READ ("read"),
+  UPDATE ("update"),
+  DELETE ("delete");
+
+  private final String m_sID;
+
+  private EEventCRUD (@Nonnull @Nonempty final String sID)
+  {
+    m_sID = sID;
+  }
+
+  @Nonnull
+  @Nonempty
+  public String getID ()
+  {
+    return m_sID;
+  }
+
+  @Nullable
+  public static EEventCRUD getFromIDOrNull (@Nullable final String sID)
+  {
+    return EnumHelper.getFromIDOrNull (EEventCRUD.class, sID);
+  }
 }

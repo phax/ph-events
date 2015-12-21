@@ -25,7 +25,7 @@ import org.junit.rules.TestRule;
 
 import com.helger.commons.scope.mgr.EScope;
 import com.helger.commons.scope.mock.ScopeTestRule;
-import com.helger.event.impl.BaseEvent;
+import com.helger.event.BaseEvent;
 
 /**
  * JUnit test for class {@link ScopedEventManager}.

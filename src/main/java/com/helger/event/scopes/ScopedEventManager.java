@@ -26,9 +26,9 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.scope.IScope;
 import com.helger.commons.scope.mgr.EScope;
 import com.helger.commons.state.EChange;
+import com.helger.event.BaseEvent;
 import com.helger.event.IEvent;
 import com.helger.event.IEventType;
-import com.helger.event.impl.BaseEvent;
 import com.helger.event.observer.IEventObserver;
 
 /**
