@@ -24,7 +24,6 @@ import javax.annotation.Nullable;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
-import com.helger.commons.collection.pair.IPair;
 import com.helger.commons.factory.IFactory;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.state.EChange;
@@ -62,11 +61,10 @@ public class AsynchronousSerialEventDispatcher extends AbstractEventDispatcher i
     ValueEnforcer.notNull (aObservers, "Observers");
 
     // find all observers that can handle the passed event
-    final IPair <Integer, Map <IEventObserver, EEventObserverHandlerType>> aHandlingInfo = getListOfObserversThatCanHandleTheEvent (aEvent,
-                                                                                                                                    aObservers);
+    final ObserverList aHandlingInfo = getListOfObserversThatCanHandleTheEvent (aEvent, aObservers);
 
-    final int nHandlingObserverCountWithReturnValue = aHandlingInfo.getFirst ().intValue ();
-    final Map <IEventObserver, EEventObserverHandlerType> aHandlingObservers = aHandlingInfo.getSecond ();
+    final int nHandlingObserverCountWithReturnValue = aHandlingInfo.getHandlingObserverCountWithReturnValue ();
+    final Map <IEventObserver, EEventObserverHandlerType> aHandlingObservers = aHandlingInfo.getObservers ();
 
     if (!aHandlingObservers.isEmpty ())
     {

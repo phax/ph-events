@@ -20,8 +20,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.ThreadSafe;
 
 import com.helger.commons.annotation.Nonempty;
+import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.event.IEventType;
 
 /**
@@ -30,9 +34,11 @@ import com.helger.event.IEventType;
  *
  * @author Philip Helger
  */
+@ThreadSafe
 public final class EventTypeRegistry
 {
-  private static final Map <String, IEventType> s_aMap = new HashMap <String, IEventType> ();
+  private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
+  private static final Map <String, EventType> s_aMap = new HashMap <> ();
 
   private EventTypeRegistry ()
   {}
@@ -40,10 +46,20 @@ public final class EventTypeRegistry
   @Nonnull
   public static IEventType createEventType (@Nonnull @Nonempty final String sName)
   {
-    if (s_aMap.containsKey (sName))
-      throw new IllegalArgumentException ("An event type with the name '" + sName + "' already exists!");
-    final IEventType aEventType = new EventType (sName);
-    s_aMap.put (sName, aEventType);
-    return aEventType;
+    return s_aRWLock.writeLocked ( () -> {
+      if (s_aMap.containsKey (sName))
+        throw new IllegalArgumentException ("An event type with the name '" + sName + "' already exists!");
+
+      final EventType aEventType = new EventType (sName);
+      s_aMap.put (sName, aEventType);
+      return aEventType;
+    });
+  }
+
+  @Nonnull
+  @ReturnsMutableCopy
+  public static Map <String, ? extends IEventType> getAllEventTypes ()
+  {
+    return s_aRWLock.readLocked ( () -> CollectionHelper.newMap (s_aMap));
   }
 }

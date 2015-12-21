@@ -30,6 +30,17 @@ import com.helger.event.IEvent;
 public interface IEventObserver
 {
   /**
+   * Identify observers that are interested only in a single observation.
+   *
+   * @return <code>true</code> if this observer is to be invoked only once,
+   *         <code>false</code> otherwise.
+   */
+  default boolean isOnlyOnce ()
+  {
+    return false;
+  }
+
+  /**
    * Determine whether we can handle this event or not. This method is always
    * called synchronously.
    *

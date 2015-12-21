@@ -16,24 +16,50 @@
  */
 package com.helger.event.impl;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.aggregate.IAggregator;
-import com.helger.commons.collection.pair.IPair;
-import com.helger.commons.collection.pair.ReadOnlyPair;
+import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.commons.factory.IFactory;
 import com.helger.event.IEvent;
 import com.helger.event.observer.EEventObserverHandlerType;
 import com.helger.event.observer.IEventObserver;
-import com.helger.event.observer.IOnlyOnceEventObserver;
 import com.helger.event.observerqueue.IEventObserverQueue;
 
 public abstract class AbstractEventDispatcher
 {
+  public static final class ObserverList
+  {
+    private final int m_nHandlingObserverCountWithReturnValue;
+    private final Map <IEventObserver, EEventObserverHandlerType> m_aHandlers;
+
+    private ObserverList (@Nonnegative final int nHandlingObserverCountWithReturnValue,
+                          @Nonnull final Map <IEventObserver, EEventObserverHandlerType> aHandlers)
+    {
+      m_nHandlingObserverCountWithReturnValue = nHandlingObserverCountWithReturnValue;
+      m_aHandlers = aHandlers;
+    }
+
+    public int getHandlingObserverCountWithReturnValue ()
+    {
+      return m_nHandlingObserverCountWithReturnValue;
+    }
+
+    @Nonnull
+    @ReturnsMutableObject ("design")
+    public Map <IEventObserver, EEventObserverHandlerType> getObservers ()
+    {
+      return m_aHandlers;
+    }
+  }
+
   protected final IAggregator <Object, ?> m_aResultAggregator;
 
   public AbstractEventDispatcher (@Nonnull final IFactory <IAggregator <Object, ?>> aResultAggregatorFactory)
@@ -46,11 +72,12 @@ public abstract class AbstractEventDispatcher
   }
 
   @Nonnull
-  protected static final IPair <Integer, Map <IEventObserver, EEventObserverHandlerType>> getListOfObserversThatCanHandleTheEvent (@Nonnull final IEvent aEvent,
-                                                                                                                                   @Nonnull final IEventObserverQueue aObservers)
+  protected static final ObserverList getListOfObserversThatCanHandleTheEvent (@Nonnull final IEvent aEvent,
+                                                                               @Nonnull final IEventObserverQueue aObservers)
   {
     // find all handling observers
-    final Map <IEventObserver, EEventObserverHandlerType> aHandler = new LinkedHashMap <IEventObserver, EEventObserverHandlerType> ();
+    final Map <IEventObserver, EEventObserverHandlerType> aHandler = new LinkedHashMap <> ();
+    final List <IEventObserver> aObserversToRemove = new ArrayList <> ();
     int nHandlingObserverCountWithReturnValue = 0;
     for (final IEventObserver aObserver : aObservers.getAllObservers ())
     {
@@ -60,18 +87,19 @@ public abstract class AbstractEventDispatcher
         aHandler.put (aObserver, eHandleType);
         if (eHandleType.hasReturnValue ())
           nHandlingObserverCountWithReturnValue++;
+
+        // "Only once" observer?
+        if (aObserver.isOnlyOnce ())
+          aObserversToRemove.add (aObserver);
       }
     }
 
     // remove all "only once" observers
-    // Note: we're operating on a copy of the original container!
-    // Note: iterate only the "handling" observers
-    for (final IEventObserver aObserver : aHandler.keySet ())
-      if (aObserver instanceof IOnlyOnceEventObserver)
-        if (aObservers.removeObserver (aObserver).isUnchanged ())
-          throw new IllegalStateException ("Failed to remove observer " + aObserver + " from " + aObservers);
+    for (final IEventObserver aObserver : aObserversToRemove)
+      if (aObservers.removeObserver (aObserver).isUnchanged ())
+        throw new IllegalStateException ("Failed to remove only-omce observer " + aObserver + " from " + aObservers);
 
     // return number of handling + handling observer map
-    return ReadOnlyPair.create (Integer.valueOf (nHandlingObserverCountWithReturnValue), aHandler);
+    return new ObserverList (nHandlingObserverCountWithReturnValue, aHandler);
   }
 }

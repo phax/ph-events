@@ -19,9 +19,9 @@ package com.helger.event.impl;
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.hashcode.HashCodeGenerator;
-import com.helger.commons.string.StringHelper;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.event.IEventType;
 
@@ -31,15 +31,13 @@ import com.helger.event.IEventType;
  * @author Philip Helger
  */
 @Immutable
-final class EventType implements IEventType
+public class EventType implements IEventType
 {
   private final String m_sName;
 
   public EventType (@Nonnull @Nonempty final String sName)
   {
-    if (StringHelper.hasNoText (sName))
-      throw new IllegalArgumentException ("Passed event type name is empty");
-    m_sName = sName;
+    m_sName = ValueEnforcer.notEmpty (sName, "Name");
   }
 
   @Nonnull
@@ -69,6 +67,6 @@ final class EventType implements IEventType
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("name", m_sName).toString ();
+    return new ToStringGenerator (this).append ("Name", m_sName).toString ();
   }
 }

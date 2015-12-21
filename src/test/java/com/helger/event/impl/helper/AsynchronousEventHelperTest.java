@@ -42,7 +42,6 @@ import com.helger.event.async.mgr.impl.BidirectionalAsynchronousUnicastEventMana
 import com.helger.event.async.mgr.impl.UnidirectionalAsynchronousUnicastEventManager;
 import com.helger.event.impl.BaseEvent;
 import com.helger.event.impl.EventTypeRegistry;
-import com.helger.event.observer.IOnlyOnceEventObserver;
 import com.helger.event.observer.impl.AbstractEventObserver;
 
 public final class AsynchronousEventHelperTest
@@ -168,11 +167,16 @@ public final class AsynchronousEventHelperTest
     }
   }
 
-  private static class MockAsyncObserverOnlyOnce extends MockAsyncObserver implements IOnlyOnceEventObserver
+  private static class MockAsyncObserverOnlyOnce extends MockAsyncObserver
   {
     public MockAsyncObserverOnlyOnce (final String sText)
     {
       super (sText);
+    }
+
+    public boolean isOnlyOnce ()
+    {
+      return true;
     }
   }
 
@@ -189,6 +193,7 @@ public final class AsynchronousEventHelperTest
       assertEquals (2, ((List <?>) currentObject).size ());
       s_aLogger.info ("1. Got: " + currentObject);
     });
+
     // trigger for the second time
     mgr.trigger (new BaseEvent (EV_TYPE), currentObject -> {
       assertTrue (currentObject instanceof List <?>);
@@ -196,6 +201,7 @@ public final class AsynchronousEventHelperTest
       assertEquals (1, ((List <?>) currentObject).size ());
       s_aLogger.info ("2. Got: " + currentObject);
     });
+
     // trigger for the third time
     mgr.trigger (new BaseEvent (EV_TYPE), currentObject -> {
       assertTrue (currentObject instanceof List <?>);

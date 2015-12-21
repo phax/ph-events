@@ -38,8 +38,8 @@ public class BaseSenderAwareEvent <T> extends BaseEvent implements ISenderAwareE
   public BaseSenderAwareEvent (@Nonnull final IEventType aEventType, @Nonnull final T aSender)
   {
     super (aEventType);
-    ValueEnforcer.notNull (aSender, "Sender");
-    m_aSender = aSender;
+
+    m_aSender = ValueEnforcer.notNull (aSender, "Sender");
   }
 
   @Nonnull

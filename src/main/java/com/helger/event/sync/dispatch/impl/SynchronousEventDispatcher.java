@@ -65,8 +65,8 @@ public class SynchronousEventDispatcher extends AbstractEventDispatcher implemen
     ValueEnforcer.notNull (aObservers, "Observers");
 
     // find all observers that can handle the passed event
-    final Map <IEventObserver, EEventObserverHandlerType> aHandlingObservers = getListOfObserversThatCanHandleTheEvent (aEvent,
-                                                                                                                        aObservers).getSecond ();
+    final ObserverList aHandlingInfo = getListOfObserversThatCanHandleTheEvent (aEvent, aObservers);
+    final Map <IEventObserver, EEventObserverHandlerType> aHandlingObservers = aHandlingInfo.getObservers ();
 
     Object aDispatchResult;
     if (aHandlingObservers.isEmpty ())
