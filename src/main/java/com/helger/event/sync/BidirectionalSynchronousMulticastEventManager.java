@@ -37,12 +37,13 @@ public class BidirectionalSynchronousMulticastEventManager extends AbstractSynch
   @Nullable
   public Object trigger (@Nonnull final IEvent aEvent)
   {
-    if (m_aObserverQueue.isEmpty ())
+    final IEventObserverQueue aObserverQueue = getObserverQueue ();
+    if (aObserverQueue.isEmpty ())
       return null;
 
-    m_aObserverQueue.beforeDispatch ();
-    final Object ret = m_aEventDispatcher.dispatch (aEvent, m_aObserverQueue);
-    m_aObserverQueue.afterDispatch ();
+    aObserverQueue.beforeDispatch ();
+    final Object ret = getEventDispatcher ().dispatch (aEvent, aObserverQueue);
+    aObserverQueue.afterDispatch ();
 
     return ret;
   }

@@ -23,6 +23,7 @@ import com.helger.commons.factory.IFactory;
 import com.helger.event.IEvent;
 import com.helger.event.dispatch.sync.ISynchronousEventDispatcher;
 import com.helger.event.mgr.IBidirectionalSynchronousEventManager;
+import com.helger.event.observerqueue.IEventObserverQueue;
 
 public class BidirectionalSynchronousUnicastEventManager extends AbstractSynchronousUnicastEventManager
                                                          implements IBidirectionalSynchronousEventManager
@@ -35,12 +36,13 @@ public class BidirectionalSynchronousUnicastEventManager extends AbstractSynchro
   @Nullable
   public Object trigger (@Nonnull final IEvent aEvent)
   {
-    if (m_aObserverQueue.isEmpty ())
+    final IEventObserverQueue aObserverQueue = getObserverQueue ();
+    if (aObserverQueue.isEmpty ())
       return null;
 
-    m_aObserverQueue.beforeDispatch ();
-    final Object ret = m_aEventDispatcher.dispatch (aEvent, m_aObserverQueue);
-    m_aObserverQueue.afterDispatch ();
+    aObserverQueue.beforeDispatch ();
+    final Object ret = getEventDispatcher ().dispatch (aEvent, aObserverQueue);
+    aObserverQueue.afterDispatch ();
 
     return ret;
   }

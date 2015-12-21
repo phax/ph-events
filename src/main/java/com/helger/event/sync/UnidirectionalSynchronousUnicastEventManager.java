@@ -19,10 +19,10 @@ package com.helger.event.sync;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.factory.IFactory;
-import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.event.IEvent;
 import com.helger.event.dispatch.sync.ISynchronousEventDispatcher;
 import com.helger.event.mgr.IUnidirectionalEventManager;
+import com.helger.event.observerqueue.IEventObserverQueue;
 
 public class UnidirectionalSynchronousUnicastEventManager extends AbstractSynchronousUnicastEventManager
                                                           implements IUnidirectionalEventManager
@@ -34,28 +34,12 @@ public class UnidirectionalSynchronousUnicastEventManager extends AbstractSynchr
 
   public void trigger (@Nonnull final IEvent aEvent)
   {
-    if (!m_aObserverQueue.isEmpty ())
+    final IEventObserverQueue aObserverQueue = getObserverQueue ();
+    if (!aObserverQueue.isEmpty ())
     {
-      m_aObserverQueue.beforeDispatch ();
-      m_aEventDispatcher.dispatch (aEvent, m_aObserverQueue);
-      m_aObserverQueue.afterDispatch ();
+      aObserverQueue.beforeDispatch ();
+      getEventDispatcher ().dispatch (aEvent, aObserverQueue);
+      aObserverQueue.afterDispatch ();
     }
-  }
-
-  @Override
-  public boolean equals (final Object o)
-  {
-    if (o == this)
-      return true;
-    if (o == null || !getClass ().equals (o.getClass ()))
-      return false;
-    final UnidirectionalSynchronousUnicastEventManager rhs = (UnidirectionalSynchronousUnicastEventManager) o;
-    return m_aObserverQueue.equals (rhs.m_aObserverQueue) && m_aEventDispatcher.equals (rhs.m_aEventDispatcher);
-  }
-
-  @Override
-  public int hashCode ()
-  {
-    return new HashCodeGenerator (this).append (m_aObserverQueue).append (m_aEventDispatcher).getHashCode ();
   }
 }

@@ -36,8 +36,8 @@ import com.helger.event.observerqueue.IEventObserverQueue;
  */
 public abstract class AbstractSynchronousUnicastEventManager implements IUnicastEventManager, IStoppable
 {
-  protected final IEventObserverQueue m_aObserverQueue = new EventObserverQueueSingleElement ();
-  protected final ISynchronousEventDispatcher m_aEventDispatcher;
+  private final IEventObserverQueue m_aObserverQueue = new EventObserverQueueSingleElement ();
+  private final ISynchronousEventDispatcher m_aEventDispatcher;
 
   public AbstractSynchronousUnicastEventManager (@Nonnull final IFactory <? extends ISynchronousEventDispatcher> aEventDispatcherFactory)
   {
@@ -46,6 +46,18 @@ public abstract class AbstractSynchronousUnicastEventManager implements IUnicast
     m_aEventDispatcher = aEventDispatcherFactory.get ();
     if (m_aEventDispatcher == null)
       throw new IllegalStateException ("An illegal event dispatcher was created");
+  }
+
+  @Nonnull
+  protected final IEventObserverQueue getObserverQueue ()
+  {
+    return m_aObserverQueue;
+  }
+
+  @Nonnull
+  protected final ISynchronousEventDispatcher getEventDispatcher ()
+  {
+    return m_aEventDispatcher;
   }
 
   public final void setObserver (@Nonnull final IEventObserver aObserver)

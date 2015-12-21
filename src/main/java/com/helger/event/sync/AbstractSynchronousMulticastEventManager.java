@@ -35,8 +35,8 @@ import com.helger.event.observerqueue.IEventObserverQueue;
  */
 public abstract class AbstractSynchronousMulticastEventManager implements IMulticastEventManager, IStoppable
 {
-  protected final IEventObserverQueue m_aObserverQueue;
-  protected final ISynchronousEventDispatcher m_aEventDispatcher;
+  private final IEventObserverQueue m_aObserverQueue;
+  private final ISynchronousEventDispatcher m_aEventDispatcher;
 
   public AbstractSynchronousMulticastEventManager (@Nonnull final IFactory <? extends IEventObserverQueue> aObserverQueueFactory,
                                                    @Nonnull final IFactory <? extends ISynchronousEventDispatcher> aEventDispatcherFactory)
@@ -50,6 +50,18 @@ public abstract class AbstractSynchronousMulticastEventManager implements IMulti
     m_aEventDispatcher = aEventDispatcherFactory.get ();
     if (m_aEventDispatcher == null)
       throw new IllegalStateException ("No event dispatcher was created!");
+  }
+
+  @Nonnull
+  protected final IEventObserverQueue getObserverQueue ()
+  {
+    return m_aObserverQueue;
+  }
+
+  @Nonnull
+  protected final ISynchronousEventDispatcher getEventDispatcher ()
+  {
+    return m_aEventDispatcher;
   }
 
   @Nonnull
