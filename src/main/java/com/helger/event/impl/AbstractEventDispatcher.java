@@ -26,10 +26,10 @@ import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.collection.pair.IPair;
 import com.helger.commons.collection.pair.ReadOnlyPair;
 import com.helger.commons.factory.IFactory;
-import com.helger.event.EEventObserverHandlerType;
 import com.helger.event.IEvent;
-import com.helger.event.IEventObserver;
-import com.helger.event.IOnlyOnceEventObserver;
+import com.helger.event.observer.EEventObserverHandlerType;
+import com.helger.event.observer.IEventObserver;
+import com.helger.event.observer.IOnlyOnceEventObserver;
 import com.helger.event.observerqueue.IEventObserverQueue;
 
 public abstract class AbstractEventDispatcher

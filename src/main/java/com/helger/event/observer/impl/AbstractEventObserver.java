@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.event.impl;
+package com.helger.event.observer.impl;
 
 import java.util.Set;
 
@@ -24,10 +24,10 @@ import com.helger.commons.annotation.DevelopersNote;
 import com.helger.commons.annotation.UnsupportedOperation;
 import com.helger.commons.collection.ArrayHelper;
 import com.helger.commons.collection.CollectionHelper;
-import com.helger.event.EEventObserverHandlerType;
 import com.helger.event.IEvent;
-import com.helger.event.IEventObserver;
 import com.helger.event.IEventType;
+import com.helger.event.observer.EEventObserverHandlerType;
+import com.helger.event.observer.IEventObserver;
 
 /**
  * Abstract base class for a simple event observer.

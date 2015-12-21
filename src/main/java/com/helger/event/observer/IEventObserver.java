@@ -14,12 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.event;
+package com.helger.event.observer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
+import com.helger.event.IEvent;
 
 /**
  * Base interface of event observers.

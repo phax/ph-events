@@ -22,9 +22,9 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.factory.IFactory;
 import com.helger.commons.state.EChange;
 import com.helger.commons.state.IStoppable;
-import com.helger.event.IEventObserver;
 import com.helger.event.async.dispatch.IAsynchronousEventDispatcher;
 import com.helger.event.mgr.IMulticastEventManager;
+import com.helger.event.observer.IEventObserver;
 import com.helger.event.observerqueue.IEventObserverQueue;
 
 /**

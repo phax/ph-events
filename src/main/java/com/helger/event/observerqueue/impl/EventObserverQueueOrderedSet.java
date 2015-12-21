@@ -31,7 +31,7 @@ import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
-import com.helger.event.IEventObserver;
+import com.helger.event.observer.IEventObserver;
 import com.helger.event.observerqueue.IEventObserverQueue;
 
 /**

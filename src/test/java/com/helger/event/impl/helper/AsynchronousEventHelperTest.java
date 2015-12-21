@@ -37,13 +37,13 @@ import com.helger.commons.exception.mock.MockRuntimeException;
 import com.helger.commons.factory.IFactory;
 import com.helger.event.IEvent;
 import com.helger.event.IEventType;
-import com.helger.event.IOnlyOnceEventObserver;
 import com.helger.event.async.mgr.impl.BidirectionalAsynchronousMulticastEventManager;
 import com.helger.event.async.mgr.impl.BidirectionalAsynchronousUnicastEventManager;
 import com.helger.event.async.mgr.impl.UnidirectionalAsynchronousUnicastEventManager;
-import com.helger.event.impl.AbstractEventObserver;
 import com.helger.event.impl.BaseEvent;
 import com.helger.event.impl.EventTypeRegistry;
+import com.helger.event.observer.IOnlyOnceEventObserver;
+import com.helger.event.observer.impl.AbstractEventObserver;
 
 public final class AsynchronousEventHelperTest
 {

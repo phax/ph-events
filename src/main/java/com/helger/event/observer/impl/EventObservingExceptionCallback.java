@@ -14,15 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.event.impl;
+package com.helger.event.observer.impl;
 
 import javax.annotation.Nonnull;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.event.IEventObserverExceptionAware;
-import com.helger.event.IEventObservingExceptionCallback;
+import com.helger.event.observer.IEventObserverExceptionAware;
+import com.helger.event.observer.IEventObservingExceptionCallback;
 
 /**
  * Utility class that knows what to with an exception that is thrown while

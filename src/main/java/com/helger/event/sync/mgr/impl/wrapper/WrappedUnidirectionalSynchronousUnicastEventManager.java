@@ -23,9 +23,9 @@ import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.state.EChange;
 import com.helger.commons.state.IStoppable;
 import com.helger.event.IEvent;
-import com.helger.event.IEventObserver;
 import com.helger.event.mgr.IUnicastEventManager;
 import com.helger.event.mgr.IUnidirectionalEventManager;
+import com.helger.event.observer.IEventObserver;
 import com.helger.event.sync.mgr.impl.UnidirectionalSynchronousUnicastEventManager;
 
 public class WrappedUnidirectionalSynchronousUnicastEventManager implements

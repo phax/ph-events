@@ -25,13 +25,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.event.EEventObserverHandlerType;
 import com.helger.event.IEvent;
-import com.helger.event.IEventObserver;
-import com.helger.event.IEventObservingExceptionCallback;
 import com.helger.event.async.dispatch.impl.AsynchronousEventResultCollector;
-import com.helger.event.impl.EventObservingExceptionCallback;
-import com.helger.event.impl.EventObservingExceptionWrapper;
+import com.helger.event.observer.EEventObserverHandlerType;
+import com.helger.event.observer.IEventObserver;
+import com.helger.event.observer.IEventObservingExceptionCallback;
+import com.helger.event.observer.impl.EventObservingExceptionCallback;
+import com.helger.event.observer.impl.EventObservingExceptionWrapper;
 
 final class AsyncSerialDispatcherThread extends Thread
 {

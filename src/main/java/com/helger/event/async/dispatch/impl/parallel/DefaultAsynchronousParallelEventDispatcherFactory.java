@@ -23,8 +23,8 @@ import com.helger.commons.ValueEnforcer;
 import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.concurrent.IExecutorServiceFactory;
 import com.helger.commons.factory.IFactory;
-import com.helger.event.IEventObservingExceptionCallback;
 import com.helger.event.async.dispatch.IAsynchronousEventDispatcher;
+import com.helger.event.observer.IEventObservingExceptionCallback;
 
 public class DefaultAsynchronousParallelEventDispatcherFactory implements IFactory <IAsynchronousEventDispatcher>
 {

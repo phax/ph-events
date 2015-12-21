@@ -23,9 +23,9 @@ import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.state.EChange;
 import com.helger.commons.state.IStoppable;
 import com.helger.event.IEvent;
-import com.helger.event.IEventObserver;
 import com.helger.event.mgr.IBidirectionalSynchronousEventManager;
 import com.helger.event.mgr.IMulticastEventManager;
+import com.helger.event.observer.IEventObserver;
 import com.helger.event.sync.mgr.impl.BidirectionalSynchronousMulticastEventManager;
 
 public class WrappedBidirectionalSynchronousMulticastEventManager implements

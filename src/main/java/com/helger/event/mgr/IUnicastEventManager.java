@@ -18,7 +18,7 @@ package com.helger.event.mgr;
 
 import javax.annotation.Nonnull;
 
-import com.helger.event.IEventObserver;
+import com.helger.event.observer.IEventObserver;
 
 /**
  * Base interface for an unicast event manager. Unicast means having only a

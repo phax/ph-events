@@ -30,13 +30,13 @@ import com.helger.commons.collection.pair.IPair;
 import com.helger.commons.factory.IFactory;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.state.EChange;
-import com.helger.event.EEventObserverHandlerType;
 import com.helger.event.IEvent;
-import com.helger.event.IEventObserver;
-import com.helger.event.IEventObservingExceptionCallback;
 import com.helger.event.async.dispatch.IAsynchronousEventDispatcher;
 import com.helger.event.async.dispatch.impl.AsynchronousEventResultCollector;
 import com.helger.event.impl.AbstractEventDispatcher;
+import com.helger.event.observer.EEventObserverHandlerType;
+import com.helger.event.observer.IEventObserver;
+import com.helger.event.observer.IEventObservingExceptionCallback;
 import com.helger.event.observerqueue.IEventObserverQueue;
 
 /**

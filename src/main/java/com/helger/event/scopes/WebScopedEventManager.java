@@ -25,9 +25,9 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.state.EChange;
 import com.helger.event.IEvent;
-import com.helger.event.IEventObserver;
 import com.helger.event.IEventType;
 import com.helger.event.impl.BaseEvent;
+import com.helger.event.observer.IEventObserver;
 import com.helger.web.scope.IWebScope;
 import com.helger.web.scope.mgr.EWebScope;
 

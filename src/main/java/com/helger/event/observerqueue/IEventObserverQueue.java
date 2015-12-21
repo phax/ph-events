@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 
 import com.helger.commons.annotation.ReturnsMutableCopy;
 import com.helger.commons.state.EChange;
-import com.helger.event.IEventObserver;
+import com.helger.event.observer.IEventObserver;
 
 /**
  * Interface for keeping a list of event observers.

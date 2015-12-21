@@ -19,7 +19,7 @@ package com.helger.event.mgr;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.state.EChange;
-import com.helger.event.IEventObserver;
+import com.helger.event.observer.IEventObserver;
 
 /**
  * Base interface for a multicast event manager. Multicast means having multiple

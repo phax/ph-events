@@ -22,7 +22,7 @@ import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.factory.IFactory;
-import com.helger.event.IEventObservingExceptionCallback;
+import com.helger.event.observer.IEventObservingExceptionCallback;
 import com.helger.event.sync.dispatch.ISynchronousEventDispatcher;
 import com.helger.event.sync.dispatch.impl.DefaultSynchronousEventDispatcherFactory;
 import com.helger.event.sync.mgr.impl.BidirectionalSynchronousMulticastEventManager;

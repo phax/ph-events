@@ -14,25 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.event;
-
-import javax.annotation.Nonnull;
-
-import com.helger.commons.callback.ICallback;
+package com.helger.event.observer;
 
 /**
- * Implement this interface to instruct an event dispatcher what to do with
- * exceptions thrown by event observers.
+ * Marker interface to identify observers that are interested only once in a
+ * plugin. Simply implement this interface besides the regular observer
+ * interface. The rest is handled automatically within the event engine (the
+ * dispatcher to be exact).
  *
  * @author Philip Helger
  */
-public interface IEventObservingExceptionCallback extends ICallback
+public interface IOnlyOnceEventObserver extends IEventObserver
 {
-  /**
-   * Handle the thrown exception.
-   *
-   * @param aThrowable
-   *        The thrown exception. May not be <code>null</code>.
-   */
-  void handleObservingException (@Nonnull Throwable aThrowable);
+  /* empty */
 }

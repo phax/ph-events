@@ -14,13 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.helger.event.impl;
+package com.helger.event.observer.impl;
 
 import javax.annotation.Nonnull;
 
 import com.helger.commons.annotation.DevelopersNote;
 import com.helger.event.IEventType;
-import com.helger.event.IOnlyOnceEventObserver;
+import com.helger.event.observer.IOnlyOnceEventObserver;
 
 /**
  * Abstract base class for a simple event observer that can be handled only

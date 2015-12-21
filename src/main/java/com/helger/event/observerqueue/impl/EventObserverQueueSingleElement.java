@@ -30,7 +30,7 @@ import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
-import com.helger.event.IEventObserver;
+import com.helger.event.observer.IEventObserver;
 
 @ThreadSafe
 public final class EventObserverQueueSingleElement extends AbstractEventObserverQueue
