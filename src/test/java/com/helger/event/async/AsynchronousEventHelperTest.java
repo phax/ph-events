@@ -38,6 +38,7 @@ import com.helger.event.BaseEvent;
 import com.helger.event.EventTypeRegistry;
 import com.helger.event.IEvent;
 import com.helger.event.IEventType;
+import com.helger.event.mgr.EventManager;
 import com.helger.event.observer.AbstractEventObserver;
 
 public final class AsynchronousEventHelperTest
@@ -49,7 +50,7 @@ public final class AsynchronousEventHelperTest
   @Test
   public void testUnidirectionalUnicastEventManager ()
   {
-    final AsynchronousEventManager mgr = AsynchronousEventHelper.createUnidirectionalUnicastEventManager ();
+    final EventManager mgr = new EventManager ();
     mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
     {
       public void onEvent (final IEvent aEvent,
@@ -59,14 +60,14 @@ public final class AsynchronousEventHelperTest
         assertEquals (EV_TYPE, aEvent.getEventType ());
       }
     });
-    mgr.trigger (new BaseEvent (EV_TYPE));
+    mgr.triggerAsynchronous (new BaseEvent (EV_TYPE));
   }
 
   @Test
   public void testBidirectionalUnicastEventManager () throws InterruptedException
   {
     final CountDownLatch aCountDown = new CountDownLatch (1);
-    final AsynchronousEventManager mgr = AsynchronousEventHelper.createBidirectionalUnicastEventManager ();
+    final EventManager mgr = new EventManager ();
     mgr.registerObserver (new AbstractEventObserver (true, EV_TYPE)
     {
       public void onEvent (final IEvent aEvent,
@@ -80,7 +81,7 @@ public final class AsynchronousEventHelperTest
     });
     final INonThrowingRunnableWithParameter <Object> aOverallCB = currentObject -> s_aLogger.info ("Got: " +
                                                                                                    currentObject);
-    mgr.trigger (new BaseEvent (EV_TYPE), aOverallCB);
+    mgr.triggerAsynchronous (new BaseEvent (EV_TYPE), aOverallCB);
     aCountDown.await ();
 
     // Try triggering the event that throws an exception
@@ -94,7 +95,7 @@ public final class AsynchronousEventHelperTest
         throw new MockRuntimeException ();
       }
     });
-    mgr.trigger (new BaseEvent (EV_TYPE), aOverallCB);
+    mgr.triggerAsynchronous (new BaseEvent (EV_TYPE), aOverallCB);
     aCountDown2.await ();
   }
 
@@ -103,7 +104,7 @@ public final class AsynchronousEventHelperTest
   {
     final int EXECUTIONS = 100000;
     final CountDownLatch aCountDown = new CountDownLatch (EXECUTIONS);
-    final AsynchronousEventManager mgr = AsynchronousEventHelper.createBidirectionalMulticastEventManager (RES_AGG);
+    final EventManager mgr = new EventManager ();
     for (int i = 0; i < EXECUTIONS; ++i)
       mgr.registerObserver (new AbstractEventObserver (true, EV_TYPE)
       {
@@ -125,14 +126,14 @@ public final class AsynchronousEventHelperTest
     final INonThrowingRunnableWithParameter <Object> aOverallCB = currentObject -> s_aLogger.info ("Got: " +
                                                                                                    ((List <?>) currentObject).size () +
                                                                                                    " results");
-    mgr.trigger (new BaseEvent (EV_TYPE), aOverallCB);
+    mgr.triggerAsynchronous (new BaseEvent (EV_TYPE), aOverallCB);
     aCountDown.await ();
   }
 
   @Test
   public void testUnidirectionalUnicastEventManagerMultiple ()
   {
-    final AsynchronousEventManager mgr = AsynchronousEventHelper.createUnidirectionalUnicastEventManager ();
+    final EventManager mgr = new EventManager ();
     mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
     {
       public void onEvent (@Nonnull final IEvent aEvent,
@@ -143,7 +144,7 @@ public final class AsynchronousEventHelperTest
       }
     });
     for (int i = 0; i < 100; ++i)
-      mgr.trigger (new BaseEvent (EV_TYPE));
+      mgr.triggerAsynchronous (new BaseEvent (EV_TYPE));
   }
 
   private static class MockAsyncObserver extends AbstractEventObserver
@@ -179,11 +180,11 @@ public final class AsynchronousEventHelperTest
   @Test
   public void testBidirectionalMulticastEventManagerOnlyOnce ()
   {
-    final AsynchronousEventManager mgr = AsynchronousEventHelper.createBidirectionalMulticastEventManager (RES_AGG);
+    final EventManager mgr = new EventManager ();
     mgr.registerObserver (new MockAsyncObserver ("Hallo"));
     mgr.registerObserver (new MockAsyncObserverOnlyOnce ("Welt"));
     // trigger for the first time
-    mgr.trigger (new BaseEvent (EV_TYPE), currentObject -> {
+    mgr.triggerAsynchronous (new BaseEvent (EV_TYPE), currentObject -> {
       assertTrue (currentObject instanceof List <?>);
       // -> expect 2 results
       assertEquals (2, ((List <?>) currentObject).size ());
@@ -191,7 +192,7 @@ public final class AsynchronousEventHelperTest
     });
 
     // trigger for the second time
-    mgr.trigger (new BaseEvent (EV_TYPE), currentObject -> {
+    mgr.triggerAsynchronous (new BaseEvent (EV_TYPE), currentObject -> {
       assertTrue (currentObject instanceof List <?>);
       // -> expect 1 result
       assertEquals (1, ((List <?>) currentObject).size ());
@@ -199,7 +200,7 @@ public final class AsynchronousEventHelperTest
     });
 
     // trigger for the third time
-    mgr.trigger (new BaseEvent (EV_TYPE), currentObject -> {
+    mgr.triggerAsynchronous (new BaseEvent (EV_TYPE), currentObject -> {
       assertTrue (currentObject instanceof List <?>);
       // -> expect 1 result
       assertEquals (1, ((List <?>) currentObject).size ());

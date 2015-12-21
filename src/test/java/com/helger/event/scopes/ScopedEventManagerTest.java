@@ -55,7 +55,7 @@ public final class ScopedEventManagerTest
       assertEquals (0, aRequest.getInvocationCount ());
 
       // process
-      ScopedEventManager.notifyObservers (new BaseEvent (MockCountingObserver.TOPIC), null);
+      ScopedEventManager.triggerSynchronous (new BaseEvent (MockCountingObserver.TOPIC));
 
       // check postconditions
       assertEquals (1, aGlobal.getInvocationCount ());

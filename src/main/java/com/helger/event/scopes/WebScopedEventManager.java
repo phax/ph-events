@@ -16,6 +16,9 @@
  */
 package com.helger.event.scopes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -25,9 +28,7 @@ import org.slf4j.LoggerFactory;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.commons.state.EChange;
-import com.helger.event.BaseEvent;
 import com.helger.event.IEvent;
-import com.helger.event.IEventType;
 import com.helger.event.observer.IEventObserver;
 import com.helger.web.scope.IWebScope;
 import com.helger.web.scope.mgr.EWebScope;
@@ -123,15 +124,30 @@ public final class WebScopedEventManager
   /**
    * Notify observers without sender and without parameter.
    *
-   * @param aEventType
-   *        The event type for which an event should be triggered
-   * @param aResultCallback
-   *        Optional result callback
+   * @param aEvent
+   *        The event on which observers should be notified.
+   * @return The aggregated result object.
    */
-  public static void notifyObservers (final @Nonnull IEventType aEventType,
-                                      @Nullable final INonThrowingRunnableWithParameter <Object> aResultCallback)
+  public static Object triggerSynchronous (@Nonnull final IEvent aEvent)
   {
-    notifyObservers (new BaseEvent (aEventType), aResultCallback);
+    final List <Object> aRetValues = new ArrayList <> ();
+    // for all scopes
+    for (final EWebScope eCurrentScope : EWebScope.values ())
+    {
+      // get current instance of scope
+      final IWebScope aScope = _getScope (eCurrentScope, false);
+      if (aScope != null)
+      {
+        // get event manager (may be null)
+        final MainEventManager aEventMgr = _getEventMgr (aScope);
+        if (aEventMgr != null)
+        {
+          // main event trigger
+          aRetValues.add (aEventMgr.triggerSynchronous (aEvent));
+        }
+      }
+    }
+    return aEvent.getResultAggregator ().aggregate (aRetValues);
   }
 
   /**
@@ -142,8 +158,8 @@ public final class WebScopedEventManager
    * @param aResultCallback
    *        Optional result callback
    */
-  public static void notifyObservers (@Nonnull final IEvent aEvent,
-                                      @Nullable final INonThrowingRunnableWithParameter <Object> aResultCallback)
+  public static void triggerAsynchronous (@Nonnull final IEvent aEvent,
+                                          @Nullable final INonThrowingRunnableWithParameter <Object> aResultCallback)
   {
     // for all scopes
     for (final EWebScope eCurrentScope : EWebScope.values ())
@@ -157,7 +173,7 @@ public final class WebScopedEventManager
         if (aEventMgr != null)
         {
           // main event trigger
-          aEventMgr.trigger (aEvent, aResultCallback);
+          aEventMgr.triggerAsynchronous (aEvent, aResultCallback);
         }
       }
     }

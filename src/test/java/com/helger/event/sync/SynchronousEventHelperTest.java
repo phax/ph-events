@@ -19,6 +19,7 @@ package com.helger.event.sync;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -34,7 +35,9 @@ import com.helger.event.BaseEvent;
 import com.helger.event.EventTypeRegistry;
 import com.helger.event.IEvent;
 import com.helger.event.IEventType;
+import com.helger.event.mgr.EventManager;
 import com.helger.event.observer.AbstractEventObserver;
+import com.helger.event.observer.exception.EventObservingExceptionWrapper;
 
 public final class SynchronousEventHelperTest
 {
@@ -45,7 +48,7 @@ public final class SynchronousEventHelperTest
   @Test
   public void testUnidirectionalUnicastEventManager ()
   {
-    final SynchronousEventManager mgr = SynchronousEventHelper.createUnidirectionalUnicastEventManager ();
+    final EventManager mgr = new EventManager ();
     mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
     {
       public void onEvent (@Nonnull final IEvent aEvent,
@@ -56,13 +59,13 @@ public final class SynchronousEventHelperTest
         s_aLogger.info ("onEvent uni sync");
       }
     });
-    mgr.trigger (new BaseEvent (EV_TYPE));
+    mgr.triggerSynchronous (new BaseEvent (EV_TYPE));
   }
 
   @Test
   public void testUnidirectionalMulticastEventManager ()
   {
-    final SynchronousEventManager mgr = SynchronousEventHelper.createUnidirectionalMulticastEventManager ();
+    final EventManager mgr = new EventManager ();
     mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
     {
       public void onEvent (@Nonnull final IEvent aEvent,
@@ -73,14 +76,15 @@ public final class SynchronousEventHelperTest
         s_aLogger.info ("onEvent multi sync 1");
       }
     });
-    mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
+    mgr.registerObserver (new AbstractEventObserver (true, EV_TYPE)
     {
       public void onEvent (@Nonnull final IEvent aEvent,
                            @Nullable final INonThrowingRunnableWithParameter <Object> aResultCallback)
       {
-        assertNull (aResultCallback);
+        assertNotNull (aResultCallback);
         assertEquals (EV_TYPE, aEvent.getEventType ());
         s_aLogger.info ("onEvent multi sync 2");
+        aResultCallback.run (Integer.valueOf (2));
       }
     });
     mgr.registerObserver (new AbstractEventObserver (true, EV_TYPE)
@@ -92,13 +96,20 @@ public final class SynchronousEventHelperTest
         throw new MockRuntimeException ();
       }
     });
-    mgr.trigger (new BaseEvent (EV_TYPE));
+
+    // Trigger all 3 observers - first result counts
+    Object ret = mgr.triggerSynchronous (new BaseEvent (EV_TYPE, IAggregator.createUseFirst ()));
+    assertEquals (Integer.valueOf (2), ret);
+
+    // Trigger all 3 observers - last result counts
+    ret = mgr.triggerSynchronous (new BaseEvent (EV_TYPE, IAggregator.createUseLast ()));
+    assertTrue (ret instanceof EventObservingExceptionWrapper);
   }
 
   @Test
   public void testBidirectionalMulticastEventManager ()
   {
-    final SynchronousEventManager mgr = SynchronousEventHelper.createBidirectionalMulticastEventManager (RES_AGG);
+    final EventManager mgr = new EventManager ();
     mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
     {
       public void onEvent (@Nonnull final IEvent aEvent,
@@ -139,6 +150,7 @@ public final class SynchronousEventHelperTest
         throw new MockRuntimeException ();
       }
     });
-    mgr.trigger (new BaseEvent (EV_TYPE), ret -> s_aLogger.info ("Trigger result = " + ret));
+    final Object ret = mgr.triggerSynchronous (new BaseEvent (EV_TYPE));
+    s_aLogger.info ("Trigger result = " + ret);
   }
 }

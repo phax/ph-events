@@ -20,23 +20,18 @@ import javax.annotation.Nonnull;
 
 import com.helger.commons.scope.IScope;
 import com.helger.commons.scope.IScopeDestructionAware;
-import com.helger.event.helper.DispatchResultAggregatorBooleanAnd;
-import com.helger.event.observerqueue.IEventObserverQueue;
-import com.helger.event.sync.SynchronousEventManager;
-import com.helger.event.sync.SynchronousEventHelper;
+import com.helger.event.mgr.EventManager;
 
 /**
  * Wraps the main event manager so that it becomes scope destruction aware
  *
  * @author Philip Helger
  */
-final class MainEventManager extends SynchronousEventManager implements IScopeDestructionAware
+final class MainEventManager extends EventManager implements IScopeDestructionAware
 {
   public MainEventManager ()
   {
-    super (IEventObserverQueue.createDefault (),
-           SynchronousEventHelper.createSynchronousEventDispatcher (new DispatchResultAggregatorBooleanAnd (),
-                                                                    new ScopedEventObservingExceptionCallback ()));
+    super (new ScopedEventObservingExceptionCallback ());
   }
 
   public void onBeforeScopeDestruction (@Nonnull final IScope aScopeToBeDestroyed) throws Exception

@@ -22,13 +22,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.commons.concurrent.SimpleLock;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.event.IEvent;
-import com.helger.event.dispatch.AbstractEventDispatcher;
 import com.helger.event.dispatch.EffectiveEventObserverList;
 import com.helger.event.dispatch.async.AsynchronousEventResultCollector;
 import com.helger.event.dispatch.async.IAsynchronousEventDispatcher;
@@ -42,17 +40,13 @@ import com.helger.event.observerqueue.IEventObserverQueue;
  *
  * @author Philip Helger
  */
-public final class AsynchronousQueueEventDispatcher extends AbstractEventDispatcher
-                                                    implements IAsynchronousEventDispatcher
+public final class AsynchronousQueueEventDispatcher implements IAsynchronousEventDispatcher
 {
   private final SimpleLock m_aLock = new SimpleLock ();
   private final AsyncQueueDispatcherThread m_aQueueThread;
 
-  public AsynchronousQueueEventDispatcher (@Nonnull final IAggregator <Object, ?> aResultAggregator,
-                                           @Nullable final IEventObservingExceptionCallback aExceptionHandler)
+  public AsynchronousQueueEventDispatcher (@Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
-    super (aResultAggregator);
-
     m_aQueueThread = new AsyncQueueDispatcherThread (aExceptionHandler);
     m_aQueueThread.start ();
   }
@@ -84,7 +78,7 @@ public final class AsynchronousQueueEventDispatcher extends AbstractEventDispatc
 
           // Create collector and start thread only if we expect a result
           aLocalResultCallback = new AsynchronousEventResultCollector (nHandlingObserverCountWithReturnValue,
-                                                                       getResultAggregator (),
+                                                                       aEvent.getResultAggregator (),
                                                                        aOverallResultCallback);
           aLocalResultCallback.start ();
         }
@@ -111,20 +105,8 @@ public final class AsynchronousQueueEventDispatcher extends AbstractEventDispatc
   }
 
   @Override
-  public boolean equals (final Object o)
-  {
-    return o == this;
-  }
-
-  @Override
-  public int hashCode ()
-  {
-    return System.identityHashCode (this);
-  }
-
-  @Override
   public String toString ()
   {
-    return ToStringGenerator.getDerived (super.toString ()).append ("QueueThread", m_aQueueThread).toString ();
+    return new ToStringGenerator (this).append ("QueueThread", m_aQueueThread).toString ();
   }
 }

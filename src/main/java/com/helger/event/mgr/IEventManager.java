@@ -54,10 +54,14 @@ public interface IEventManager extends IStoppable
   @Nonnull
   EChange unregisterObserver (@Nonnull IEventObserver aObserver);
 
-  default void trigger (@Nonnull final IEvent aEvent)
+  @Nullable
+  Object triggerSynchronous (@Nonnull IEvent aEvent);
+
+  default void triggerAsynchronous (@Nonnull final IEvent aEvent)
   {
-    trigger (aEvent, null);
+    triggerAsynchronous (aEvent, null);
   }
 
-  void trigger (@Nonnull IEvent aEvent, @Nullable INonThrowingRunnableWithParameter <Object> aResultCallback);
+  void triggerAsynchronous (@Nonnull IEvent aEvent,
+                            @Nullable INonThrowingRunnableWithParameter <Object> aResultCallback);
 }

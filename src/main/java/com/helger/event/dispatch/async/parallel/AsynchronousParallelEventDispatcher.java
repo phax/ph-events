@@ -27,14 +27,12 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.commons.concurrent.IExecutorServiceFactory;
 import com.helger.commons.concurrent.SimpleLock;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.event.IEvent;
-import com.helger.event.dispatch.AbstractEventDispatcher;
 import com.helger.event.dispatch.EffectiveEventObserverList;
 import com.helger.event.dispatch.async.AsynchronousEventResultCollector;
 import com.helger.event.dispatch.async.IAsynchronousEventDispatcher;
@@ -49,18 +47,15 @@ import com.helger.event.observerqueue.IEventObserverQueue;
  *
  * @author Philip Helger
  */
-public class AsynchronousParallelEventDispatcher extends AbstractEventDispatcher implements IAsynchronousEventDispatcher
+public class AsynchronousParallelEventDispatcher implements IAsynchronousEventDispatcher
 {
   private final SimpleLock m_aLock = new SimpleLock ();
   private final IExecutorServiceFactory m_aExecutorServiceFactory;
   private final IEventObservingExceptionCallback m_aExceptionHandler;
 
-  public AsynchronousParallelEventDispatcher (@Nonnull final IAggregator <Object, ?> aResultAggregator,
-                                              @Nonnull final IExecutorServiceFactory aExecutorServiceFactory,
+  public AsynchronousParallelEventDispatcher (@Nonnull final IExecutorServiceFactory aExecutorServiceFactory,
                                               @Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
-    super (aResultAggregator);
-
     ValueEnforcer.notNull (aExecutorServiceFactory, "ExecutorServiceFactory");
     m_aExecutorServiceFactory = aExecutorServiceFactory;
     m_aExceptionHandler = aExceptionHandler;
@@ -93,7 +88,7 @@ public class AsynchronousParallelEventDispatcher extends AbstractEventDispatcher
 
           // Create collector and start thread only if we expect a result
           aLocalResultCallback = new AsynchronousEventResultCollector (nHandlingObserverCountWithReturnValue,
-                                                                       getResultAggregator (),
+                                                                       aEvent.getResultAggregator (),
                                                                        aOverallResultCallback);
           aLocalResultCallback.start ();
         }
@@ -135,23 +130,10 @@ public class AsynchronousParallelEventDispatcher extends AbstractEventDispatcher
   }
 
   @Override
-  public boolean equals (final Object o)
-  {
-    return o == this;
-  }
-
-  @Override
-  public int hashCode ()
-  {
-    return System.identityHashCode (this);
-  }
-
-  @Override
   public String toString ()
   {
-    return ToStringGenerator.getDerived (super.toString ())
-                            .append ("ExecutorServiceFactory", m_aExecutorServiceFactory)
-                            .append ("ExceptionHandler", m_aExceptionHandler)
-                            .toString ();
+    return new ToStringGenerator (this).append ("ExecutorServiceFactory", m_aExecutorServiceFactory)
+                                       .append ("ExceptionHandler", m_aExceptionHandler)
+                                       .toString ();
   }
 }

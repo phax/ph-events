@@ -27,14 +27,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.commons.exception.mock.IMockException;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.event.IEvent;
-import com.helger.event.dispatch.AbstractEventDispatcher;
 import com.helger.event.dispatch.EffectiveEventObserverList;
 import com.helger.event.observer.EEventObserverHandlerType;
 import com.helger.event.observer.IEventObserver;
@@ -43,16 +41,14 @@ import com.helger.event.observer.exception.EventObservingExceptionWrapper;
 import com.helger.event.observer.exception.IEventObservingExceptionCallback;
 import com.helger.event.observerqueue.IEventObserverQueue;
 
-public class SynchronousEventDispatcher extends AbstractEventDispatcher implements ISynchronousEventDispatcher
+public class SynchronousEventDispatcher implements ISynchronousEventDispatcher
 {
   private static final Logger s_aLogger = LoggerFactory.getLogger (SynchronousEventDispatcher.class);
 
   private final IEventObservingExceptionCallback m_aExceptionHandler;
 
-  public SynchronousEventDispatcher (@Nonnull final IAggregator <Object, ?> aResultAggregator,
-                                     @Nullable final IEventObservingExceptionCallback aExceptionHandler)
+  public SynchronousEventDispatcher (@Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
-    super (aResultAggregator);
     m_aExceptionHandler = aExceptionHandler != null ? aExceptionHandler
                                                     : EventObservingExceptionCallback.getInstance ();
   }
@@ -126,7 +122,7 @@ public class SynchronousEventDispatcher extends AbstractEventDispatcher implemen
       }
 
       // aggregate all result values
-      aDispatchResult = getResultAggregator ().aggregate (aCallbackReturnValues);
+      aDispatchResult = aEvent.getResultAggregator ().aggregate (aCallbackReturnValues);
     }
 
     // Return the main dispatch result

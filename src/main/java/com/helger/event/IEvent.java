@@ -20,6 +20,8 @@ import java.io.Serializable;
 
 import javax.annotation.Nonnull;
 
+import com.helger.commons.aggregate.IAggregator;
+
 /**
  * Base interface for a single event instance.
  *
@@ -32,4 +34,10 @@ public interface IEvent extends Serializable
    */
   @Nonnull
   IEventType getEventType ();
+
+  @Nonnull
+  default IAggregator <Object, ?> getResultAggregator ()
+  {
+    return IAggregator.createUseFirst ();
+  }
 }

@@ -20,6 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.ToStringGenerator;
 
@@ -33,17 +34,29 @@ import com.helger.commons.string.ToStringGenerator;
 public class BaseEvent implements IEvent
 {
   private final IEventType m_aEventType;
+  private final IAggregator <Object, ?> m_aResultAggregator;
 
   public BaseEvent (@Nonnull final IEventType aEventType)
   {
-    ValueEnforcer.notNull (aEventType, "EventType");
-    m_aEventType = aEventType;
+    this (aEventType, IAggregator.createUseFirst ());
+  }
+
+  public BaseEvent (@Nonnull final IEventType aEventType, @Nonnull final IAggregator <Object, ?> aResultAggregator)
+  {
+    m_aEventType = ValueEnforcer.notNull (aEventType, "EventType");
+    m_aResultAggregator = ValueEnforcer.notNull (aResultAggregator, "ResultAggregator");
   }
 
   @Nonnull
   public final IEventType getEventType ()
   {
     return m_aEventType;
+  }
+
+  @Nonnull
+  public final IAggregator <Object, ?> getResultAggregator ()
+  {
+    return m_aResultAggregator;
   }
 
   @Override

@@ -22,18 +22,16 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.callback.INonThrowingRunnableWithParameter;
-import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.event.IEvent;
-import com.helger.event.dispatch.AbstractEventDispatcher;
 import com.helger.event.dispatch.EffectiveEventObserverList;
 import com.helger.event.dispatch.async.AsynchronousEventResultCollector;
 import com.helger.event.dispatch.async.IAsynchronousEventDispatcher;
 import com.helger.event.observer.EEventObserverHandlerType;
 import com.helger.event.observer.IEventObserver;
+import com.helger.event.observer.exception.EventObservingExceptionCallback;
 import com.helger.event.observer.exception.IEventObservingExceptionCallback;
 import com.helger.event.observerqueue.IEventObserverQueue;
 
@@ -43,15 +41,14 @@ import com.helger.event.observerqueue.IEventObserverQueue;
  *
  * @author Philip Helger
  */
-public class AsynchronousSerialEventDispatcher extends AbstractEventDispatcher implements IAsynchronousEventDispatcher
+public class AsynchronousSerialEventDispatcher implements IAsynchronousEventDispatcher
 {
   private final IEventObservingExceptionCallback m_aExceptionHandler;
 
-  public AsynchronousSerialEventDispatcher (@Nonnull final IAggregator <Object, ?> aResultAggregator,
-                                            @Nullable final IEventObservingExceptionCallback aExceptionHandler)
+  public AsynchronousSerialEventDispatcher (@Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
-    super (aResultAggregator);
-    m_aExceptionHandler = aExceptionHandler;
+    m_aExceptionHandler = aExceptionHandler != null ? aExceptionHandler
+                                                    : EventObservingExceptionCallback.getInstance ();
   }
 
   public void dispatch (@Nonnull final IEvent aEvent,
@@ -80,7 +77,7 @@ public class AsynchronousSerialEventDispatcher extends AbstractEventDispatcher i
 
         // Create collector and start thread only if we expect a result
         aLocalResultCallback = new AsynchronousEventResultCollector (nHandlingObserverCountWithReturnValue,
-                                                                     getResultAggregator (),
+                                                                     aEvent.getResultAggregator (),
                                                                      aOverallResultCallback);
         aLocalResultCallback.start ();
       }
@@ -97,27 +94,8 @@ public class AsynchronousSerialEventDispatcher extends AbstractEventDispatcher i
   }
 
   @Override
-  public boolean equals (final Object o)
-  {
-    if (o == this)
-      return true;
-    if (!super.equals (o))
-      return false;
-    final AsynchronousSerialEventDispatcher rhs = (AsynchronousSerialEventDispatcher) o;
-    return m_aExceptionHandler.equals (rhs.m_aExceptionHandler);
-  }
-
-  @Override
-  public int hashCode ()
-  {
-    return HashCodeGenerator.getDerived (super.hashCode ()).append (m_aExceptionHandler).getHashCode ();
-  }
-
-  @Override
   public String toString ()
   {
-    return ToStringGenerator.getDerived (super.toString ())
-                            .append ("ExceptionHandler", m_aExceptionHandler)
-                            .toString ();
+    return new ToStringGenerator (this).append ("ExceptionHandler", m_aExceptionHandler).toString ();
   }
 }
