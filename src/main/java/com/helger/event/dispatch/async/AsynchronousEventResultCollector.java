@@ -65,8 +65,11 @@ public final class AsynchronousEventResultCollector extends Thread implements IN
       // Wait until all results are present
       m_aCountDown.await ();
 
-      // We have all
-      m_aResultCallback.run (m_aResultAggregator.aggregate (m_aResults));
+      // We have all - aggregate
+      final Object aAggregatedResults = m_aResultAggregator.aggregate (m_aResults);
+
+      // Call callback
+      m_aResultCallback.run (aAggregatedResults);
     }
     catch (final InterruptedException ex)
     {
