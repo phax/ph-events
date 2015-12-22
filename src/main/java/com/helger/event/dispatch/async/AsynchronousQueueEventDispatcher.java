@@ -47,7 +47,7 @@ public class AsynchronousQueueEventDispatcher extends AbstractEventDispatcher im
   public AsynchronousQueueEventDispatcher (@Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
     super (aExceptionHandler);
-    m_aQueueThread = new AsyncQueueDispatcherThread (aExceptionHandler);
+    m_aQueueThread = new AsyncQueueDispatcherThread (getExceptionCallback ());
     m_aQueueThread.start ();
   }
 
