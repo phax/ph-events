@@ -28,6 +28,7 @@ import com.helger.event.observerqueue.IEventObserverQueue;
  *
  * @author Philip Helger
  */
+@FunctionalInterface
 public interface ISynchronousEventDispatcher extends IEventDispatcher
 {
   /**

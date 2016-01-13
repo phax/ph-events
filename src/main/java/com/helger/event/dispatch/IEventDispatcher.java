@@ -18,6 +18,9 @@ package com.helger.event.dispatch;
 
 import java.io.Serializable;
 
+import javax.annotation.Nonnull;
+
+import com.helger.commons.state.EChange;
 import com.helger.commons.state.IStoppable;
 
 /**
@@ -27,5 +30,10 @@ import com.helger.commons.state.IStoppable;
  */
 public interface IEventDispatcher extends IStoppable, Serializable
 {
-  /* empty */
+  @Nonnull
+  default EChange stop ()
+  {
+    // Nothing to do in here
+    return EChange.UNCHANGED;
+  }
 }

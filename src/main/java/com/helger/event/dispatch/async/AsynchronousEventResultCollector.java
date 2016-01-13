@@ -31,23 +31,23 @@ public final class AsynchronousEventResultCollector extends Thread implements IN
 {
   private final CountDownLatch m_aCountDown;
   private final List <Object> m_aResults = new Vector <Object> ();
-  private final int m_nExpectedResults;
+  private final int m_nExpectedResultCount;
   private final IAggregator <Object, ?> m_aResultAggregator;
   private final INonThrowingRunnableWithParameter <Object> m_aResultCallback;
 
-  public AsynchronousEventResultCollector (@Nonnegative final int nObserverWithReturn,
+  public AsynchronousEventResultCollector (@Nonnegative final int nObserversWithReturn,
                                            @Nonnull final IAggregator <Object, ?> aResultAggregator,
                                            @Nonnull final INonThrowingRunnableWithParameter <Object> aResultCallback)
   {
     super ("event-result-collector-thread");
-    ValueEnforcer.isGT0 (nObserverWithReturn, "ObserverWithReturn");
+    ValueEnforcer.isGT0 (nObserversWithReturn, "ObserversWithReturn");
     ValueEnforcer.notNull (aResultAggregator, "ResultAggregator");
     ValueEnforcer.notNull (aResultCallback, "ResultCallback");
 
-    m_nExpectedResults = nObserverWithReturn;
+    m_nExpectedResultCount = nObserversWithReturn;
     m_aResultAggregator = aResultAggregator;
     m_aResultCallback = aResultCallback;
-    m_aCountDown = new CountDownLatch (m_nExpectedResults);
+    m_aCountDown = new CountDownLatch (m_nExpectedResultCount);
   }
 
   // Called from each observer upon completion

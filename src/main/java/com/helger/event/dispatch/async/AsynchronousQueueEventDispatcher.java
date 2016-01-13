@@ -62,14 +62,14 @@ public class AsynchronousQueueEventDispatcher extends AbstractEventDispatcher im
     final EffectiveEventObserverList aHandlingInfo = EffectiveEventObserverList.getListOfObserversThatCanHandleTheEvent (aEvent,
                                                                                                                          aObservers);
 
-    final int nHandlingObserverCountWithReturnValue = aHandlingInfo.getHandlingObserverCountWithReturnValue ();
     final Map <IEventObserver, EEventObserverHandlerType> aHandlingObservers = aHandlingInfo.getObservers ();
+    final int nHandlingObserverCountWithReturnValue = aHandlingInfo.getHandlingObserverCountWithReturnValue ();
 
     if (!aHandlingObservers.isEmpty ())
     {
       m_aLock.locked ( () -> {
         // At least one handler was found
-        AsynchronousEventResultCollector aLocalResultCallback = null;
+        AsynchronousEventResultCollector aLocalResultCollector = null;
         if (nHandlingObserverCountWithReturnValue > 0)
         {
           // If we have handling observers, we need an overall result callback!
@@ -77,10 +77,10 @@ public class AsynchronousQueueEventDispatcher extends AbstractEventDispatcher im
             throw new IllegalStateException ("Are you possibly using a unicast event manager and sending an event that has a return value?");
 
           // Create collector and start thread only if we expect a result
-          aLocalResultCallback = new AsynchronousEventResultCollector (nHandlingObserverCountWithReturnValue,
-                                                                       aEvent.getResultAggregator (),
-                                                                       aOverallResultCallback);
-          aLocalResultCallback.start ();
+          aLocalResultCollector = new AsynchronousEventResultCollector (nHandlingObserverCountWithReturnValue,
+                                                                        aEvent.getResultAggregator (),
+                                                                        aOverallResultCallback);
+          aLocalResultCollector.start ();
         }
 
         // Iterate all handling observers
@@ -88,7 +88,7 @@ public class AsynchronousQueueEventDispatcher extends AbstractEventDispatcher im
         {
           m_aQueueThread.addToQueue (aEvent,
                                      aEntry.getKey (),
-                                     aEntry.getValue ().hasReturnValue () ? aLocalResultCallback : null);
+                                     aEntry.getValue ().hasReturnValue () ? aLocalResultCollector : null);
         }
       });
     }
@@ -98,11 +98,13 @@ public class AsynchronousQueueEventDispatcher extends AbstractEventDispatcher im
   @Nonnull
   public EChange stop ()
   {
-    // Interrupt the dispatcher thread
-    if (m_aQueueThread.isInterrupted ())
-      return EChange.UNCHANGED;
-    m_aQueueThread.interrupt ();
-    return EChange.CHANGED;
+    return m_aLock.locked ( () -> {
+      // Interrupt the dispatcher thread
+      if (m_aQueueThread.isInterrupted ())
+        return EChange.UNCHANGED;
+      m_aQueueThread.interrupt ();
+      return EChange.CHANGED;
+    });
   }
 
   @Override

@@ -28,6 +28,7 @@ import com.helger.commons.callback.ICallback;
  * @author Philip Helger
  */
 @MustImplementEqualsAndHashcode
+@FunctionalInterface
 public interface IEventObservingExceptionCallback extends ICallback
 {
   /**

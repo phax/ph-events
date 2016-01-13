@@ -3,7 +3,6 @@ package com.helger.event.dispatch;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
 import com.helger.event.observer.exception.EventObservingExceptionCallback;
 import com.helger.event.observer.exception.IEventObservingExceptionCallback;
@@ -21,12 +20,6 @@ public abstract class AbstractEventDispatcher implements IEventDispatcher
   protected final IEventObservingExceptionCallback getExceptionCallback ()
   {
     return m_aExceptionCallback;
-  }
-
-  public EChange stop ()
-  {
-    // Nothing to do in here
-    return EChange.UNCHANGED;
   }
 
   @Override

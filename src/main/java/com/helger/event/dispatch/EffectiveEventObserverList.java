@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
+import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableObject;
 import com.helger.event.IEvent;
 import com.helger.event.observer.EEventObserverHandlerType;
@@ -16,42 +17,47 @@ import com.helger.event.observerqueue.IEventObserverQueue;
 
 public final class EffectiveEventObserverList
 {
+  private final Map <IEventObserver, EEventObserverHandlerType> m_aObservers;
   private final int m_nHandlingObserverCountWithReturnValue;
-  private final Map <IEventObserver, EEventObserverHandlerType> m_aHandlers;
 
-  EffectiveEventObserverList (@Nonnegative final int nHandlingObserverCountWithReturnValue,
-                              @Nonnull final Map <IEventObserver, EEventObserverHandlerType> aHandlers)
+  EffectiveEventObserverList (@Nonnull final Map <IEventObserver, EEventObserverHandlerType> aObservers,
+                              @Nonnegative final int nHandlingObserverCountWithReturnValue)
   {
+    ValueEnforcer.notNull (aObservers, "Observers");
+    ValueEnforcer.isGE0 (nHandlingObserverCountWithReturnValue, "HandlingObserverCountWithReturnValue");
+    ValueEnforcer.isTrue (aObservers.size () >= nHandlingObserverCountWithReturnValue, "Internal inconsistency");
+
+    m_aObservers = aObservers;
     m_nHandlingObserverCountWithReturnValue = nHandlingObserverCountWithReturnValue;
-    m_aHandlers = aHandlers;
-  }
-
-  public int getHandlingObserverCountWithReturnValue ()
-  {
-    return m_nHandlingObserverCountWithReturnValue;
   }
 
   @Nonnull
   @ReturnsMutableObject ("design")
   public Map <IEventObserver, EEventObserverHandlerType> getObservers ()
   {
-    return m_aHandlers;
+    return m_aObservers;
+  }
+
+  @Nonnegative
+  public int getHandlingObserverCountWithReturnValue ()
+  {
+    return m_nHandlingObserverCountWithReturnValue;
   }
 
   @Nonnull
   public static final EffectiveEventObserverList getListOfObserversThatCanHandleTheEvent (@Nonnull final IEvent aEvent,
-                                                                                          @Nonnull final IEventObserverQueue aObservers)
+                                                                                          @Nonnull final IEventObserverQueue aObserverQueue)
   {
     // find all handling observers
-    final Map <IEventObserver, EEventObserverHandlerType> aHandler = new LinkedHashMap <> ();
+    final Map <IEventObserver, EEventObserverHandlerType> aObservers = new LinkedHashMap <> ();
     final List <IEventObserver> aObserversToRemove = new ArrayList <> ();
     int nHandlingObserverCountWithReturnValue = 0;
-    for (final IEventObserver aObserver : aObservers.getAllObservers ())
+    for (final IEventObserver aObserver : aObserverQueue.getAllObservers ())
     {
       final EEventObserverHandlerType eHandleType = aObserver.canHandleEvent (aEvent);
       if (eHandleType.isHandling ())
       {
-        aHandler.put (aObserver, eHandleType);
+        aObservers.put (aObserver, eHandleType);
         if (eHandleType.hasReturnValue ())
           nHandlingObserverCountWithReturnValue++;
 
@@ -63,10 +69,13 @@ public final class EffectiveEventObserverList
 
     // remove all "only once" observers
     for (final IEventObserver aObserver : aObserversToRemove)
-      if (aObservers.removeObserver (aObserver).isUnchanged ())
-        throw new IllegalStateException ("Failed to remove only-omce observer " + aObserver + " from " + aObservers);
+      if (aObserverQueue.removeObserver (aObserver).isUnchanged ())
+        throw new IllegalStateException ("Failed to remove only-omce observer " +
+                                         aObserver +
+                                         " from " +
+                                         aObserverQueue);
 
     // return number of handling + handling observer map
-    return new EffectiveEventObserverList (nHandlingObserverCountWithReturnValue, aHandler);
+    return new EffectiveEventObserverList (aObservers, nHandlingObserverCountWithReturnValue);
   }
 }

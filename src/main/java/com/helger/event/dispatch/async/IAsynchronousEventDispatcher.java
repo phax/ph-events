@@ -29,6 +29,7 @@ import com.helger.event.observerqueue.IEventObserverQueue;
  *
  * @author Philip Helger
  */
+@FunctionalInterface
 public interface IAsynchronousEventDispatcher extends IEventDispatcher
 {
   /**
@@ -43,7 +44,7 @@ public interface IAsynchronousEventDispatcher extends IEventDispatcher
    *        The callback to be called once all results are present. Is
    *        <code>null</code> for unicast events.
    */
-  void dispatch (@Nonnull IEvent aEvent,
-                 @Nonnull IEventObserverQueue aObservers,
-                 @Nullable INonThrowingRunnableWithParameter <Object> aOverallResultCallback);
+  void dispatch (@Nonnull final IEvent aEvent,
+                 @Nonnull final IEventObserverQueue aObservers,
+                 @Nullable final INonThrowingRunnableWithParameter <Object> aOverallResultCallback);
 }
