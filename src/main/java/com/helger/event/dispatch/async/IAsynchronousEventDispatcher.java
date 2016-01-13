@@ -16,10 +16,10 @@
  */
 package com.helger.event.dispatch.async;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import java.util.function.Consumer;
 
-import com.helger.commons.callback.INonThrowingRunnableWithParameter;
+import javax.annotation.Nonnull;
+
 import com.helger.event.IEvent;
 import com.helger.event.dispatch.IEventDispatcher;
 import com.helger.event.observerqueue.IEventObserverQueue;
@@ -40,11 +40,12 @@ public interface IAsynchronousEventDispatcher extends IEventDispatcher
    * @param aObservers
    *        The list of available observers. They need to be queried whether
    *        they are interested in the event. May not be <code>null</code>.
-   * @param aOverallResultCallback
-   *        The callback to be called once all results are present. Is
-   *        <code>null</code> for unicast events.
+   * @param aOverallResultConsumer
+   *        The callback to be called once all results are present. May not be
+   *        <code>null</code>. Must be called even if all event handlers are
+   *        "void" handlers.
    */
   void dispatch (@Nonnull final IEvent aEvent,
                  @Nonnull final IEventObserverQueue aObservers,
-                 @Nullable final INonThrowingRunnableWithParameter <Object> aOverallResultCallback);
+                 @Nonnull final Consumer <Object> aOverallResultConsumer);
 }

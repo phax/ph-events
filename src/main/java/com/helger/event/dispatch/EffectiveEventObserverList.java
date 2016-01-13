@@ -52,8 +52,11 @@ public final class EffectiveEventObserverList
     final Map <IEventObserver, EEventObserverHandlerType> aObservers = new LinkedHashMap <> ();
     final List <IEventObserver> aObserversToRemove = new ArrayList <> ();
     int nHandlingObserverCountWithReturnValue = 0;
+
+    // For all
     for (final IEventObserver aObserver : aObserverQueue.getAllObservers ())
     {
+      // Find the one matching our event type
       final EEventObserverHandlerType eHandleType = aObserver.canHandleEvent (aEvent);
       if (eHandleType.isHandling ())
       {

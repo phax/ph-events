@@ -23,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -37,7 +38,6 @@ import com.helger.event.BaseEvent;
 import com.helger.event.EventTypeRegistry;
 import com.helger.event.IEvent;
 import com.helger.event.IEventType;
-import com.helger.event.mgr.EventManager;
 import com.helger.event.observer.AbstractEventObserver;
 
 public final class AsyncFuncTest
@@ -58,7 +58,7 @@ public final class AsyncFuncTest
         assertEquals (EV_TYPE, aEvent.getEventType ());
       }
     });
-    mgr.triggerAsynchronous (new BaseEvent (EV_TYPE));
+    mgr.triggerAsynchronous (new BaseEvent (EV_TYPE), c -> {});
   }
 
   @Test
@@ -77,8 +77,7 @@ public final class AsyncFuncTest
         aCountDown.countDown ();
       }
     });
-    final INonThrowingRunnableWithParameter <Object> aOverallCB = currentObject -> s_aLogger.info ("Got: " +
-                                                                                                   currentObject);
+    final Consumer <Object> aOverallCB = currentObject -> s_aLogger.info ("Got: " + currentObject);
     mgr.triggerAsynchronous (new BaseEvent (EV_TYPE), aOverallCB);
     aCountDown.await ();
 
@@ -121,9 +120,9 @@ public final class AsyncFuncTest
         }
       });
 
-    final INonThrowingRunnableWithParameter <Object> aOverallCB = currentObject -> s_aLogger.info ("Got: " +
-                                                                                                   ((List <?>) currentObject).size () +
-                                                                                                   " results");
+    final Consumer <Object> aOverallCB = currentObject -> s_aLogger.info ("Got: " +
+                                                                          ((List <?>) currentObject).size () +
+                                                                          " results");
     mgr.triggerAsynchronous (new BaseEvent (EV_TYPE), aOverallCB);
     aCountDown.await ();
   }
@@ -142,7 +141,7 @@ public final class AsyncFuncTest
       }
     });
     for (int i = 0; i < 100; ++i)
-      mgr.triggerAsynchronous (new BaseEvent (EV_TYPE));
+      mgr.triggerAsynchronous (new BaseEvent (EV_TYPE), c -> {});
   }
 
   private static class MockAsyncObserver extends AbstractEventObserver

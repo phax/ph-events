@@ -43,7 +43,7 @@ import com.helger.event.observer.IEventObserver;
 public final class EventObserverQueueWeakSet implements IEventObserverQueue
 {
   private final SimpleReadWriteLock m_aRWLock = new SimpleReadWriteLock ();
-  private final Map <IEventObserver, Boolean> m_aWeakMap = new WeakHashMap <IEventObserver, Boolean> ();
+  private final Map <IEventObserver, Boolean> m_aWeakMap = new WeakHashMap <> ();
 
   public EventObserverQueueWeakSet ()
   {}

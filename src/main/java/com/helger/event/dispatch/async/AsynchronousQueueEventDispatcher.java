@@ -17,12 +17,12 @@
 package com.helger.event.dispatch.async;
 
 import java.util.Map;
+import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.commons.concurrent.SimpleLock;
 import com.helger.commons.state.EChange;
 import com.helger.commons.string.ToStringGenerator;
@@ -53,10 +53,11 @@ public class AsynchronousQueueEventDispatcher extends AbstractEventDispatcher im
 
   public void dispatch (@Nonnull final IEvent aEvent,
                         @Nonnull final IEventObserverQueue aObservers,
-                        final INonThrowingRunnableWithParameter <Object> aOverallResultCallback)
+                        @Nullable final Consumer <Object> aOverallResultConsumer)
   {
     ValueEnforcer.notNull (aEvent, "Event");
     ValueEnforcer.notNull (aObservers, "Observers");
+    ValueEnforcer.notNull (aOverallResultConsumer, "OverallResultConsumer");
 
     // find all observers that can handle the passed event
     final EffectiveEventObserverList aHandlingInfo = EffectiveEventObserverList.getListOfObserversThatCanHandleTheEvent (aEvent,
@@ -72,14 +73,10 @@ public class AsynchronousQueueEventDispatcher extends AbstractEventDispatcher im
         AsynchronousEventResultCollector aLocalResultCollector = null;
         if (nHandlingObserverCountWithReturnValue > 0)
         {
-          // If we have handling observers, we need an overall result callback!
-          if (aOverallResultCallback == null)
-            throw new IllegalStateException ("Are you possibly using a unicast event manager and sending an event that has a return value?");
-
           // Create collector and start thread only if we expect a result
           aLocalResultCollector = new AsynchronousEventResultCollector (nHandlingObserverCountWithReturnValue,
                                                                         aEvent.getResultAggregator (),
-                                                                        aOverallResultCallback);
+                                                                        aOverallResultConsumer);
           aLocalResultCollector.start ();
         }
 

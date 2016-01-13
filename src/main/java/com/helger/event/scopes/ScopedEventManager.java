@@ -18,6 +18,7 @@ package com.helger.event.scopes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -26,7 +27,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.commons.scope.IScope;
 import com.helger.commons.scope.mgr.EScope;
 import com.helger.commons.state.EChange;
@@ -128,8 +128,11 @@ public final class ScopedEventManager
    *        The event on which observers should be notified.
    * @return The aggregated result object.
    */
+  @Nullable
   public static Object triggerSynchronous (@Nonnull final IEvent aEvent)
   {
+    ValueEnforcer.notNull (aEvent, "Event");
+
     final List <Object> aRetValues = new ArrayList <> ();
     // for all scopes
     for (final EScope eCurrentScope : EScope.values ())
@@ -159,8 +162,11 @@ public final class ScopedEventManager
    *        Optional result callback
    */
   public static void triggerAsynchronous (@Nonnull final IEvent aEvent,
-                                          @Nullable final INonThrowingRunnableWithParameter <Object> aResultCallback)
+                                          @Nonnull final Consumer <Object> aResultCallback)
   {
+    ValueEnforcer.notNull (aEvent, "Event");
+    ValueEnforcer.notNull (aResultCallback, "ResultCallback");
+
     // for all scopes
     for (final EScope eCurrentScope : EScope.values ())
     {

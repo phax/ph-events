@@ -16,11 +16,12 @@
  */
 package com.helger.event.mgr;
 
+import java.util.function.Consumer;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.commons.state.EChange;
 import com.helger.event.IEvent;
 import com.helger.event.dispatch.async.AsynchronousQueueEventDispatcher;
@@ -115,14 +116,13 @@ public class EventManager implements IEventManager
     return ret;
   }
 
-  public void triggerAsynchronous (@Nonnull final IEvent aEvent,
-                                   @Nullable final INonThrowingRunnableWithParameter <Object> aResultCallback)
+  public void triggerAsynchronous (@Nonnull final IEvent aEvent, @Nullable final Consumer <Object> aResultConsumer)
   {
     final IEventObserverQueue aObserverQueue = getObserverQueue ();
     if (!aObserverQueue.isEmpty ())
     {
       aObserverQueue.beforeDispatch ();
-      getAsyncEventDispatcher ().dispatch (aEvent, aObserverQueue, aResultCallback);
+      getAsyncEventDispatcher ().dispatch (aEvent, aObserverQueue, aResultConsumer);
       aObserverQueue.afterDispatch ();
     }
   }

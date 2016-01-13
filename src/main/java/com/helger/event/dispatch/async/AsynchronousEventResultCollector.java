@@ -19,6 +19,7 @@ package com.helger.event.dispatch.async;
 import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.CountDownLatch;
+import java.util.function.Consumer;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -33,20 +34,20 @@ public final class AsynchronousEventResultCollector extends Thread implements IN
   private final List <Object> m_aResults = new Vector <Object> ();
   private final int m_nExpectedResultCount;
   private final IAggregator <Object, ?> m_aResultAggregator;
-  private final INonThrowingRunnableWithParameter <Object> m_aResultCallback;
+  private final Consumer <Object> m_aResultConsumer;
 
   public AsynchronousEventResultCollector (@Nonnegative final int nObserversWithReturn,
                                            @Nonnull final IAggregator <Object, ?> aResultAggregator,
-                                           @Nonnull final INonThrowingRunnableWithParameter <Object> aResultCallback)
+                                           @Nonnull final Consumer <Object> aResultConsumer)
   {
     super ("event-result-collector-thread");
     ValueEnforcer.isGT0 (nObserversWithReturn, "ObserversWithReturn");
     ValueEnforcer.notNull (aResultAggregator, "ResultAggregator");
-    ValueEnforcer.notNull (aResultCallback, "ResultCallback");
+    ValueEnforcer.notNull (aResultConsumer, "ResultCallback");
 
     m_nExpectedResultCount = nObserversWithReturn;
     m_aResultAggregator = aResultAggregator;
-    m_aResultCallback = aResultCallback;
+    m_aResultConsumer = aResultConsumer;
     m_aCountDown = new CountDownLatch (m_nExpectedResultCount);
   }
 
@@ -68,8 +69,8 @@ public final class AsynchronousEventResultCollector extends Thread implements IN
       // We have all - aggregate
       final Object aAggregatedResults = m_aResultAggregator.aggregate (m_aResults);
 
-      // Call callback
-      m_aResultCallback.run (aAggregatedResults);
+      // Call result consumer
+      m_aResultConsumer.accept (aAggregatedResults);
     }
     catch (final InterruptedException ex)
     {

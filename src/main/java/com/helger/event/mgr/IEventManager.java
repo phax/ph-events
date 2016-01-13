@@ -16,10 +16,11 @@
  */
 package com.helger.event.mgr;
 
+import java.util.function.Consumer;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.commons.state.EChange;
 import com.helger.commons.state.IStoppable;
 import com.helger.event.IEvent;
@@ -57,11 +58,5 @@ public interface IEventManager extends IStoppable
   @Nullable
   Object triggerSynchronous (@Nonnull IEvent aEvent);
 
-  default void triggerAsynchronous (@Nonnull final IEvent aEvent)
-  {
-    triggerAsynchronous (aEvent, null);
-  }
-
-  void triggerAsynchronous (@Nonnull IEvent aEvent,
-                            @Nullable INonThrowingRunnableWithParameter <Object> aResultCallback);
+  void triggerAsynchronous (@Nonnull IEvent aEvent, @Nonnull Consumer <Object> aResultConsumer);
 }
