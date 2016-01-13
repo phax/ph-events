@@ -55,8 +55,18 @@ public interface IEventManager extends IStoppable
   @Nonnull
   EChange unregisterObserver (@Nonnull IEventObserver aObserver);
 
+  /**
+   * Trigger the passed event synchronously.
+   *
+   * @param aEvent
+   *        The event to be triggered. May not be <code>null</code>.
+   * @return <code>null</code> in case no matching observer is registered,
+   *         otherwise the result of
+   *         <code>aEvent.getResultAggregator ().aggregate (...)</code> with the
+   *         results of all matching observers.
+   */
   @Nullable
   Object triggerSynchronous (@Nonnull IEvent aEvent);
 
-  void triggerAsynchronous (@Nonnull IEvent aEvent, @Nonnull Consumer <Object> aResultConsumer);
+  void triggerAsynchronous (@Nonnull IEvent aEvent, @Nonnull Consumer <Object> aOverallResultConsumer);
 }

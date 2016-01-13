@@ -40,8 +40,5 @@ public interface IEvent extends Serializable
    *         "use first result".
    */
   @Nonnull
-  default IAggregator <Object, ?> getResultAggregator ()
-  {
-    return IAggregator.createUseFirst ();
-  }
+  IAggregator <Object, ?> getResultAggregator ();
 }

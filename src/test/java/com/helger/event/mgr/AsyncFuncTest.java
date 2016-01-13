@@ -23,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
@@ -32,8 +33,9 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.callback.INonThrowingRunnableWithParameter;
+import com.helger.commons.aggregate.IAggregator;
 import com.helger.commons.exception.mock.MockRuntimeException;
+import com.helger.commons.thread.ThreadHelper;
 import com.helger.event.BaseEvent;
 import com.helger.event.EventTypeRegistry;
 import com.helger.event.IEvent;
@@ -42,6 +44,35 @@ import com.helger.event.observer.AbstractEventObserver;
 
 public final class AsyncFuncTest
 {
+  private static class MockObserverMultiple extends AbstractEventObserver
+  {
+    private final String m_sText;
+
+    public MockObserverMultiple (final String sText)
+    {
+      super (true, EV_TYPE);
+      m_sText = sText;
+    }
+
+    public void onEvent (@Nonnull final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
+    {
+      aResultCallback.accept (m_sText);
+    }
+  }
+
+  private static class MockObserverOnlyOnce extends MockObserverMultiple
+  {
+    public MockObserverOnlyOnce (final String sText)
+    {
+      super (sText);
+    }
+
+    public boolean isOnlyOnce ()
+    {
+      return true;
+    }
+  }
+
   private static final IEventType EV_TYPE = EventTypeRegistry.createEventType (AsyncFuncTest.class.getName ());
   private static final Logger s_aLogger = LoggerFactory.getLogger (AsyncFuncTest.class);
 
@@ -51,8 +82,7 @@ public final class AsyncFuncTest
     final EventManager mgr = new EventManager ();
     mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
     {
-      public void onEvent (final IEvent aEvent,
-                           @Nullable final INonThrowingRunnableWithParameter <Object> aResultCallback)
+      public void onEvent (final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
       {
         assertNull (aResultCallback);
         assertEquals (EV_TYPE, aEvent.getEventType ());
@@ -68,12 +98,11 @@ public final class AsyncFuncTest
     final EventManager mgr = new EventManager ();
     mgr.registerObserver (new AbstractEventObserver (true, EV_TYPE)
     {
-      public void onEvent (final IEvent aEvent,
-                           @Nullable final INonThrowingRunnableWithParameter <Object> aResultCallback)
+      public void onEvent (final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
       {
         assertNotNull (aResultCallback);
         assertEquals (EV_TYPE, aEvent.getEventType ());
-        aResultCallback.run ("onEvent called!");
+        aResultCallback.accept ("onEvent called!");
         aCountDown.countDown ();
       }
     });
@@ -85,8 +114,7 @@ public final class AsyncFuncTest
     final CountDownLatch aCountDown2 = new CountDownLatch (1);
     mgr.registerObserver (new AbstractEventObserver (true, EV_TYPE)
     {
-      public void onEvent (@Nonnull final IEvent aEvent,
-                           @Nullable final INonThrowingRunnableWithParameter <Object> aResultCallback)
+      public void onEvent (@Nonnull final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
       {
         aCountDown2.countDown ();
         throw new MockRuntimeException ();
@@ -105,8 +133,7 @@ public final class AsyncFuncTest
     for (int i = 0; i < EXECUTIONS; ++i)
       mgr.registerObserver (new AbstractEventObserver (true, EV_TYPE)
       {
-        public void onEvent (@Nonnull final IEvent aEvent,
-                             @Nullable final INonThrowingRunnableWithParameter <Object> aResultCallback)
+        public void onEvent (@Nonnull final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
         {
           // Ensure we're called for the correct event type
           assertNotNull (aEvent);
@@ -115,7 +142,7 @@ public final class AsyncFuncTest
           // Check that the callback for the result is present
           assertNotNull (aResultCallback);
 
-          aResultCallback.run ("onEvent1 called!");
+          aResultCallback.accept ("onEvent1 called!");
           aCountDown.countDown ();
         }
       });
@@ -123,73 +150,48 @@ public final class AsyncFuncTest
     final Consumer <Object> aOverallCB = currentObject -> s_aLogger.info ("Got: " +
                                                                           ((List <?>) currentObject).size () +
                                                                           " results");
-    mgr.triggerAsynchronous (new BaseEvent (EV_TYPE), aOverallCB);
+    mgr.triggerAsynchronous (new BaseEvent (EV_TYPE, IAggregator.createUseAll ()), aOverallCB);
     aCountDown.await ();
   }
 
   @Test
-  public void testUnidirectionalUnicastEventManagerMultiple ()
+  public void testAsyncanagerMultipleObservers ()
   {
     final EventManager mgr = new EventManager ();
+    final AtomicInteger aInvocationCount = new AtomicInteger (0);
     mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
     {
-      public void onEvent (@Nonnull final IEvent aEvent,
-                           @Nullable final INonThrowingRunnableWithParameter <Object> aResultCallback)
+      public void onEvent (@Nonnull final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
       {
         assertNull (aResultCallback);
         assertEquals (EV_TYPE, aEvent.getEventType ());
+        aInvocationCount.incrementAndGet ();
       }
     });
-    for (int i = 0; i < 100; ++i)
+    final int nMax = 200;
+    for (int i = 0; i < nMax; ++i)
       mgr.triggerAsynchronous (new BaseEvent (EV_TYPE), c -> {});
-  }
-
-  private static class MockAsyncObserver extends AbstractEventObserver
-  {
-    private final String m_sText;
-
-    public MockAsyncObserver (final String sText)
-    {
-      super (true, EV_TYPE);
-      m_sText = sText;
-    }
-
-    public void onEvent (@Nonnull final IEvent aEvent,
-                         @Nullable final INonThrowingRunnableWithParameter <Object> aResultCallback)
-    {
-      aResultCallback.run (m_sText);
-    }
-  }
-
-  private static class MockAsyncObserverOnlyOnce extends MockAsyncObserver
-  {
-    public MockAsyncObserverOnlyOnce (final String sText)
-    {
-      super (sText);
-    }
-
-    public boolean isOnlyOnce ()
-    {
-      return true;
-    }
+    ThreadHelper.sleep (100);
+    assertEquals ("You may need to increase the sleep length", nMax, aInvocationCount.get ());
   }
 
   @Test
-  public void testBidirectionalMulticastEventManagerOnlyOnce ()
+  public void testAsyncOnlyOnce ()
   {
     final EventManager mgr = new EventManager ();
-    mgr.registerObserver (new MockAsyncObserver ("Hallo"));
-    mgr.registerObserver (new MockAsyncObserverOnlyOnce ("Welt"));
+    mgr.registerObserver (new MockObserverMultiple ("Hallo"));
+    mgr.registerObserver (new MockObserverOnlyOnce ("Welt"));
+
     // trigger for the first time
-    mgr.triggerAsynchronous (new BaseEvent (EV_TYPE), currentObject -> {
+    mgr.triggerAsynchronous (new BaseEvent (EV_TYPE, IAggregator.createUseAll ()), currentObject -> {
       assertTrue (currentObject instanceof List <?>);
       // -> expect 2 results
       assertEquals (2, ((List <?>) currentObject).size ());
       s_aLogger.info ("1. Got: " + currentObject);
     });
 
-    // trigger for the second time
-    mgr.triggerAsynchronous (new BaseEvent (EV_TYPE), currentObject -> {
+    // trigger for the second time - the OnlyOnce should not be contained
+    mgr.triggerAsynchronous (new BaseEvent (EV_TYPE, IAggregator.createUseAll ()), currentObject -> {
       assertTrue (currentObject instanceof List <?>);
       // -> expect 1 result
       assertEquals (1, ((List <?>) currentObject).size ());
@@ -197,7 +199,7 @@ public final class AsyncFuncTest
     });
 
     // trigger for the third time
-    mgr.triggerAsynchronous (new BaseEvent (EV_TYPE), currentObject -> {
+    mgr.triggerAsynchronous (new BaseEvent (EV_TYPE, IAggregator.createUseAll ()), currentObject -> {
       assertTrue (currentObject instanceof List <?>);
       // -> expect 1 result
       assertEquals (1, ((List <?>) currentObject).size ());

@@ -31,6 +31,11 @@ public final class EffectiveEventObserverList
     m_nHandlingObserverCountWithReturnValue = nHandlingObserverCountWithReturnValue;
   }
 
+  public boolean hasNoObservers ()
+  {
+    return m_aObservers.isEmpty ();
+  }
+
   @Nonnull
   @ReturnsMutableObject ("design")
   public Map <IEventObserver, EEventObserverHandlerType> getObservers ()

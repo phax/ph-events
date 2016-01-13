@@ -25,6 +25,7 @@ import org.junit.rules.TestRule;
 
 import com.helger.commons.scope.mgr.EScope;
 import com.helger.commons.scope.mock.ScopeTestRule;
+import com.helger.commons.thread.ThreadHelper;
 import com.helger.event.BaseEvent;
 
 /**
@@ -38,7 +39,7 @@ public final class ScopedEventManagerTest
   public final TestRule m_aScopeRule = new ScopeTestRule ();
 
   @Test
-  public void testScoping ()
+  public void testSendSync ()
   {
     // prepare processing
     final MockCountingObserver aGlobal = new MockCountingObserver ();
@@ -56,6 +57,43 @@ public final class ScopedEventManagerTest
 
       // process
       ScopedEventManager.triggerSynchronous (new BaseEvent (MockCountingObserver.TOPIC));
+
+      // check postconditions
+      assertEquals (1, aGlobal.getInvocationCount ());
+      assertEquals (1, aApp.getInvocationCount ());
+      assertEquals (1, aRequest.getInvocationCount ());
+    }
+    finally
+    {
+      // unregister
+      assertTrue (ScopedEventManager.unregisterObserver (EScope.GLOBAL, aGlobal).isChanged ());
+      assertTrue (ScopedEventManager.unregisterObserver (EScope.APPLICATION, aApp).isChanged ());
+      assertTrue (ScopedEventManager.unregisterObserver (EScope.REQUEST, aRequest).isChanged ());
+    }
+  }
+
+  @Test
+  public void testSendAsync ()
+  {
+    // prepare processing
+    final MockCountingObserver aGlobal = new MockCountingObserver ();
+    final MockCountingObserver aApp = new MockCountingObserver ();
+    final MockCountingObserver aRequest = new MockCountingObserver ();
+    assertTrue (ScopedEventManager.registerObserver (EScope.GLOBAL, aGlobal).isChanged ());
+    assertTrue (ScopedEventManager.registerObserver (EScope.APPLICATION, aApp).isChanged ());
+    assertTrue (ScopedEventManager.registerObserver (EScope.REQUEST, aRequest).isChanged ());
+    try
+    {
+      // check preconditions
+      assertEquals (0, aGlobal.getInvocationCount ());
+      assertEquals (0, aApp.getInvocationCount ());
+      assertEquals (0, aRequest.getInvocationCount ());
+
+      // process
+      ScopedEventManager.triggerAsynchronous (new BaseEvent (MockCountingObserver.TOPIC), c -> {});
+
+      // Wait until processing finished
+      ThreadHelper.sleep (100);
 
       // check postconditions
       assertEquals (1, aGlobal.getInvocationCount ());

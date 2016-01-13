@@ -18,9 +18,10 @@ package com.helger.event.scopes;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.function.Consumer;
+
 import javax.annotation.Nullable;
 
-import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.event.EventTypeRegistry;
 import com.helger.event.IEvent;
 import com.helger.event.IEventType;
@@ -42,7 +43,7 @@ public final class MockCountingObserver extends AbstractEventObserver
     super (false, TOPIC);
   }
 
-  public void onEvent (final IEvent aEvent, @Nullable final INonThrowingRunnableWithParameter <Object> aResultCallback)
+  public void onEvent (final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
   {
     assertEquals (aEvent.getEventType (), TOPIC);
     ++m_nInvokeCount;

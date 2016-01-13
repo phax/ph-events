@@ -26,33 +26,31 @@ import javax.annotation.Nonnull;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.aggregate.IAggregator;
-import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 
-public final class AsynchronousEventResultCollector extends Thread implements INonThrowingRunnableWithParameter <Object>
+public final class AsynchronousEventResultCollectorThread extends Thread implements Consumer <Object>
 {
+
   private final CountDownLatch m_aCountDown;
-  private final List <Object> m_aResults = new Vector <Object> ();
-  private final int m_nExpectedResultCount;
   private final IAggregator <Object, ?> m_aResultAggregator;
   private final Consumer <Object> m_aResultConsumer;
+  private final List <Object> m_aResults = new Vector <> ();
 
-  public AsynchronousEventResultCollector (@Nonnegative final int nObserversWithReturn,
-                                           @Nonnull final IAggregator <Object, ?> aResultAggregator,
-                                           @Nonnull final Consumer <Object> aResultConsumer)
+  public AsynchronousEventResultCollectorThread (@Nonnegative final int nObserversWithReturn,
+                                                 @Nonnull final IAggregator <Object, ?> aResultAggregator,
+                                                 @Nonnull final Consumer <Object> aResultConsumer)
   {
     super ("event-result-collector-thread");
     ValueEnforcer.isGT0 (nObserversWithReturn, "ObserversWithReturn");
     ValueEnforcer.notNull (aResultAggregator, "ResultAggregator");
     ValueEnforcer.notNull (aResultConsumer, "ResultCallback");
 
-    m_nExpectedResultCount = nObserversWithReturn;
+    m_aCountDown = new CountDownLatch (nObserversWithReturn);
     m_aResultAggregator = aResultAggregator;
     m_aResultConsumer = aResultConsumer;
-    m_aCountDown = new CountDownLatch (m_nExpectedResultCount);
   }
 
   // Called from each observer upon completion
-  public void run (final Object aObserverResult)
+  public void accept (final Object aObserverResult)
   {
     m_aResults.add (aObserverResult);
     m_aCountDown.countDown ();

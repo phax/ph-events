@@ -17,11 +17,11 @@
 package com.helger.event.observer;
 
 import java.io.Serializable;
+import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.event.IEvent;
 
 /**
@@ -60,12 +60,11 @@ public interface IEventObserver extends Serializable
    *
    * @param aEvent
    *        The event to be handled. May not be <code>null</code>.
-   * @param aResultCallback
+   * @param aResultConsumer
    *        The callback to which the result needs to be delivered. May be
    *        <code>null</code> if the dispatcher is unidirectional.
    * @throws Exception
    *         on error
    */
-  void onEvent (@Nonnull IEvent aEvent,
-                @Nullable INonThrowingRunnableWithParameter <Object> aResultCallback) throws Exception;
+  void onEvent (@Nonnull IEvent aEvent, @Nullable Consumer <Object> aResultConsumer) throws Exception;
 }

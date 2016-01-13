@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.commons.state.ESuccess;
 import com.helger.event.IEvent;
 import com.helger.event.observer.IEventObserver;
 import com.helger.event.observer.exception.EventObservingExceptionWrapper;
@@ -32,15 +33,15 @@ import com.helger.event.observer.exception.IEventObservingExceptionCallback;
 
 final class AsyncQueueDispatcherThread extends Thread
 {
-  private static final class Triple
+  private static final class DispatchItem
   {
     private final IEvent m_aEvent;
     private final IEventObserver m_aEventObserver;
-    private final AsynchronousEventResultCollector m_aCollector;
+    private final AsynchronousEventResultCollectorThread m_aCollector;
 
-    public Triple (@Nonnull final IEvent aEvent,
-                   @Nonnull final IEventObserver aEventObserver,
-                   @Nullable final AsynchronousEventResultCollector aCollector)
+    public DispatchItem (@Nonnull final IEvent aEvent,
+                         @Nonnull final IEventObserver aEventObserver,
+                         @Nullable final AsynchronousEventResultCollectorThread aCollector)
     {
       m_aEvent = aEvent;
       m_aEventObserver = aEventObserver;
@@ -49,26 +50,29 @@ final class AsyncQueueDispatcherThread extends Thread
   }
 
   private static final Logger s_aLogger = LoggerFactory.getLogger (AsyncQueueDispatcherThread.class);
-  private final BlockingQueue <Triple> m_aQueue = new LinkedBlockingQueue <> ();
-  private final IEventObservingExceptionCallback m_aExceptionHandler;
+  private final BlockingQueue <DispatchItem> m_aQueue = new LinkedBlockingQueue <> ();
+  private final IEventObservingExceptionCallback m_aExceptionCallback;
 
-  public AsyncQueueDispatcherThread (@Nonnull final IEventObservingExceptionCallback aExceptionHandler)
+  public AsyncQueueDispatcherThread (@Nonnull final IEventObservingExceptionCallback aExceptionCallback)
   {
     super ("async-queue-dispatcher-thread");
-    m_aExceptionHandler = aExceptionHandler;
+    m_aExceptionCallback = aExceptionCallback;
   }
 
-  public void addToQueue (@Nonnull final IEvent aEvent,
-                          @Nonnull final IEventObserver aObserver,
-                          @Nullable final AsynchronousEventResultCollector aResultCollector)
+  @Nonnull
+  public ESuccess addToQueue (@Nonnull final IEvent aEvent,
+                              @Nonnull final IEventObserver aObserver,
+                              @Nullable final AsynchronousEventResultCollectorThread aResultCollector)
   {
     try
     {
-      m_aQueue.put (new Triple (aEvent, aObserver, aResultCollector));
+      m_aQueue.put (new DispatchItem (aEvent, aObserver, aResultCollector));
+      return ESuccess.SUCCESS;
     }
     catch (final InterruptedException ex)
     {
       s_aLogger.error ("Failed to add event to queue", ex);
+      return ESuccess.FAILURE;
     }
   }
 
@@ -80,10 +84,10 @@ final class AsyncQueueDispatcherThread extends Thread
       while (!isInterrupted ())
       {
         // get current element
-        final Triple aElement = m_aQueue.take ();
-        final IEvent aEvent = aElement.m_aEvent;
-        final IEventObserver aObserver = aElement.m_aEventObserver;
-        final AsynchronousEventResultCollector aCollector = aElement.m_aCollector;
+        final DispatchItem aItem = m_aQueue.take ();
+        final IEvent aEvent = aItem.m_aEvent;
+        final IEventObserver aObserver = aItem.m_aEventObserver;
+        final AsynchronousEventResultCollectorThread aCollector = aItem.m_aCollector;
 
         try
         {
@@ -92,14 +96,14 @@ final class AsyncQueueDispatcherThread extends Thread
         }
         catch (final Throwable t)
         {
-          m_aExceptionHandler.handleObservingException (t);
-          s_aLogger.error ("Failed to notify " + aObserver + " on " + aEvent, t);
+          m_aExceptionCallback.handleObservingException (t);
+          s_aLogger.error ("Failed to asynchronously notify " + aObserver + " on " + aEvent, t);
 
           // Notify on exception
           if (aCollector != null)
           {
-            // Put exception in result list
-            aCollector.run (new EventObservingExceptionWrapper (aObserver, aEvent, t));
+            // Put exception in result consumer
+            aCollector.accept (new EventObservingExceptionWrapper (aObserver, aEvent, t));
           }
         }
       }

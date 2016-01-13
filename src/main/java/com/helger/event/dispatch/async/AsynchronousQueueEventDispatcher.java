@@ -44,9 +44,9 @@ public class AsynchronousQueueEventDispatcher extends AbstractEventDispatcher im
   private final SimpleLock m_aLock = new SimpleLock ();
   private final AsyncQueueDispatcherThread m_aQueueThread;
 
-  public AsynchronousQueueEventDispatcher (@Nullable final IEventObservingExceptionCallback aExceptionHandler)
+  public AsynchronousQueueEventDispatcher (@Nullable final IEventObservingExceptionCallback aExceptionCallback)
   {
-    super (aExceptionHandler);
+    super (aExceptionCallback);
     m_aQueueThread = new AsyncQueueDispatcherThread (getExceptionCallback ());
     m_aQueueThread.start ();
   }
@@ -62,33 +62,32 @@ public class AsynchronousQueueEventDispatcher extends AbstractEventDispatcher im
     // find all observers that can handle the passed event
     final EffectiveEventObserverList aHandlingInfo = EffectiveEventObserverList.getListOfObserversThatCanHandleTheEvent (aEvent,
                                                                                                                          aObservers);
+    if (aHandlingInfo.hasNoObservers ())
+      return;
 
     final Map <IEventObserver, EEventObserverHandlerType> aHandlingObservers = aHandlingInfo.getObservers ();
     final int nHandlingObserverCountWithReturnValue = aHandlingInfo.getHandlingObserverCountWithReturnValue ();
 
-    if (!aHandlingObservers.isEmpty ())
-    {
-      m_aLock.locked ( () -> {
-        // At least one handler was found
-        AsynchronousEventResultCollector aLocalResultCollector = null;
-        if (nHandlingObserverCountWithReturnValue > 0)
-        {
-          // Create collector and start thread only if we expect a result
-          aLocalResultCollector = new AsynchronousEventResultCollector (nHandlingObserverCountWithReturnValue,
-                                                                        aEvent.getResultAggregator (),
-                                                                        aOverallResultConsumer);
-          aLocalResultCollector.start ();
-        }
+    m_aLock.locked ( () -> {
+      // At least one handler was found
+      AsynchronousEventResultCollectorThread aLocalResultCollector = null;
+      if (nHandlingObserverCountWithReturnValue > 0)
+      {
+        // Create collector and start thread only if we expect a result
+        aLocalResultCollector = new AsynchronousEventResultCollectorThread (nHandlingObserverCountWithReturnValue,
+                                                                            aEvent.getResultAggregator (),
+                                                                            aOverallResultConsumer);
+        aLocalResultCollector.start ();
+      }
 
-        // Iterate all handling observers
-        for (final Map.Entry <IEventObserver, EEventObserverHandlerType> aEntry : aHandlingObservers.entrySet ())
-        {
-          m_aQueueThread.addToQueue (aEvent,
-                                     aEntry.getKey (),
-                                     aEntry.getValue ().hasReturnValue () ? aLocalResultCollector : null);
-        }
-      });
-    }
+      // Iterate all handling observers
+      for (final Map.Entry <IEventObserver, EEventObserverHandlerType> aEntry : aHandlingObservers.entrySet ())
+      {
+        m_aQueueThread.addToQueue (aEvent,
+                                   aEntry.getKey (),
+                                   aEntry.getValue ().hasReturnValue () ? aLocalResultCollector : null);
+      }
+    });
   }
 
   @Override

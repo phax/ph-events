@@ -83,13 +83,13 @@ public class EventManager implements IEventManager
   }
 
   @Nonnull
-  public final EChange registerObserver (final IEventObserver aObserver)
+  public final EChange registerObserver (@Nonnull final IEventObserver aObserver)
   {
     return m_aObserverQueue.addObserver (aObserver);
   }
 
   @Nonnull
-  public final EChange unregisterObserver (final IEventObserver aObserver)
+  public final EChange unregisterObserver (@Nonnull final IEventObserver aObserver)
   {
     return m_aObserverQueue.removeObserver (aObserver);
   }
@@ -105,10 +105,12 @@ public class EventManager implements IEventManager
   @Nullable
   public Object triggerSynchronous (@Nonnull final IEvent aEvent)
   {
+    // Default return value is null
     Object ret = null;
     final IEventObserverQueue aObserverQueue = getObserverQueue ();
     if (!aObserverQueue.isEmpty ())
     {
+      // At least one observer is present
       aObserverQueue.beforeDispatch ();
       ret = getSyncEventDispatcher ().dispatch (aEvent, aObserverQueue);
       aObserverQueue.afterDispatch ();
@@ -116,13 +118,15 @@ public class EventManager implements IEventManager
     return ret;
   }
 
-  public void triggerAsynchronous (@Nonnull final IEvent aEvent, @Nullable final Consumer <Object> aResultConsumer)
+  public void triggerAsynchronous (@Nonnull final IEvent aEvent,
+                                   @Nonnull final Consumer <Object> aOverallResultConsumer)
   {
     final IEventObserverQueue aObserverQueue = getObserverQueue ();
     if (!aObserverQueue.isEmpty ())
     {
+      // At least one observer is present
       aObserverQueue.beforeDispatch ();
-      getAsyncEventDispatcher ().dispatch (aEvent, aObserverQueue, aResultConsumer);
+      getAsyncEventDispatcher ().dispatch (aEvent, aObserverQueue, aOverallResultConsumer);
       aObserverQueue.afterDispatch ();
     }
   }

@@ -36,11 +36,26 @@ public class BaseEvent implements IEvent
   private final IEventType m_aEventType;
   private final IAggregator <Object, ?> m_aResultAggregator;
 
+  /**
+   * Constructor using only the first provided result.
+   *
+   * @param aEventType
+   *        Event type to use.
+   */
   public BaseEvent (@Nonnull final IEventType aEventType)
   {
     this (aEventType, IAggregator.createUseFirst ());
   }
 
+  /**
+   * Constructor
+   *
+   * @param aEventType
+   *        Event type to use. May not be <code>null</code>.
+   * @param aResultAggregator
+   *        Result aggregator. Aggregates the results of all observers. May not
+   *        be <code>null</code>.
+   */
   public BaseEvent (@Nonnull final IEventType aEventType, @Nonnull final IAggregator <Object, ?> aResultAggregator)
   {
     m_aEventType = ValueEnforcer.notNull (aEventType, "EventType");

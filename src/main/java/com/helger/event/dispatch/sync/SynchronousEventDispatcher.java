@@ -19,6 +19,7 @@ package com.helger.event.dispatch.sync;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -27,7 +28,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.callback.INonThrowingRunnableWithParameter;
 import com.helger.commons.exception.mock.IMockException;
 import com.helger.event.IEvent;
 import com.helger.event.dispatch.AbstractEventDispatcher;
@@ -69,10 +69,10 @@ public class SynchronousEventDispatcher extends AbstractEventDispatcher implemen
       // At least one handler was found
 
       // The list of all callback return values
-      final List <Object> aCallbackReturnValues = new ArrayList <Object> ();
+      final List <Object> aCallbackReturnValues = new ArrayList <> ();
 
       // The local result callback that puts the different values into the list
-      final INonThrowingRunnableWithParameter <Object> aResultCallback = aCurrentObject -> aCallbackReturnValues.add (aCurrentObject);
+      final Consumer <Object> aResultCallback = aCurrentObject -> aCallbackReturnValues.add (aCurrentObject);
 
       // Iterate all handling observers
       for (final Map.Entry <IEventObserver, EEventObserverHandlerType> aEntry : aHandlingObservers.entrySet ())
