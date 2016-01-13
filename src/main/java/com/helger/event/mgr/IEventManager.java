@@ -16,13 +16,13 @@
  */
 package com.helger.event.mgr;
 
+import java.io.Closeable;
 import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.helger.commons.state.EChange;
-import com.helger.commons.state.IStoppable;
 import com.helger.event.IEvent;
 import com.helger.event.observer.IEventObserver;
 
@@ -31,7 +31,7 @@ import com.helger.event.observer.IEventObserver;
  *
  * @author Philip Helger
  */
-public interface IEventManager extends IStoppable
+public interface IEventManager extends Closeable
 {
   /**
    * Register an additional observer.

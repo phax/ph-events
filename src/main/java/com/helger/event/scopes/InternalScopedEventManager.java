@@ -37,6 +37,6 @@ final class InternalScopedEventManager extends EventManager implements IScopeDes
   public void onScopeDestruction (@Nonnull final IScope aScopeInDestruction) throws Exception
   {
     // Stop the event manager
-    stop ();
+    close ();
   }
 }

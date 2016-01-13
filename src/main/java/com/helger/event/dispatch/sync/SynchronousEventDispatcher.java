@@ -58,68 +58,80 @@ public class SynchronousEventDispatcher extends AbstractEventDispatcher implemen
                                                                                                                          aObservers);
     final Map <IEventObserver, EEventObserverHandlerType> aHandlingObservers = aHandlingInfo.getObservers ();
 
-    Object aDispatchResult;
+    Object aAggregatedDispatchResult;
     if (aHandlingObservers.isEmpty ())
     {
       // No observer -> no result
-      aDispatchResult = null;
+      aAggregatedDispatchResult = null;
     }
     else
     {
       // At least one handler was found
 
       // The list of all callback return values
-      final List <Object> aCallbackReturnValues = new ArrayList <> ();
+      final List <Object> aEventReturnValues = new ArrayList <> ();
 
       // The local result callback that puts the different values into the list
-      final Consumer <Object> aResultCallback = aCurrentObject -> aCallbackReturnValues.add (aCurrentObject);
+      final Consumer <Object> aResultCollector = o -> aEventReturnValues.add (o);
 
       // Iterate all handling observers
       for (final Map.Entry <IEventObserver, EEventObserverHandlerType> aEntry : aHandlingObservers.entrySet ())
       {
-        final boolean bHasReturnValue = aEntry.getValue ().hasReturnValue ();
         final IEventObserver aObserver = aEntry.getKey ();
-        final int nOldSize = aCallbackReturnValues.size ();
+        final boolean bHasReturnValue = aEntry.getValue ().hasReturnValue ();
+        final int nOldReturnValueCount = aEventReturnValues.size ();
 
         try
         {
           // main event call
-          aObserver.onEvent (aEvent, bHasReturnValue ? aResultCallback : null);
+          aObserver.onEvent (aEvent, bHasReturnValue ? aResultCollector : null);
         }
         catch (final Throwable t)
         {
           getExceptionCallback ().handleObservingException (t);
-          s_aLogger.error ("Failed to notify " + aObserver + " on " + aEvent, t instanceof IMockException ? null : t);
+          s_aLogger.error ("Failed to notify " +
+                           aObserver +
+                           " on " +
+                           aEvent +
+                           " because of " +
+                           t.getClass ().getName (),
+                           t instanceof IMockException ? null : t);
 
           // Handle eventual exception gracefully
           if (bHasReturnValue)
           {
             // Add the exception wrapper even if the observer already added a
             // result -> this leads to an IllegalStateException below!
-            aCallbackReturnValues.add (new EventObservingExceptionWrapper (aObserver, aEvent, t));
+            aEventReturnValues.add (new EventObservingExceptionWrapper (aObserver, aEvent, t));
           }
         }
 
-        // Check whether a value was really added (no matter whether it was an
-        // exception or a real value)
+        /*
+         * Consistency cCheck whether a value was really added (no matter
+         * whether it was an exception or a real value)
+         */
         if (bHasReturnValue)
         {
-          if (aCallbackReturnValues.size () == nOldSize)
+          if (aEventReturnValues.size () == nOldReturnValueCount)
             throw new IllegalStateException ("The observer " +
                                              aObserver +
-                                             " did not add any return value even though he claimed to have one!");
-          if (aCallbackReturnValues.size () > nOldSize + 1)
+                                             " did not add any return value on event " +
+                                             aEvent +
+                                             " even though he claimed to have one!");
+          if (aEventReturnValues.size () > nOldReturnValueCount + 1)
             throw new IllegalStateException ("The observer " +
                                              aObserver +
-                                             " added more than one return value which is generally not allowed!");
+                                             " added more than one return value on " +
+                                             aEvent +
+                                             " which is generally not allowed!");
         }
       }
 
-      // aggregate all result values
-      aDispatchResult = aEvent.getResultAggregator ().aggregate (aCallbackReturnValues);
+      // finally aggregate all event return values
+      aAggregatedDispatchResult = aEvent.getResultAggregator ().aggregate (aEventReturnValues);
     }
 
     // Return the main dispatch result
-    return aDispatchResult;
+    return aAggregatedDispatchResult;
   }
 }

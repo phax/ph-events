@@ -47,102 +47,108 @@ public final class SyncFuncTest
   @Test
   public void testUnidirectionalUnicastEventManager ()
   {
-    final EventManager mgr = new EventManager ();
-    mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
+    try (final EventManager mgr = new EventManager ())
     {
-      public void onEvent (@Nonnull final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
+      mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
       {
-        assertNull (aResultCallback);
-        assertEquals (EV_TYPE, aEvent.getEventType ());
-        s_aLogger.info ("onEvent uni sync");
-      }
-    });
-    mgr.triggerSynchronous (new BaseEvent (EV_TYPE));
+        public void onEvent (@Nonnull final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
+        {
+          assertNull (aResultCallback);
+          assertEquals (EV_TYPE, aEvent.getEventType ());
+          s_aLogger.info ("onEvent uni sync");
+        }
+      });
+      mgr.triggerSynchronous (new BaseEvent (EV_TYPE));
+    }
   }
 
   @Test
   public void testUnidirectionalMulticastEventManager ()
   {
-    final EventManager mgr = new EventManager ();
-    mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
+    try (final EventManager mgr = new EventManager ())
     {
-      public void onEvent (@Nonnull final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
+      mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
       {
-        assertNull (aResultCallback);
-        assertEquals (EV_TYPE, aEvent.getEventType ());
-        s_aLogger.info ("onEvent multi sync 1");
-      }
-    });
-    mgr.registerObserver (new AbstractEventObserver (true, EV_TYPE)
-    {
-      public void onEvent (@Nonnull final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
+        public void onEvent (@Nonnull final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
+        {
+          assertNull (aResultCallback);
+          assertEquals (EV_TYPE, aEvent.getEventType ());
+          s_aLogger.info ("onEvent multi sync 1");
+        }
+      });
+      mgr.registerObserver (new AbstractEventObserver (true, EV_TYPE)
       {
-        assertNotNull (aResultCallback);
-        assertEquals (EV_TYPE, aEvent.getEventType ());
-        s_aLogger.info ("onEvent multi sync 2");
-        aResultCallback.accept (Integer.valueOf (2));
-      }
-    });
-    mgr.registerObserver (new AbstractEventObserver (true, EV_TYPE)
-    {
-      public void onEvent (@Nonnull final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
+        public void onEvent (@Nonnull final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
+        {
+          assertNotNull (aResultCallback);
+          assertEquals (EV_TYPE, aEvent.getEventType ());
+          s_aLogger.info ("onEvent multi sync 2");
+          aResultCallback.accept (Integer.valueOf (2));
+        }
+      });
+      mgr.registerObserver (new AbstractEventObserver (true, EV_TYPE)
       {
-        assertNotNull (aResultCallback);
-        throw new MockRuntimeException ();
-      }
-    });
+        public void onEvent (@Nonnull final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
+        {
+          assertNotNull (aResultCallback);
+          throw new MockRuntimeException ();
+        }
+      });
 
-    // Trigger all 3 observers - first result counts
-    Object ret = mgr.triggerSynchronous (new BaseEvent (EV_TYPE, IAggregator.createUseFirst ()));
-    assertEquals (Integer.valueOf (2), ret);
+      // Trigger all 3 observers - first result counts
+      Object ret = mgr.triggerSynchronous (new BaseEvent (EV_TYPE, IAggregator.createUseFirst ()));
+      assertEquals (Integer.valueOf (2), ret);
 
-    // Trigger all 3 observers - last result counts
-    ret = mgr.triggerSynchronous (new BaseEvent (EV_TYPE, IAggregator.createUseLast ()));
-    assertTrue (ret instanceof EventObservingExceptionWrapper);
+      // Trigger all 3 observers - last result counts
+      ret = mgr.triggerSynchronous (new BaseEvent (EV_TYPE, IAggregator.createUseLast ()));
+      assertTrue (ret instanceof EventObservingExceptionWrapper);
+    }
   }
 
   @Test
   public void testBidirectionalMulticastEventManager ()
   {
-    final EventManager mgr = new EventManager ();
-    mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
+    try (final EventManager mgr = new EventManager ())
     {
-      public void onEvent (@Nonnull final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
+      mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
       {
-        assertNull (aResultCallback);
-        assertEquals (EV_TYPE, aEvent.getEventType ());
-        s_aLogger.info ("onEvent multi sync 1");
-      }
-    });
-    mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
-    {
-      public void onEvent (@Nonnull final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
+        public void onEvent (@Nonnull final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
+        {
+          assertNull (aResultCallback);
+          assertEquals (EV_TYPE, aEvent.getEventType ());
+          s_aLogger.info ("onEvent multi sync 1");
+        }
+      });
+      mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
       {
-        assertNull (aResultCallback);
-        assertEquals (EV_TYPE, aEvent.getEventType ());
-        s_aLogger.info ("onEvent multi sync 2");
-      }
-    });
-    mgr.registerObserver (new AbstractEventObserver (true, EV_TYPE)
-    {
-      public void onEvent (@Nonnull final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
+        public void onEvent (@Nonnull final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
+        {
+          assertNull (aResultCallback);
+          assertEquals (EV_TYPE, aEvent.getEventType ());
+          s_aLogger.info ("onEvent multi sync 2");
+        }
+      });
+      mgr.registerObserver (new AbstractEventObserver (true, EV_TYPE)
       {
-        assertNotNull (aResultCallback);
-        assertEquals (EV_TYPE, aEvent.getEventType ());
-        s_aLogger.info ("onEvent multi sync 3");
-        aResultCallback.accept ("My return value");
-      }
-    });
-    mgr.registerObserver (new AbstractEventObserver (true, EV_TYPE)
-    {
-      public void onEvent (@Nonnull final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
+        public void onEvent (@Nonnull final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
+        {
+          assertNotNull (aResultCallback);
+          assertEquals (EV_TYPE, aEvent.getEventType ());
+          s_aLogger.info ("onEvent multi sync 3");
+          aResultCallback.accept ("My return value");
+        }
+      });
+      mgr.registerObserver (new AbstractEventObserver (true, EV_TYPE)
       {
-        assertNotNull (aResultCallback);
-        throw new MockRuntimeException ();
-      }
-    });
-    final Object ret = mgr.triggerSynchronous (new BaseEvent (EV_TYPE));
-    s_aLogger.info ("Trigger sync result = " + ret);
-    mgr.triggerAsynchronous (new BaseEvent (EV_TYPE), r -> s_aLogger.info ("Trigger result = " + r));
+        public void onEvent (@Nonnull final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
+        {
+          assertNotNull (aResultCallback);
+          throw new MockRuntimeException ();
+        }
+      });
+      final Object ret = mgr.triggerSynchronous (new BaseEvent (EV_TYPE));
+      s_aLogger.info ("Trigger sync result = " + ret);
+      mgr.triggerAsynchronous (new BaseEvent (EV_TYPE), r -> s_aLogger.info ("Trigger result = " + r));
+    }
   }
 }

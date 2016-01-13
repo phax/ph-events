@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.helger.commons.exception.mock.IMockException;
 import com.helger.commons.state.ESuccess;
 import com.helger.event.IEvent;
 import com.helger.event.observer.IEventObserver;
@@ -33,7 +34,7 @@ import com.helger.event.observer.exception.IEventObservingExceptionCallback;
 
 /**
  * This thread class is instantiated once in {@link AsynchronousEventDispatcher}
- * and manages the asynchronous dispatching of the items.
+ * and manages the asynchronous dispatching of the events.
  *
  * @author Philip Helger
  */
@@ -92,24 +93,30 @@ final class AsyncQueueDispatcherThread extends Thread
         // get current element
         final EventItem aItem = m_aEventQueue.take ();
         final IEvent aEvent = aItem.m_aEvent;
-        final IEventObserver aObserver = aItem.m_aEventObserver;
+        final IEventObserver aEventObserver = aItem.m_aEventObserver;
         final AsynchronousEventResultCollectorThread aCollector = aItem.m_aCollector;
 
         try
         {
           // main dispatch
-          aObserver.onEvent (aEvent, aCollector);
+          aEventObserver.onEvent (aEvent, aCollector);
         }
         catch (final Throwable t)
         {
           m_aExceptionCallback.handleObservingException (t);
-          s_aLogger.error ("Failed to asynchronously notify " + aObserver + " on " + aEvent, t);
+          s_aLogger.error ("Failed to asynchronously notify " +
+                           aEventObserver +
+                           " on " +
+                           aEvent +
+                           " because of " +
+                           t.getClass ().getName (),
+                           t instanceof IMockException ? null : t);
 
           // Notify on exception
           if (aCollector != null)
           {
             // Put exception in result consumer
-            aCollector.accept (new EventObservingExceptionWrapper (aObserver, aEvent, t));
+            aCollector.accept (new EventObservingExceptionWrapper (aEventObserver, aEvent, t));
           }
         }
       }

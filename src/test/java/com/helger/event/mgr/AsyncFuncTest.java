@@ -79,49 +79,53 @@ public final class AsyncFuncTest
   @Test
   public void testUnidirectionalUnicastEventManager ()
   {
-    final EventManager mgr = new EventManager ();
-    mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
+    try (final EventManager mgr = new EventManager ())
     {
-      public void onEvent (final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
+      mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
       {
-        assertNull (aResultCallback);
-        assertEquals (EV_TYPE, aEvent.getEventType ());
-      }
-    });
-    mgr.triggerAsynchronous (new BaseEvent (EV_TYPE), c -> {});
+        public void onEvent (final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
+        {
+          assertNull (aResultCallback);
+          assertEquals (EV_TYPE, aEvent.getEventType ());
+        }
+      });
+      mgr.triggerAsynchronous (new BaseEvent (EV_TYPE), c -> {});
+    }
   }
 
   @Test
   public void testBidirectionalUnicastEventManager () throws InterruptedException
   {
-    final CountDownLatch aCountDown = new CountDownLatch (1);
-    final EventManager mgr = new EventManager ();
-    mgr.registerObserver (new AbstractEventObserver (true, EV_TYPE)
+    try (final EventManager mgr = new EventManager ())
     {
-      public void onEvent (final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
+      final CountDownLatch aCountDown = new CountDownLatch (1);
+      mgr.registerObserver (new AbstractEventObserver (true, EV_TYPE)
       {
-        assertNotNull (aResultCallback);
-        assertEquals (EV_TYPE, aEvent.getEventType ());
-        aResultCallback.accept ("onEvent called!");
-        aCountDown.countDown ();
-      }
-    });
-    final Consumer <Object> aOverallCB = currentObject -> s_aLogger.info ("Got: " + currentObject);
-    mgr.triggerAsynchronous (new BaseEvent (EV_TYPE), aOverallCB);
-    aCountDown.await ();
+        public void onEvent (final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
+        {
+          assertNotNull (aResultCallback);
+          assertEquals (EV_TYPE, aEvent.getEventType ());
+          aResultCallback.accept ("onEvent called!");
+          aCountDown.countDown ();
+        }
+      });
+      final Consumer <Object> aOverallCB = currentObject -> s_aLogger.info ("Got: " + currentObject);
+      mgr.triggerAsynchronous (new BaseEvent (EV_TYPE), aOverallCB);
+      aCountDown.await ();
 
-    // Try triggering the event that throws an exception
-    final CountDownLatch aCountDown2 = new CountDownLatch (1);
-    mgr.registerObserver (new AbstractEventObserver (true, EV_TYPE)
-    {
-      public void onEvent (@Nonnull final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
+      // Try triggering the event that throws an exception
+      final CountDownLatch aCountDown2 = new CountDownLatch (1);
+      mgr.registerObserver (new AbstractEventObserver (true, EV_TYPE)
       {
-        aCountDown2.countDown ();
-        throw new MockRuntimeException ();
-      }
-    });
-    mgr.triggerAsynchronous (new BaseEvent (EV_TYPE), aOverallCB);
-    aCountDown2.await ();
+        public void onEvent (@Nonnull final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
+        {
+          aCountDown2.countDown ();
+          throw new MockRuntimeException ();
+        }
+      });
+      mgr.triggerAsynchronous (new BaseEvent (EV_TYPE), aOverallCB);
+      aCountDown2.await ();
+    }
   }
 
   @Test
@@ -129,81 +133,88 @@ public final class AsyncFuncTest
   {
     final int EXECUTIONS = 100000;
     final CountDownLatch aCountDown = new CountDownLatch (EXECUTIONS);
-    final EventManager mgr = new EventManager ();
-    for (int i = 0; i < EXECUTIONS; ++i)
-      mgr.registerObserver (new AbstractEventObserver (true, EV_TYPE)
-      {
-        public void onEvent (@Nonnull final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
+
+    try (final EventManager mgr = new EventManager ())
+    {
+      for (int i = 0; i < EXECUTIONS; ++i)
+        mgr.registerObserver (new AbstractEventObserver (true, EV_TYPE)
         {
-          // Ensure we're called for the correct event type
-          assertNotNull (aEvent);
-          assertEquals (EV_TYPE, aEvent.getEventType ());
+          public void onEvent (@Nonnull final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
+          {
+            // Ensure we're called for the correct event type
+            assertNotNull (aEvent);
+            assertEquals (EV_TYPE, aEvent.getEventType ());
 
-          // Check that the callback for the result is present
-          assertNotNull (aResultCallback);
+            // Check that the callback for the result is present
+            assertNotNull (aResultCallback);
 
-          aResultCallback.accept ("onEvent1 called!");
-          aCountDown.countDown ();
-        }
-      });
+            aResultCallback.accept ("onEvent1 called!");
+            aCountDown.countDown ();
+          }
+        });
 
-    final Consumer <Object> aOverallCB = currentObject -> s_aLogger.info ("Got: " +
-                                                                          ((List <?>) currentObject).size () +
-                                                                          " results");
-    mgr.triggerAsynchronous (new BaseEvent (EV_TYPE, IAggregator.createUseAll ()), aOverallCB);
-    aCountDown.await ();
+      final Consumer <Object> aOverallCB = currentObject -> s_aLogger.info ("Got: " +
+                                                                            ((List <?>) currentObject).size () +
+                                                                            " results");
+      mgr.triggerAsynchronous (new BaseEvent (EV_TYPE, IAggregator.createUseAll ()), aOverallCB);
+      aCountDown.await ();
+    }
   }
 
   @Test
   public void testAsyncanagerMultipleObservers ()
   {
-    final EventManager mgr = new EventManager ();
-    final AtomicInteger aInvocationCount = new AtomicInteger (0);
-    mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
+    try (final EventManager mgr = new EventManager ())
     {
-      public void onEvent (@Nonnull final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
+      final AtomicInteger aInvocationCount = new AtomicInteger (0);
+      mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
       {
-        assertNull (aResultCallback);
-        assertEquals (EV_TYPE, aEvent.getEventType ());
-        aInvocationCount.incrementAndGet ();
-      }
-    });
-    final int nMax = 200;
-    for (int i = 0; i < nMax; ++i)
-      mgr.triggerAsynchronous (new BaseEvent (EV_TYPE), c -> {});
-    ThreadHelper.sleep (100);
-    assertEquals ("You may need to increase the sleep length", nMax, aInvocationCount.get ());
+        public void onEvent (@Nonnull final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
+        {
+          assertNull (aResultCallback);
+          assertEquals (EV_TYPE, aEvent.getEventType ());
+          aInvocationCount.incrementAndGet ();
+        }
+      });
+      final int nMax = 200;
+      for (int i = 0; i < nMax; ++i)
+        mgr.triggerAsynchronous (new BaseEvent (EV_TYPE), c -> {});
+      ThreadHelper.sleep (100);
+      assertEquals ("You may need to increase the sleep length", nMax, aInvocationCount.get ());
+    }
   }
 
   @Test
   public void testAsyncOnlyOnce ()
   {
-    final EventManager mgr = new EventManager ();
-    mgr.registerObserver (new MockObserverMultiple ("Hallo"));
-    mgr.registerObserver (new MockObserverOnlyOnce ("Welt"));
+    try (final EventManager mgr = new EventManager ())
+    {
+      mgr.registerObserver (new MockObserverMultiple ("Hallo"));
+      mgr.registerObserver (new MockObserverOnlyOnce ("Welt"));
 
-    // trigger for the first time
-    mgr.triggerAsynchronous (new BaseEvent (EV_TYPE, IAggregator.createUseAll ()), currentObject -> {
-      assertTrue (currentObject instanceof List <?>);
-      // -> expect 2 results
-      assertEquals (2, ((List <?>) currentObject).size ());
-      s_aLogger.info ("1. Got: " + currentObject);
-    });
+      // trigger for the first time
+      mgr.triggerAsynchronous (new BaseEvent (EV_TYPE, IAggregator.createUseAll ()), currentObject -> {
+        assertTrue (currentObject instanceof List <?>);
+        // -> expect 2 results
+        assertEquals (2, ((List <?>) currentObject).size ());
+        s_aLogger.info ("1. Got: " + currentObject);
+      });
 
-    // trigger for the second time - the OnlyOnce should not be contained
-    mgr.triggerAsynchronous (new BaseEvent (EV_TYPE, IAggregator.createUseAll ()), currentObject -> {
-      assertTrue (currentObject instanceof List <?>);
-      // -> expect 1 result
-      assertEquals (1, ((List <?>) currentObject).size ());
-      s_aLogger.info ("2. Got: " + currentObject);
-    });
+      // trigger for the second time - the OnlyOnce should not be contained
+      mgr.triggerAsynchronous (new BaseEvent (EV_TYPE, IAggregator.createUseAll ()), currentObject -> {
+        assertTrue (currentObject instanceof List <?>);
+        // -> expect 1 result
+        assertEquals (1, ((List <?>) currentObject).size ());
+        s_aLogger.info ("2. Got: " + currentObject);
+      });
 
-    // trigger for the third time
-    mgr.triggerAsynchronous (new BaseEvent (EV_TYPE, IAggregator.createUseAll ()), currentObject -> {
-      assertTrue (currentObject instanceof List <?>);
-      // -> expect 1 result
-      assertEquals (1, ((List <?>) currentObject).size ());
-      s_aLogger.info ("3. Got: " + currentObject);
-    });
+      // trigger for the third time
+      mgr.triggerAsynchronous (new BaseEvent (EV_TYPE, IAggregator.createUseAll ()), currentObject -> {
+        assertTrue (currentObject instanceof List <?>);
+        // -> expect 1 result
+        assertEquals (1, ((List <?>) currentObject).size ());
+        s_aLogger.info ("3. Got: " + currentObject);
+      });
+    }
   }
 }

@@ -18,9 +18,6 @@ package com.helger.event.observer.exception;
 
 import javax.annotation.Nonnull;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.string.ToStringGenerator;
@@ -28,7 +25,6 @@ import com.helger.event.IEvent;
 
 public final class EventObservingExceptionWrapper
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (EventObservingExceptionWrapper.class);
   private final String m_sMessage;
   private final IEvent m_aEvent;
   private final Throwable m_aThrowable;
@@ -44,8 +40,6 @@ public final class EventObservingExceptionWrapper
     m_sMessage = "Failed to notify " + aObserver;
     m_aEvent = aEvent;
     m_aThrowable = aThrowable;
-
-    s_aLogger.warn ("An exception occured while notifying observer " + aObserver + " on event " + aEvent);
   }
 
   @Nonnull

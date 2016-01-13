@@ -21,6 +21,9 @@ import java.util.function.Consumer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.state.EChange;
 import com.helger.event.IEvent;
@@ -35,6 +38,8 @@ import com.helger.event.observerqueue.IEventObserverQueue;
 
 public class EventManager implements IEventManager
 {
+  private static final Logger s_aLogger = LoggerFactory.getLogger (EventManager.class);
+
   private final IEventObserverQueue m_aObserverQueue;
   private final ISynchronousEventDispatcher m_aSyncEventDispatcher;
   private final IAsynchronousEventDispatcher m_aAsyncEventDispatcher;
@@ -62,6 +67,9 @@ public class EventManager implements IEventManager
     m_aObserverQueue = aObserverQueue;
     m_aSyncEventDispatcher = aSyncEventDispatcher;
     m_aAsyncEventDispatcher = aAsyncEventDispatcher;
+
+    if (s_aLogger.isDebugEnabled ())
+      s_aLogger.debug ("EventManager created");
   }
 
   @Nonnull
@@ -94,12 +102,13 @@ public class EventManager implements IEventManager
     return m_aObserverQueue.removeObserver (aObserver);
   }
 
-  @Nonnull
-  public final EChange stop ()
+  public void close ()
   {
-    EChange eChange = m_aSyncEventDispatcher.stop ();
-    eChange = eChange.or (m_aAsyncEventDispatcher.stop ());
-    return eChange;
+    m_aSyncEventDispatcher.stop ();
+    m_aAsyncEventDispatcher.stop ();
+
+    if (s_aLogger.isDebugEnabled ())
+      s_aLogger.debug ("EventManager closed");
   }
 
   @Nullable
@@ -111,6 +120,9 @@ public class EventManager implements IEventManager
     if (!aObserverQueue.isEmpty ())
     {
       // At least one observer is present
+      if (s_aLogger.isDebugEnabled ())
+        s_aLogger.debug ("EventManager triggerSynchronous " + aEvent);
+
       aObserverQueue.beforeDispatch ();
       ret = getSyncEventDispatcher ().dispatch (aEvent, aObserverQueue);
       aObserverQueue.afterDispatch ();
@@ -125,6 +137,9 @@ public class EventManager implements IEventManager
     if (!aObserverQueue.isEmpty ())
     {
       // At least one observer is present
+      if (s_aLogger.isDebugEnabled ())
+        s_aLogger.debug ("EventManager triggerAsynchronous " + aEvent + " -- " + aOverallResultConsumer);
+
       aObserverQueue.beforeDispatch ();
       getAsyncEventDispatcher ().dispatch (aEvent, aObserverQueue, aOverallResultConsumer);
       aObserverQueue.afterDispatch ();
