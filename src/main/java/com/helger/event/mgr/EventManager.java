@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.state.EChange;
 import com.helger.event.IEvent;
-import com.helger.event.dispatch.async.AsynchronousQueueEventDispatcher;
+import com.helger.event.dispatch.async.AsynchronousEventDispatcher;
 import com.helger.event.dispatch.async.IAsynchronousEventDispatcher;
 import com.helger.event.dispatch.sync.ISynchronousEventDispatcher;
 import com.helger.event.dispatch.sync.SynchronousEventDispatcher;
@@ -48,7 +48,7 @@ public class EventManager implements IEventManager
   {
     this (new EventObserverQueueOrderedSet (),
           new SynchronousEventDispatcher (aExceptionHandler),
-          new AsynchronousQueueEventDispatcher (aExceptionHandler));
+          new AsynchronousEventDispatcher (aExceptionHandler));
   }
 
   public EventManager (@Nonnull final IEventObserverQueue aObserverQueue,

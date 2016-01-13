@@ -31,17 +31,23 @@ import com.helger.event.observer.IEventObserver;
 import com.helger.event.observer.exception.EventObservingExceptionWrapper;
 import com.helger.event.observer.exception.IEventObservingExceptionCallback;
 
+/**
+ * This thread class is instantiated once in {@link AsynchronousEventDispatcher}
+ * and manages the asynchronous dispatching of the items.
+ *
+ * @author Philip Helger
+ */
 final class AsyncQueueDispatcherThread extends Thread
 {
-  private static final class DispatchItem
+  private static final class EventItem
   {
     private final IEvent m_aEvent;
     private final IEventObserver m_aEventObserver;
     private final AsynchronousEventResultCollectorThread m_aCollector;
 
-    public DispatchItem (@Nonnull final IEvent aEvent,
-                         @Nonnull final IEventObserver aEventObserver,
-                         @Nullable final AsynchronousEventResultCollectorThread aCollector)
+    public EventItem (@Nonnull final IEvent aEvent,
+                      @Nonnull final IEventObserver aEventObserver,
+                      @Nullable final AsynchronousEventResultCollectorThread aCollector)
     {
       m_aEvent = aEvent;
       m_aEventObserver = aEventObserver;
@@ -50,7 +56,7 @@ final class AsyncQueueDispatcherThread extends Thread
   }
 
   private static final Logger s_aLogger = LoggerFactory.getLogger (AsyncQueueDispatcherThread.class);
-  private final BlockingQueue <DispatchItem> m_aQueue = new LinkedBlockingQueue <> ();
+  private final BlockingQueue <EventItem> m_aEventQueue = new LinkedBlockingQueue <> ();
   private final IEventObservingExceptionCallback m_aExceptionCallback;
 
   public AsyncQueueDispatcherThread (@Nonnull final IEventObservingExceptionCallback aExceptionCallback)
@@ -60,13 +66,13 @@ final class AsyncQueueDispatcherThread extends Thread
   }
 
   @Nonnull
-  public ESuccess addToQueue (@Nonnull final IEvent aEvent,
-                              @Nonnull final IEventObserver aObserver,
-                              @Nullable final AsynchronousEventResultCollectorThread aResultCollector)
+  public ESuccess addEventToQueue (@Nonnull final IEvent aEvent,
+                                   @Nonnull final IEventObserver aObserver,
+                                   @Nullable final AsynchronousEventResultCollectorThread aResultCollector)
   {
     try
     {
-      m_aQueue.put (new DispatchItem (aEvent, aObserver, aResultCollector));
+      m_aEventQueue.put (new EventItem (aEvent, aObserver, aResultCollector));
       return ESuccess.SUCCESS;
     }
     catch (final InterruptedException ex)
@@ -84,7 +90,7 @@ final class AsyncQueueDispatcherThread extends Thread
       while (!isInterrupted ())
       {
         // get current element
-        final DispatchItem aItem = m_aQueue.take ();
+        final EventItem aItem = m_aEventQueue.take ();
         final IEvent aEvent = aItem.m_aEvent;
         final IEventObserver aObserver = aItem.m_aEventObserver;
         final AsynchronousEventResultCollectorThread aCollector = aItem.m_aCollector;

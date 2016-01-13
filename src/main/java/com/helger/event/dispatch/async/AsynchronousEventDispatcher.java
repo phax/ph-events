@@ -39,12 +39,12 @@ import com.helger.event.observerqueue.IEventObserverQueue;
  *
  * @author Philip Helger
  */
-public class AsynchronousQueueEventDispatcher extends AbstractEventDispatcher implements IAsynchronousEventDispatcher
+public class AsynchronousEventDispatcher extends AbstractEventDispatcher implements IAsynchronousEventDispatcher
 {
   private final SimpleLock m_aLock = new SimpleLock ();
   private final AsyncQueueDispatcherThread m_aQueueThread;
 
-  public AsynchronousQueueEventDispatcher (@Nullable final IEventObservingExceptionCallback aExceptionCallback)
+  public AsynchronousEventDispatcher (@Nullable final IEventObservingExceptionCallback aExceptionCallback)
   {
     super (aExceptionCallback);
     m_aQueueThread = new AsyncQueueDispatcherThread (getExceptionCallback ());
@@ -65,12 +65,11 @@ public class AsynchronousQueueEventDispatcher extends AbstractEventDispatcher im
     if (aHandlingInfo.hasNoObservers ())
       return;
 
-    final Map <IEventObserver, EEventObserverHandlerType> aHandlingObservers = aHandlingInfo.getObservers ();
-    final int nHandlingObserverCountWithReturnValue = aHandlingInfo.getHandlingObserverCountWithReturnValue ();
-
     m_aLock.locked ( () -> {
       // At least one handler was found
       AsynchronousEventResultCollectorThread aLocalResultCollector = null;
+
+      final int nHandlingObserverCountWithReturnValue = aHandlingInfo.getHandlingObserverCountWithReturnValue ();
       if (nHandlingObserverCountWithReturnValue > 0)
       {
         // Create collector and start thread only if we expect a result
@@ -81,11 +80,12 @@ public class AsynchronousQueueEventDispatcher extends AbstractEventDispatcher im
       }
 
       // Iterate all handling observers
-      for (final Map.Entry <IEventObserver, EEventObserverHandlerType> aEntry : aHandlingObservers.entrySet ())
+      for (final Map.Entry <IEventObserver, EEventObserverHandlerType> aEntry : aHandlingInfo.getObservers ()
+                                                                                             .entrySet ())
       {
-        m_aQueueThread.addToQueue (aEvent,
-                                   aEntry.getKey (),
-                                   aEntry.getValue ().hasReturnValue () ? aLocalResultCollector : null);
+        m_aQueueThread.addEventToQueue (aEvent,
+                                        aEntry.getKey (),
+                                        aEntry.getValue ().hasReturnValue () ? aLocalResultCollector : null);
       }
     });
   }
