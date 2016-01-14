@@ -66,8 +66,8 @@ public final class EffectiveEventObserverList
   }
 
   @Nonnull
-  public static final EffectiveEventObserverList getListOfObserversThatCanHandleTheEvent (@Nonnull final IEvent aEvent,
-                                                                                          @Nonnull final IEventObserverQueue aObserverQueue)
+  public static EffectiveEventObserverList getListOfObserversThatCanHandleTheEvent (@Nonnull final IEvent aEvent,
+                                                                                    @Nonnull final IEventObserverQueue aObserverQueue)
   {
     // find all handling observers
     final Map <IEventObserver, EEventObserverHandlerType> aObservers = new LinkedHashMap <> ();
