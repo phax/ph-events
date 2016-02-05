@@ -33,7 +33,7 @@ import com.helger.event.observer.exception.EventObservingExceptionWrapper;
 public final class DispatchResultAggregatorBooleanOr implements IAggregator <Object, Boolean>
 {
   @Nonnull
-  public Boolean aggregate (final Collection <Object> aResults)
+  public Boolean apply (final Collection <Object> aResults)
   {
     ValueEnforcer.notNull (aResults, "Results");
 
