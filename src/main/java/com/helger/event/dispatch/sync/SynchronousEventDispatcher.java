@@ -128,7 +128,7 @@ public class SynchronousEventDispatcher extends AbstractEventDispatcher implemen
       }
 
       // finally aggregate all event return values
-      aAggregatedDispatchResult = aEvent.getResultAggregator ().aggregate (aEventReturnValues);
+      aAggregatedDispatchResult = aEvent.getResultAggregator ().apply (aEventReturnValues);
     }
 
     // Return the main dispatch result

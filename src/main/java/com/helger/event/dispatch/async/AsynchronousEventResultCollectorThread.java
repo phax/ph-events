@@ -65,7 +65,7 @@ public final class AsynchronousEventResultCollectorThread extends Thread impleme
       m_aCountDown.await ();
 
       // We have all - aggregate
-      final Object aAggregatedResults = m_aResultAggregator.aggregate (m_aResults);
+      final Object aAggregatedResults = m_aResultAggregator.apply (m_aResults);
 
       // Call result consumer
       m_aResultConsumer.accept (aAggregatedResults);

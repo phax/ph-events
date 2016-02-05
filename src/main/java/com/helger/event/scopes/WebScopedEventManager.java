@@ -150,7 +150,7 @@ public final class WebScopedEventManager
         }
       }
     }
-    return aEvent.getResultAggregator ().aggregate (aRetValues);
+    return aEvent.getResultAggregator ().apply (aRetValues);
   }
 
   /**
