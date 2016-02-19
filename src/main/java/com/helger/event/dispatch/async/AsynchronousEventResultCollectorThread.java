@@ -16,8 +16,6 @@
  */
 package com.helger.event.dispatch.async;
 
-import java.util.List;
-import java.util.Vector;
 import java.util.concurrent.CountDownLatch;
 import java.util.function.Consumer;
 
@@ -26,6 +24,8 @@ import javax.annotation.Nonnull;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.aggregate.IAggregator;
+import com.helger.commons.collection.ext.CommonsVector;
+import com.helger.commons.collection.ext.ICommonsList;
 
 public final class AsynchronousEventResultCollectorThread extends Thread implements Consumer <Object>
 {
@@ -33,7 +33,7 @@ public final class AsynchronousEventResultCollectorThread extends Thread impleme
   private final CountDownLatch m_aCountDown;
   private final IAggregator <Object, ?> m_aResultAggregator;
   private final Consumer <Object> m_aResultConsumer;
-  private final List <Object> m_aResults = new Vector <> ();
+  private final ICommonsList <Object> m_aResults = new CommonsVector <> ();
 
   public AsynchronousEventResultCollectorThread (@Nonnegative final int nObserversWithReturn,
                                                  @Nonnull final IAggregator <Object, ?> aResultAggregator,

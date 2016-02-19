@@ -52,7 +52,7 @@ public class BaseSenderAwareEvent <T> extends BaseEvent implements ISenderAwareE
     if (o == this)
       return true;
     if (!super.equals (o))
-      return true;
+      return false;
     final BaseSenderAwareEvent <?> rhs = (BaseSenderAwareEvent <?>) o;
     return m_aSender.equals (rhs.m_aSender);
   }

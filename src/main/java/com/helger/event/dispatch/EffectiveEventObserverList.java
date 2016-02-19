@@ -17,15 +17,15 @@
 package com.helger.event.dispatch;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableObject;
+import com.helger.commons.collection.ext.CommonsLinkedHashMap;
+import com.helger.commons.collection.ext.ICommonsOrderedMap;
 import com.helger.event.IEvent;
 import com.helger.event.observer.EEventObserverHandlerType;
 import com.helger.event.observer.IEventObserver;
@@ -33,10 +33,10 @@ import com.helger.event.observerqueue.IEventObserverQueue;
 
 public final class EffectiveEventObserverList
 {
-  private final Map <IEventObserver, EEventObserverHandlerType> m_aObservers;
+  private final ICommonsOrderedMap <IEventObserver, EEventObserverHandlerType> m_aObservers;
   private final int m_nHandlingObserverCountWithReturnValue;
 
-  EffectiveEventObserverList (@Nonnull final Map <IEventObserver, EEventObserverHandlerType> aObservers,
+  EffectiveEventObserverList (@Nonnull final ICommonsOrderedMap <IEventObserver, EEventObserverHandlerType> aObservers,
                               @Nonnegative final int nHandlingObserverCountWithReturnValue)
   {
     ValueEnforcer.notNull (aObservers, "Observers");
@@ -54,7 +54,7 @@ public final class EffectiveEventObserverList
 
   @Nonnull
   @ReturnsMutableObject ("design")
-  public Map <IEventObserver, EEventObserverHandlerType> getObservers ()
+  public ICommonsOrderedMap <IEventObserver, EEventObserverHandlerType> getObservers ()
   {
     return m_aObservers;
   }
@@ -70,7 +70,7 @@ public final class EffectiveEventObserverList
                                                                                     @Nonnull final IEventObserverQueue aObserverQueue)
   {
     // find all handling observers
-    final Map <IEventObserver, EEventObserverHandlerType> aObservers = new LinkedHashMap <> ();
+    final ICommonsOrderedMap <IEventObserver, EEventObserverHandlerType> aObservers = new CommonsLinkedHashMap <> ();
     final List <IEventObserver> aObserversToRemove = new ArrayList <> ();
     int nHandlingObserverCountWithReturnValue = 0;
 

@@ -17,15 +17,15 @@
 package com.helger.event.observerqueue;
 
 import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.CommonsLinkedHashSet;
+import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.collection.ext.ICommonsOrderedSet;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.state.EChange;
@@ -42,7 +42,7 @@ import com.helger.event.observer.IEventObserver;
 public class EventObserverQueueOrderedSet implements IEventObserverQueue
 {
   private final SimpleReadWriteLock m_aRWLock = new SimpleReadWriteLock ();
-  private final Set <IEventObserver> m_aSet = new LinkedHashSet <> ();
+  private final ICommonsOrderedSet <IEventObserver> m_aSet = new CommonsLinkedHashSet <> ();
 
   public EventObserverQueueOrderedSet ()
   {}
@@ -70,9 +70,9 @@ public class EventObserverQueueOrderedSet implements IEventObserverQueue
 
   @Nonnull
   @ReturnsMutableCopy
-  public List <IEventObserver> getAllObservers ()
+  public ICommonsList <IEventObserver> getAllObservers ()
   {
-    return m_aRWLock.readLocked ( () -> CollectionHelper.newList (m_aSet));
+    return m_aRWLock.readLocked ( () -> m_aSet.getCopyAsList ());
   }
 
   @Override

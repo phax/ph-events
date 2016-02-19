@@ -16,14 +16,13 @@
  */
 package com.helger.event.observer;
 
-import java.util.Set;
-
 import javax.annotation.Nonnull;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.DevelopersNote;
 import com.helger.commons.annotation.UnsupportedOperation;
-import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.CommonsHashSet;
+import com.helger.commons.collection.ext.ICommonsSet;
 import com.helger.event.IEvent;
 import com.helger.event.IEventType;
 
@@ -35,7 +34,7 @@ import com.helger.event.IEventType;
 public abstract class AbstractEventObserver implements IEventObserver
 {
   private final EEventObserverHandlerType m_eHandlerType;
-  private final Set <IEventType> m_aHandledEventTypes;
+  private final ICommonsSet <IEventType> m_aHandledEventTypes;
 
   /**
    * @param bWithReturnValue
@@ -55,7 +54,7 @@ public abstract class AbstractEventObserver implements IEventObserver
 
     m_eHandlerType = bWithReturnValue ? EEventObserverHandlerType.HANDLE_RETURN_VALUE
                                       : EEventObserverHandlerType.HANDLE_NO_RETURN;
-    m_aHandledEventTypes = CollectionHelper.newSet (aHandledEventTypes);
+    m_aHandledEventTypes = new CommonsHashSet <> (aHandledEventTypes);
   }
 
   public AbstractEventObserver (final boolean bWithReturnValue,
@@ -65,7 +64,7 @@ public abstract class AbstractEventObserver implements IEventObserver
 
     m_eHandlerType = bWithReturnValue ? EEventObserverHandlerType.HANDLE_RETURN_VALUE
                                       : EEventObserverHandlerType.HANDLE_NO_RETURN;
-    m_aHandledEventTypes = CollectionHelper.newSet (aHandledEventTypes);
+    m_aHandledEventTypes = new CommonsHashSet <> (aHandledEventTypes);
   }
 
   @Nonnull

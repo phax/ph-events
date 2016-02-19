@@ -16,14 +16,13 @@
  */
 package com.helger.event.observerqueue;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.equals.EqualsHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
@@ -64,9 +63,9 @@ public final class EventObserverQueueSingleElement implements IEventObserverQueu
 
   @Nonnull
   @ReturnsMutableCopy
-  public List <IEventObserver> getAllObservers ()
+  public ICommonsList <IEventObserver> getAllObservers ()
   {
-    return m_aRWLock.readLocked ( () -> CollectionHelper.newList (m_aObserver));
+    return m_aRWLock.readLocked ( () -> new CommonsArrayList <> (m_aObserver));
   }
 
   public boolean isEmpty ()

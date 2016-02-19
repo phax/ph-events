@@ -16,15 +16,16 @@
  */
 package com.helger.event;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.ThreadSafe;
 
 import com.helger.commons.annotation.Nonempty;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.CommonsHashMap;
+import com.helger.commons.collection.ext.ICommonsMap;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
 
 /**
@@ -37,7 +38,8 @@ import com.helger.commons.concurrent.SimpleReadWriteLock;
 public final class EventTypeRegistry
 {
   private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
-  private static final Map <String, EventType> s_aMap = new HashMap <> ();
+  @GuardedBy ("s_aRWLock")
+  private static final ICommonsMap <String, EventType> s_aMap = new CommonsHashMap <> ();
 
   private EventTypeRegistry ()
   {}
@@ -59,6 +61,6 @@ public final class EventTypeRegistry
   @ReturnsMutableCopy
   public static Map <String, ? extends IEventType> getAllEventTypes ()
   {
-    return s_aRWLock.readLocked ( () -> CollectionHelper.newMap (s_aMap));
+    return s_aRWLock.readLocked ( () -> s_aMap.getClone ());
   }
 }

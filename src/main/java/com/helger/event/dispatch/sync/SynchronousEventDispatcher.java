@@ -16,8 +16,6 @@
  */
 package com.helger.event.dispatch.sync;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -28,6 +26,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.collection.ext.ICommonsOrderedMap;
 import com.helger.commons.exception.mock.IMockException;
 import com.helger.event.IEvent;
 import com.helger.event.dispatch.AbstractEventDispatcher;
@@ -56,7 +57,7 @@ public class SynchronousEventDispatcher extends AbstractEventDispatcher implemen
     // find all observers that can handle the passed event
     final EffectiveEventObserverList aHandlingInfo = EffectiveEventObserverList.getListOfObserversThatCanHandleTheEvent (aEvent,
                                                                                                                          aObservers);
-    final Map <IEventObserver, EEventObserverHandlerType> aHandlingObservers = aHandlingInfo.getObservers ();
+    final ICommonsOrderedMap <IEventObserver, EEventObserverHandlerType> aHandlingObservers = aHandlingInfo.getObservers ();
 
     Object aAggregatedDispatchResult;
     if (aHandlingObservers.isEmpty ())
@@ -69,7 +70,7 @@ public class SynchronousEventDispatcher extends AbstractEventDispatcher implemen
       // At least one handler was found
 
       // The list of all callback return values
-      final List <Object> aEventReturnValues = new ArrayList <> ();
+      final ICommonsList <Object> aEventReturnValues = new CommonsArrayList <> ();
 
       // The local result callback that puts the different values into the list
       final Consumer <Object> aResultCollector = o -> aEventReturnValues.add (o);

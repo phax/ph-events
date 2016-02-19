@@ -16,8 +16,6 @@
  */
 package com.helger.event.observerqueue;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 
@@ -26,7 +24,10 @@ import javax.annotation.concurrent.ThreadSafe;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableCopy;
-import com.helger.commons.collection.CollectionHelper;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.CommonsWeakHashMap;
+import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.collection.ext.ICommonsMap;
 import com.helger.commons.concurrent.SimpleReadWriteLock;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.state.EChange;
@@ -43,7 +44,7 @@ import com.helger.event.observer.IEventObserver;
 public final class EventObserverQueueWeakSet implements IEventObserverQueue
 {
   private final SimpleReadWriteLock m_aRWLock = new SimpleReadWriteLock ();
-  private final Map <IEventObserver, Boolean> m_aWeakMap = new WeakHashMap <> ();
+  private final ICommonsMap <IEventObserver, Boolean> m_aWeakMap = new CommonsWeakHashMap <> ();
 
   public EventObserverQueueWeakSet ()
   {}
@@ -72,9 +73,9 @@ public final class EventObserverQueueWeakSet implements IEventObserverQueue
 
   @Nonnull
   @ReturnsMutableCopy
-  public List <IEventObserver> getAllObservers ()
+  public ICommonsList <IEventObserver> getAllObservers ()
   {
-    return m_aRWLock.readLocked ( () -> CollectionHelper.newList (m_aWeakMap.keySet ()));
+    return m_aRWLock.readLocked ( () -> new CommonsArrayList <> (m_aWeakMap.keySet ()));
   }
 
   @Override

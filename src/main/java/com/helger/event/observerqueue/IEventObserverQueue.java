@@ -17,12 +17,12 @@
 package com.helger.event.observerqueue;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 
 import com.helger.commons.annotation.MustImplementEqualsAndHashcode;
 import com.helger.commons.annotation.ReturnsMutableCopy;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.state.EChange;
 import com.helger.event.observer.IEventObserver;
 
@@ -59,7 +59,7 @@ public interface IEventObserverQueue extends Serializable
    */
   @Nonnull
   @ReturnsMutableCopy
-  List <IEventObserver> getAllObservers ();
+  ICommonsList <IEventObserver> getAllObservers ();
 
   /**
    * @return <code>true</code> if not a single observer is contained,
