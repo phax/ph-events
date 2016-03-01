@@ -16,8 +16,6 @@
  */
 package com.helger.event.observerqueue;
 
-import java.util.LinkedHashSet;
-
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 
@@ -34,7 +32,7 @@ import com.helger.event.observer.IEventObserver;
 
 /**
  * Implementation of {@link IEventObserverQueue} based on a
- * {@link LinkedHashSet}. Order of observers is maintained!
+ * {@link CommonsLinkedHashSet}. Order of observers is maintained!
  *
  * @author Philip Helger
  */
