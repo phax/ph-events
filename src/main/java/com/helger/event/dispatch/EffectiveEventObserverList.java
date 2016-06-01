@@ -16,15 +16,14 @@
  */
 package com.helger.event.dispatch;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.annotation.ReturnsMutableObject;
+import com.helger.commons.collection.ext.CommonsArrayList;
 import com.helger.commons.collection.ext.CommonsLinkedHashMap;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.collection.ext.ICommonsOrderedMap;
 import com.helger.event.IEvent;
 import com.helger.event.observer.EEventObserverHandlerType;
@@ -70,8 +69,8 @@ public final class EffectiveEventObserverList
                                                                                     @Nonnull final IEventObserverQueue aObserverQueue)
   {
     // find all handling observers
-    final ICommonsOrderedMap <IEventObserver, EEventObserverHandlerType> aObservers = new CommonsLinkedHashMap <> ();
-    final List <IEventObserver> aObserversToRemove = new ArrayList <> ();
+    final ICommonsOrderedMap <IEventObserver, EEventObserverHandlerType> aObservers = new CommonsLinkedHashMap<> ();
+    final ICommonsList <IEventObserver> aObserversToRemove = new CommonsArrayList<> ();
     int nHandlingObserverCountWithReturnValue = 0;
 
     // For all

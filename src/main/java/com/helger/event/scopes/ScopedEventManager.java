@@ -16,8 +16,6 @@
  */
 package com.helger.event.scopes;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Consumer;
 
 import javax.annotation.Nonnull;
@@ -27,6 +25,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
+import com.helger.commons.collection.ext.CommonsArrayList;
+import com.helger.commons.collection.ext.ICommonsList;
 import com.helger.commons.scope.IScope;
 import com.helger.commons.scope.mgr.EScope;
 import com.helger.commons.state.EChange;
@@ -133,7 +133,7 @@ public final class ScopedEventManager
   {
     ValueEnforcer.notNull (aEvent, "Event");
 
-    final List <Object> aRetValues = new ArrayList <> ();
+    final ICommonsList <Object> aRetValues = new CommonsArrayList<> ();
     // for all scopes
     for (final EScope eCurrentScope : EScope.values ())
     {
