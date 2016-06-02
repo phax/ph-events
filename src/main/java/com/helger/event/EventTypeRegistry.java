@@ -16,8 +16,6 @@
  */
 package com.helger.event;
 
-import java.util.Map;
-
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.GuardedBy;
 import javax.annotation.concurrent.ThreadSafe;
@@ -59,7 +57,7 @@ public final class EventTypeRegistry
 
   @Nonnull
   @ReturnsMutableCopy
-  public static Map <String, ? extends IEventType> getAllEventTypes ()
+  public static ICommonsMap <String, ? extends IEventType> getAllEventTypes ()
   {
     return s_aRWLock.readLocked ( () -> s_aMap.getClone ());
   }
