@@ -133,7 +133,7 @@ public final class WebScopedEventManager
   {
     ValueEnforcer.notNull (aEvent, "Event");
 
-    final ICommonsList <Object> aRetValues = new CommonsArrayList<> ();
+    final ICommonsList <Object> aRetValues = new CommonsArrayList <> ();
     // for all scopes
     for (final EWebScope eCurrentScope : EWebScope.values ())
     {

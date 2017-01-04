@@ -36,8 +36,8 @@ public interface IEvent extends Serializable
   IEventType getEventType ();
 
   /**
-   * @return The result aggregator to be used for this event. Defaults to
-   *         "use first result".
+   * @return The result aggregator to be used for this event. Defaults to "use
+   *         first result".
    */
   @Nonnull
   IAggregator <Object, ?> getResultAggregator ();

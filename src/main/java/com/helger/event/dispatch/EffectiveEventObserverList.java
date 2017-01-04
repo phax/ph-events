@@ -69,8 +69,8 @@ public final class EffectiveEventObserverList
                                                                                     @Nonnull final IEventObserverQueue aObserverQueue)
   {
     // find all handling observers
-    final ICommonsOrderedMap <IEventObserver, EEventObserverHandlerType> aObservers = new CommonsLinkedHashMap<> ();
-    final ICommonsList <IEventObserver> aObserversToRemove = new CommonsArrayList<> ();
+    final ICommonsOrderedMap <IEventObserver, EEventObserverHandlerType> aObservers = new CommonsLinkedHashMap <> ();
+    final ICommonsList <IEventObserver> aObserversToRemove = new CommonsArrayList <> ();
     int nHandlingObserverCountWithReturnValue = 0;
 
     // For all

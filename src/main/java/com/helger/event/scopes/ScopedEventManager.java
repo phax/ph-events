@@ -133,7 +133,7 @@ public final class ScopedEventManager
   {
     ValueEnforcer.notNull (aEvent, "Event");
 
-    final ICommonsList <Object> aRetValues = new CommonsArrayList<> ();
+    final ICommonsList <Object> aRetValues = new CommonsArrayList <> ();
     // for all scopes
     for (final EScope eCurrentScope : EScope.values ())
     {
