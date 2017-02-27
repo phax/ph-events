@@ -66,6 +66,6 @@ public class EventType implements IEventType
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("Name", m_sName).toString ();
+    return new ToStringGenerator (this).append ("Name", m_sName).getToString ();
   }
 }

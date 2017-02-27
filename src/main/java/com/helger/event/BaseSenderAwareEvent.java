@@ -66,6 +66,6 @@ public class BaseSenderAwareEvent <T> extends BaseEvent implements ISenderAwareE
   @Override
   public String toString ()
   {
-    return ToStringGenerator.getDerived (super.toString ()).append ("sender", m_aSender).toString ();
+    return ToStringGenerator.getDerived (super.toString ()).append ("sender", m_aSender).getToString ();
   }
 }

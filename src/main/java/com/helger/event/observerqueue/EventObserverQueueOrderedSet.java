@@ -40,7 +40,7 @@ import com.helger.event.observer.IEventObserver;
 public class EventObserverQueueOrderedSet implements IEventObserverQueue
 {
   private final SimpleReadWriteLock m_aRWLock = new SimpleReadWriteLock ();
-  private final ICommonsOrderedSet <IEventObserver> m_aSet = new CommonsLinkedHashSet <> ();
+  private final ICommonsOrderedSet <IEventObserver> m_aSet = new CommonsLinkedHashSet<> ();
 
   public EventObserverQueueOrderedSet ()
   {}
@@ -93,6 +93,6 @@ public class EventObserverQueueOrderedSet implements IEventObserverQueue
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("set", m_aSet).toString ();
+    return new ToStringGenerator (this).append ("set", m_aSet).getToString ();
   }
 }

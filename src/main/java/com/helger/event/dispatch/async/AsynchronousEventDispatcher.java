@@ -106,6 +106,6 @@ public class AsynchronousEventDispatcher extends AbstractEventDispatcher impleme
   @Override
   public String toString ()
   {
-    return ToStringGenerator.getDerived (super.toString ()).append ("QueueThread", m_aQueueThread).toString ();
+    return ToStringGenerator.getDerived (super.toString ()).append ("QueueThread", m_aQueueThread).getToString ();
   }
 }

@@ -94,6 +94,6 @@ public class BaseEvent implements IEvent
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("EventType", m_aEventType).toString ();
+    return new ToStringGenerator (this).append ("EventType", m_aEventType).getToString ();
   }
 }

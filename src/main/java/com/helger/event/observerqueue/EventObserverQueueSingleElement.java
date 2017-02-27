@@ -65,7 +65,7 @@ public final class EventObserverQueueSingleElement implements IEventObserverQueu
   @ReturnsMutableCopy
   public ICommonsList <IEventObserver> getAllObservers ()
   {
-    return m_aRWLock.readLocked ( () -> new CommonsArrayList <> (m_aObserver));
+    return m_aRWLock.readLocked ( () -> new CommonsArrayList<> (m_aObserver));
   }
 
   public boolean isEmpty ()
@@ -93,6 +93,6 @@ public final class EventObserverQueueSingleElement implements IEventObserverQueu
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("observer", m_aObserver).toString ();
+    return new ToStringGenerator (this).append ("observer", m_aObserver).getToString ();
   }
 }

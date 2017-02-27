@@ -67,6 +67,6 @@ public final class EventObservingExceptionWrapper
     return new ToStringGenerator (this).append ("Message", m_sMessage)
                                        .append ("Event", m_aEvent)
                                        .append ("Throwable", m_aThrowable)
-                                       .toString ();
+                                       .getToString ();
   }
 }

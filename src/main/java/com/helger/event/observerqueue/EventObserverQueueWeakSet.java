@@ -44,7 +44,7 @@ import com.helger.event.observer.IEventObserver;
 public final class EventObserverQueueWeakSet implements IEventObserverQueue
 {
   private final SimpleReadWriteLock m_aRWLock = new SimpleReadWriteLock ();
-  private final ICommonsMap <IEventObserver, Boolean> m_aWeakMap = new CommonsWeakHashMap <> ();
+  private final ICommonsMap <IEventObserver, Boolean> m_aWeakMap = new CommonsWeakHashMap<> ();
 
   public EventObserverQueueWeakSet ()
   {}
@@ -75,7 +75,7 @@ public final class EventObserverQueueWeakSet implements IEventObserverQueue
   @ReturnsMutableCopy
   public ICommonsList <IEventObserver> getAllObservers ()
   {
-    return m_aRWLock.readLocked ( () -> new CommonsArrayList <> (m_aWeakMap.keySet ()));
+    return m_aRWLock.readLocked ( () -> new CommonsArrayList<> (m_aWeakMap.keySet ()));
   }
 
   @Override
@@ -98,6 +98,6 @@ public final class EventObserverQueueWeakSet implements IEventObserverQueue
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("WeakMap", m_aWeakMap).toString ();
+    return new ToStringGenerator (this).append ("WeakMap", m_aWeakMap).getToString ();
   }
 }

@@ -89,6 +89,6 @@ public class CRUDEventType implements ICRUDEventType
     return new ToStringGenerator (this).append ("Name", m_sEventName)
                                        .append ("PointInTime", m_ePointInTime)
                                        .append ("CRUD", m_eCRUD)
-                                       .toString ();
+                                       .getToString ();
   }
 }

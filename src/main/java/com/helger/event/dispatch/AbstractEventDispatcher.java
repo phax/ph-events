@@ -41,6 +41,6 @@ public abstract class AbstractEventDispatcher implements IEventDispatcher
   @Override
   public String toString ()
   {
-    return new ToStringGenerator (this).append ("ExceptionCallback", m_aExceptionCallback).toString ();
+    return new ToStringGenerator (this).append ("ExceptionCallback", m_aExceptionCallback).getToString ();
   }
 }
