@@ -21,6 +21,7 @@ import javax.annotation.concurrent.Immutable;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.aggregate.IAggregator;
+import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.hashcode.HashCodeGenerator;
 import com.helger.commons.string.ToStringGenerator;
 
@@ -44,7 +45,7 @@ public class BaseEvent implements IEvent
    */
   public BaseEvent (@Nonnull final IEventType aEventType)
   {
-    this (aEventType, IAggregator.createUseFirst ());
+    this (aEventType, x -> CollectionHelper.getFirstElement (x));
   }
 
   /**

@@ -30,7 +30,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.aggregate.IAggregator;
+import com.helger.commons.collection.CollectionHelper;
 import com.helger.commons.exception.mock.MockRuntimeException;
 import com.helger.event.BaseEvent;
 import com.helger.event.EventTypeRegistry;
@@ -96,11 +96,11 @@ public final class SyncFuncTest
       });
 
       // Trigger all 3 observers - first result counts
-      Object ret = mgr.triggerSynchronous (new BaseEvent (EV_TYPE, IAggregator.createUseFirst ()));
+      Object ret = mgr.triggerSynchronous (new BaseEvent (EV_TYPE, x -> CollectionHelper.getFirstElement (x)));
       assertEquals (Integer.valueOf (2), ret);
 
       // Trigger all 3 observers - last result counts
-      ret = mgr.triggerSynchronous (new BaseEvent (EV_TYPE, IAggregator.createUseLast ()));
+      ret = mgr.triggerSynchronous (new BaseEvent (EV_TYPE, x -> CollectionHelper.getLastElement (x)));
       assertTrue (ret instanceof EventObservingExceptionWrapper);
     }
   }

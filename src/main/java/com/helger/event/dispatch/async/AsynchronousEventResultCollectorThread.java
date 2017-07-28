@@ -24,8 +24,8 @@ import javax.annotation.Nonnull;
 
 import com.helger.commons.ValueEnforcer;
 import com.helger.commons.aggregate.IAggregator;
-import com.helger.commons.collection.ext.CommonsVector;
-import com.helger.commons.collection.ext.ICommonsList;
+import com.helger.commons.collection.impl.CommonsVector;
+import com.helger.commons.collection.impl.ICommonsList;
 
 public final class AsynchronousEventResultCollectorThread extends Thread implements Consumer <Object>
 {

@@ -23,10 +23,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 
-import com.helger.commons.scope.mgr.EScope;
-import com.helger.commons.scope.mock.ScopeTestRule;
-import com.helger.commons.thread.ThreadHelper;
+import com.helger.commons.concurrent.ThreadHelper;
 import com.helger.event.BaseEvent;
+import com.helger.scope.mgr.EScope;
+import com.helger.scope.mock.ScopeTestRule;
 
 /**
  * JUnit test for class {@link ScopedEventManager}.

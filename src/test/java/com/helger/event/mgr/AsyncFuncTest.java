@@ -33,9 +33,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.helger.commons.aggregate.IAggregator;
+import com.helger.commons.concurrent.ThreadHelper;
 import com.helger.commons.exception.mock.MockRuntimeException;
-import com.helger.commons.thread.ThreadHelper;
 import com.helger.event.BaseEvent;
 import com.helger.event.EventTypeRegistry;
 import com.helger.event.IEvent;
@@ -156,7 +155,7 @@ public final class AsyncFuncTest
       final Consumer <Object> aOverallCB = currentObject -> s_aLogger.info ("Got: " +
                                                                             ((List <?>) currentObject).size () +
                                                                             " results");
-      mgr.triggerAsynchronous (new BaseEvent (EV_TYPE, IAggregator.createUseAll ()), aOverallCB);
+      mgr.triggerAsynchronous (new BaseEvent (EV_TYPE, x -> x), aOverallCB);
       aCountDown.await ();
     }
   }
@@ -193,7 +192,7 @@ public final class AsyncFuncTest
       mgr.registerObserver (new MockObserverOnlyOnce ("Welt"));
 
       // trigger for the first time
-      mgr.triggerAsynchronous (new BaseEvent (EV_TYPE, IAggregator.createUseAll ()), currentObject -> {
+      mgr.triggerAsynchronous (new BaseEvent (EV_TYPE, x -> x), currentObject -> {
         assertTrue (currentObject instanceof List <?>);
         // -> expect 2 results
         assertEquals (2, ((List <?>) currentObject).size ());
@@ -201,7 +200,7 @@ public final class AsyncFuncTest
       });
 
       // trigger for the second time - the OnlyOnce should not be contained
-      mgr.triggerAsynchronous (new BaseEvent (EV_TYPE, IAggregator.createUseAll ()), currentObject -> {
+      mgr.triggerAsynchronous (new BaseEvent (EV_TYPE, x -> x), currentObject -> {
         assertTrue (currentObject instanceof List <?>);
         // -> expect 1 result
         assertEquals (1, ((List <?>) currentObject).size ());
@@ -209,7 +208,7 @@ public final class AsyncFuncTest
       });
 
       // trigger for the third time
-      mgr.triggerAsynchronous (new BaseEvent (EV_TYPE, IAggregator.createUseAll ()), currentObject -> {
+      mgr.triggerAsynchronous (new BaseEvent (EV_TYPE, x -> x), currentObject -> {
         assertTrue (currentObject instanceof List <?>);
         // -> expect 1 result
         assertEquals (1, ((List <?>) currentObject).size ());

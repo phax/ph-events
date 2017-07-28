@@ -18,9 +18,9 @@ package com.helger.event.scopes;
 
 import javax.annotation.Nonnull;
 
-import com.helger.commons.scope.IScope;
-import com.helger.commons.scope.IScopeDestructionAware;
 import com.helger.event.mgr.EventManager;
+import com.helger.scope.IScope;
+import com.helger.scope.IScopeDestructionAware;
 
 /**
  * Wraps the main event manager so that it becomes scope destruction aware

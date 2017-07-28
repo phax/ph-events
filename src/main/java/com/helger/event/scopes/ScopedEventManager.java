@@ -25,13 +25,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.helger.commons.ValueEnforcer;
-import com.helger.commons.collection.ext.CommonsArrayList;
-import com.helger.commons.collection.ext.ICommonsList;
-import com.helger.commons.scope.IScope;
-import com.helger.commons.scope.mgr.EScope;
+import com.helger.commons.collection.impl.CommonsArrayList;
+import com.helger.commons.collection.impl.ICommonsList;
 import com.helger.commons.state.EChange;
 import com.helger.event.IEvent;
 import com.helger.event.observer.IEventObserver;
+import com.helger.scope.IScope;
+import com.helger.scope.mgr.EScope;
 
 /**
  * Scope aware event manager for non-web scopes.
@@ -69,7 +69,7 @@ public final class ScopedEventManager
   {
     ValueEnforcer.notNull (aScope, "Scope");
 
-    return aScope.getCastedAttribute (ATTR_EVENT_MANAGER);
+    return aScope.attrs ().getCastedValue (ATTR_EVENT_MANAGER);
   }
 
   @Nonnull
@@ -78,16 +78,8 @@ public final class ScopedEventManager
     ValueEnforcer.notNull (aScope, "Scope");
 
     // Does the scope already contain an event manager?
-    InternalScopedEventManager aEventMgr = _getEventMgr (aScope);
-    if (aEventMgr == null)
-    {
-      // Build the event manager
-      aEventMgr = new InternalScopedEventManager ();
-
-      // put it in scope and register the cleanup handler
-      aScope.setAttribute (ATTR_EVENT_MANAGER, aEventMgr);
-    }
-    return aEventMgr;
+    return (InternalScopedEventManager) aScope.attrs ().computeIfAbsent (ATTR_EVENT_MANAGER,
+                                                                         k -> new InternalScopedEventManager ());
   }
 
   @Nonnull
