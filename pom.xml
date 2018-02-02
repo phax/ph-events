@@ -28,7 +28,7 @@
   <version>6.0.0-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <name>ph-events</name>
-  <description>In-process Javaevent library</description>
+  <description>In-process Java event library</description>
   <url>https://github.com/phax/ph-events</url>
   <inceptionYear>2015</inceptionYear>
   <licenses>
@@ -61,7 +61,7 @@
       <dependency>
         <groupId>com.helger</groupId>
         <artifactId>ph-commons-parent-pom</artifactId>
-        <version>9.0.0</version>
+        <version>9.0.1</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
