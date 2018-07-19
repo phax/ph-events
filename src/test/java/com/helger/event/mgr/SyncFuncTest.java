@@ -42,7 +42,7 @@ import com.helger.event.observer.exception.EventObservingExceptionWrapper;
 public final class SyncFuncTest
 {
   private static final IEventType EV_TYPE = EventTypeRegistry.createEventType (SyncFuncTest.class.getName ());
-  private static final Logger s_aLogger = LoggerFactory.getLogger (SyncFuncTest.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (SyncFuncTest.class);
 
   @Test
   public void testUnidirectionalUnicastEventManager ()
@@ -55,7 +55,7 @@ public final class SyncFuncTest
         {
           assertNull (aResultCallback);
           assertEquals (EV_TYPE, aEvent.getEventType ());
-          s_aLogger.info ("onEvent uni sync");
+          LOGGER.info ("onEvent uni sync");
         }
       });
       mgr.triggerSynchronous (new BaseEvent (EV_TYPE));
@@ -73,7 +73,7 @@ public final class SyncFuncTest
         {
           assertNull (aResultCallback);
           assertEquals (EV_TYPE, aEvent.getEventType ());
-          s_aLogger.info ("onEvent multi sync 1");
+          LOGGER.info ("onEvent multi sync 1");
         }
       });
       mgr.registerObserver (new AbstractEventObserver (true, EV_TYPE)
@@ -82,7 +82,7 @@ public final class SyncFuncTest
         {
           assertNotNull (aResultCallback);
           assertEquals (EV_TYPE, aEvent.getEventType ());
-          s_aLogger.info ("onEvent multi sync 2");
+          LOGGER.info ("onEvent multi sync 2");
           aResultCallback.accept (Integer.valueOf (2));
         }
       });
@@ -116,7 +116,7 @@ public final class SyncFuncTest
         {
           assertNull (aResultCallback);
           assertEquals (EV_TYPE, aEvent.getEventType ());
-          s_aLogger.info ("onEvent multi sync 1");
+          LOGGER.info ("onEvent multi sync 1");
         }
       });
       mgr.registerObserver (new AbstractEventObserver (false, EV_TYPE)
@@ -125,7 +125,7 @@ public final class SyncFuncTest
         {
           assertNull (aResultCallback);
           assertEquals (EV_TYPE, aEvent.getEventType ());
-          s_aLogger.info ("onEvent multi sync 2");
+          LOGGER.info ("onEvent multi sync 2");
         }
       });
       mgr.registerObserver (new AbstractEventObserver (true, EV_TYPE)
@@ -134,7 +134,7 @@ public final class SyncFuncTest
         {
           assertNotNull (aResultCallback);
           assertEquals (EV_TYPE, aEvent.getEventType ());
-          s_aLogger.info ("onEvent multi sync 3");
+          LOGGER.info ("onEvent multi sync 3");
           aResultCallback.accept ("My return value");
         }
       });
@@ -147,8 +147,8 @@ public final class SyncFuncTest
         }
       });
       final Object ret = mgr.triggerSynchronous (new BaseEvent (EV_TYPE));
-      s_aLogger.info ("Trigger sync result = " + ret);
-      mgr.triggerAsynchronous (new BaseEvent (EV_TYPE), r -> s_aLogger.info ("Trigger result = " + r));
+      LOGGER.info ("Trigger sync result = " + ret);
+      mgr.triggerAsynchronous (new BaseEvent (EV_TYPE), r -> LOGGER.info ("Trigger result = " + r));
     }
   }
 }

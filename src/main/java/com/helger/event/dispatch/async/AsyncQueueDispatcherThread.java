@@ -56,7 +56,7 @@ final class AsyncQueueDispatcherThread extends Thread
     }
   }
 
-  private static final Logger s_aLogger = LoggerFactory.getLogger (AsyncQueueDispatcherThread.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (AsyncQueueDispatcherThread.class);
   private final BlockingQueue <EventItem> m_aEventQueue = new LinkedBlockingQueue <> ();
   private final IEventObservingExceptionCallback m_aExceptionCallback;
 
@@ -78,7 +78,7 @@ final class AsyncQueueDispatcherThread extends Thread
     }
     catch (final InterruptedException ex)
     {
-      s_aLogger.error ("Failed to add event to queue", ex);
+      LOGGER.error ("Failed to add event to queue", ex);
       return ESuccess.FAILURE;
     }
   }
@@ -104,7 +104,7 @@ final class AsyncQueueDispatcherThread extends Thread
         catch (final Throwable t)
         {
           m_aExceptionCallback.handleObservingException (t);
-          s_aLogger.error ("Failed to asynchronously notify " +
+          LOGGER.error ("Failed to asynchronously notify " +
                            aEventObserver +
                            " on " +
                            aEvent +
@@ -125,7 +125,7 @@ final class AsyncQueueDispatcherThread extends Thread
     {
       // OK, gracefully stopped
       if (false)
-        s_aLogger.error ("Failed to execute queued event dispatcher thread", ex);
+        LOGGER.error ("Failed to execute queued event dispatcher thread", ex);
     }
   }
 }

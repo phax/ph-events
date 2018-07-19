@@ -40,7 +40,7 @@ import com.helger.web.scope.mgr.EWebScope;
  */
 public final class WebScopedEventManager
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (WebScopedEventManager.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (WebScopedEventManager.class);
   private static final String ATTR_EVENT_MANAGER = WebScopedEventManager.class.getName ();
 
   private WebScopedEventManager ()
@@ -87,7 +87,7 @@ public final class WebScopedEventManager
     IWebScope aScope = _getScope (eScope, false);
     if (aScope == null)
     {
-      s_aLogger.warn ("Creating scope of type " + eScope + " because of event observer registration");
+      LOGGER.warn ("Creating scope of type " + eScope + " because of event observer registration");
       aScope = _getScope (eScope, true);
     }
     return registerObserver (aScope, aObserver);

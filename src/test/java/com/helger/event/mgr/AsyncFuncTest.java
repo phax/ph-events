@@ -73,7 +73,7 @@ public final class AsyncFuncTest
   }
 
   private static final IEventType EV_TYPE = EventTypeRegistry.createEventType (AsyncFuncTest.class.getName ());
-  private static final Logger s_aLogger = LoggerFactory.getLogger (AsyncFuncTest.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (AsyncFuncTest.class);
 
   @Test
   public void testUnidirectionalUnicastEventManager ()
@@ -108,7 +108,7 @@ public final class AsyncFuncTest
           aCountDown.countDown ();
         }
       });
-      final Consumer <Object> aOverallCB = currentObject -> s_aLogger.info ("Got: " + currentObject);
+      final Consumer <Object> aOverallCB = currentObject -> LOGGER.info ("Got: " + currentObject);
       mgr.triggerAsynchronous (new BaseEvent (EV_TYPE), aOverallCB);
       aCountDown.await ();
 
@@ -152,7 +152,7 @@ public final class AsyncFuncTest
           }
         });
 
-      final Consumer <Object> aOverallCB = currentObject -> s_aLogger.info ("Got: " +
+      final Consumer <Object> aOverallCB = currentObject -> LOGGER.info ("Got: " +
                                                                             ((List <?>) currentObject).size () +
                                                                             " results");
       mgr.triggerAsynchronous (new BaseEvent (EV_TYPE, x -> x), aOverallCB);
@@ -196,7 +196,7 @@ public final class AsyncFuncTest
         assertTrue (currentObject instanceof List <?>);
         // -> expect 2 results
         assertEquals (2, ((List <?>) currentObject).size ());
-        s_aLogger.info ("1. Got: " + currentObject);
+        LOGGER.info ("1. Got: " + currentObject);
       });
 
       // trigger for the second time - the OnlyOnce should not be contained
@@ -204,7 +204,7 @@ public final class AsyncFuncTest
         assertTrue (currentObject instanceof List <?>);
         // -> expect 1 result
         assertEquals (1, ((List <?>) currentObject).size ());
-        s_aLogger.info ("2. Got: " + currentObject);
+        LOGGER.info ("2. Got: " + currentObject);
       });
 
       // trigger for the third time
@@ -212,7 +212,7 @@ public final class AsyncFuncTest
         assertTrue (currentObject instanceof List <?>);
         // -> expect 1 result
         assertEquals (1, ((List <?>) currentObject).size ());
-        s_aLogger.info ("3. Got: " + currentObject);
+        LOGGER.info ("3. Got: " + currentObject);
       });
     }
   }

@@ -38,7 +38,7 @@ import com.helger.event.observerqueue.IEventObserverQueue;
 
 public class EventManager implements IEventManager
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (EventManager.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (EventManager.class);
 
   private final IEventObserverQueue m_aObserverQueue;
   private final ISynchronousEventDispatcher m_aSyncEventDispatcher;
@@ -68,8 +68,8 @@ public class EventManager implements IEventManager
     m_aSyncEventDispatcher = aSyncEventDispatcher;
     m_aAsyncEventDispatcher = aAsyncEventDispatcher;
 
-    if (s_aLogger.isDebugEnabled ())
-      s_aLogger.debug ("EventManager created");
+    if (LOGGER.isDebugEnabled ())
+      LOGGER.debug ("EventManager created");
   }
 
   @Nonnull
@@ -107,8 +107,8 @@ public class EventManager implements IEventManager
     m_aSyncEventDispatcher.stop ();
     m_aAsyncEventDispatcher.stop ();
 
-    if (s_aLogger.isDebugEnabled ())
-      s_aLogger.debug ("EventManager closed");
+    if (LOGGER.isDebugEnabled ())
+      LOGGER.debug ("EventManager closed");
   }
 
   @Nullable
@@ -120,8 +120,8 @@ public class EventManager implements IEventManager
     if (!aObserverQueue.isEmpty ())
     {
       // At least one observer is present
-      if (s_aLogger.isDebugEnabled ())
-        s_aLogger.debug ("EventManager triggerSynchronous " + aEvent);
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("EventManager triggerSynchronous " + aEvent);
 
       aObserverQueue.beforeDispatch ();
       ret = getSyncEventDispatcher ().dispatch (aEvent, aObserverQueue);
@@ -137,8 +137,8 @@ public class EventManager implements IEventManager
     if (!aObserverQueue.isEmpty ())
     {
       // At least one observer is present
-      if (s_aLogger.isDebugEnabled ())
-        s_aLogger.debug ("EventManager triggerAsynchronous " + aEvent + " -- " + aOverallResultConsumer);
+      if (LOGGER.isDebugEnabled ())
+        LOGGER.debug ("EventManager triggerAsynchronous " + aEvent + " -- " + aOverallResultConsumer);
 
       aObserverQueue.beforeDispatch ();
       getAsyncEventDispatcher ().dispatch (aEvent, aObserverQueue, aOverallResultConsumer);

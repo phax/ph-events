@@ -41,7 +41,7 @@ import com.helger.event.observerqueue.IEventObserverQueue;
 
 public class SynchronousEventDispatcher extends AbstractEventDispatcher implements ISynchronousEventDispatcher
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (SynchronousEventDispatcher.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (SynchronousEventDispatcher.class);
 
   public SynchronousEventDispatcher (@Nullable final IEventObservingExceptionCallback aExceptionHandler)
   {
@@ -90,7 +90,7 @@ public class SynchronousEventDispatcher extends AbstractEventDispatcher implemen
         catch (final Throwable t)
         {
           getExceptionCallback ().handleObservingException (t);
-          s_aLogger.error ("Failed to notify " +
+          LOGGER.error ("Failed to notify " +
                            aObserver +
                            " on " +
                            aEvent +

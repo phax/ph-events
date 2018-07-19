@@ -40,7 +40,7 @@ import com.helger.scope.mgr.EScope;
  */
 public final class ScopedEventManager
 {
-  private static final Logger s_aLogger = LoggerFactory.getLogger (ScopedEventManager.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger (ScopedEventManager.class);
   private static final String ATTR_EVENT_MANAGER = ScopedEventManager.class.getName ();
 
   private ScopedEventManager ()
@@ -88,7 +88,7 @@ public final class ScopedEventManager
     IScope aScope = _getScope (eScope, false);
     if (aScope == null)
     {
-      s_aLogger.warn ("Creating scope of type " + eScope + " because of event observer registration");
+      LOGGER.warn ("Creating scope of type " + eScope + " because of event observer registration");
       aScope = _getScope (eScope, true);
     }
     return registerObserver (aScope, aObserver);
