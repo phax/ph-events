@@ -55,7 +55,8 @@ public final class AsyncFuncTest
 
     public void onEvent (@Nonnull final IEvent aEvent, @Nullable final Consumer <Object> aResultCallback)
     {
-      aResultCallback.accept (m_sText);
+      if (aResultCallback != null)
+        aResultCallback.accept (m_sText);
     }
   }
 
@@ -153,8 +154,8 @@ public final class AsyncFuncTest
         });
 
       final Consumer <Object> aOverallCB = currentObject -> LOGGER.info ("Got: " +
-                                                                            ((List <?>) currentObject).size () +
-                                                                            " results");
+                                                                         ((List <?>) currentObject).size () +
+                                                                         " results");
       mgr.triggerAsynchronous (new BaseEvent (EV_TYPE, x -> x), aOverallCB);
       aCountDown.await ();
     }
