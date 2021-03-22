@@ -53,7 +53,7 @@ public final class EventObserverQueueSingleElement implements IEventObserverQueu
   {
     ValueEnforcer.notNull (aObserver, "Observer");
 
-    return m_aRWLock.writeLocked ( () -> {
+    return m_aRWLock.writeLockedGet ( () -> {
       if (!EqualsHelper.equals (m_aObserver, aObserver))
         return EChange.UNCHANGED;
       m_aObserver = null;
@@ -65,12 +65,12 @@ public final class EventObserverQueueSingleElement implements IEventObserverQueu
   @ReturnsMutableCopy
   public ICommonsList <IEventObserver> getAllObservers ()
   {
-    return m_aRWLock.readLocked ( () -> new CommonsArrayList<> (m_aObserver));
+    return m_aRWLock.readLockedGet ( () -> new CommonsArrayList <> (m_aObserver));
   }
 
   public boolean isEmpty ()
   {
-    return m_aRWLock.readLocked ( () -> m_aObserver == null);
+    return m_aRWLock.readLockedBoolean ( () -> m_aObserver == null);
   }
 
   @Override

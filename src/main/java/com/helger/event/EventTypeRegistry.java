@@ -35,9 +35,9 @@ import com.helger.commons.concurrent.SimpleReadWriteLock;
 @ThreadSafe
 public final class EventTypeRegistry
 {
-  private static final SimpleReadWriteLock s_aRWLock = new SimpleReadWriteLock ();
-  @GuardedBy ("s_aRWLock")
-  private static final ICommonsMap <String, EventType> s_aMap = new CommonsHashMap <> ();
+  private static final SimpleReadWriteLock RW_LOCK = new SimpleReadWriteLock ();
+  @GuardedBy ("RW_LOCK")
+  private static final ICommonsMap <String, EventType> MAP = new CommonsHashMap <> ();
 
   private EventTypeRegistry ()
   {}
@@ -45,12 +45,12 @@ public final class EventTypeRegistry
   @Nonnull
   public static IEventType createEventType (@Nonnull @Nonempty final String sName)
   {
-    return s_aRWLock.writeLocked ( () -> {
-      if (s_aMap.containsKey (sName))
+    return RW_LOCK.writeLockedGet ( () -> {
+      if (MAP.containsKey (sName))
         throw new IllegalArgumentException ("An event type with the name '" + sName + "' already exists!");
 
       final EventType aEventType = new EventType (sName);
-      s_aMap.put (sName, aEventType);
+      MAP.put (sName, aEventType);
       return aEventType;
     });
   }
@@ -59,6 +59,6 @@ public final class EventTypeRegistry
   @ReturnsMutableCopy
   public static ICommonsMap <String, ? extends IEventType> getAllEventTypes ()
   {
-    return s_aRWLock.readLocked ( () -> s_aMap.getClone ());
+    return RW_LOCK.readLockedGet (MAP::getClone);
   }
 }

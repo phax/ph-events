@@ -80,12 +80,9 @@ public class AsynchronousEventDispatcher extends AbstractEventDispatcher impleme
       }
 
       // Iterate all handling observers
-      for (final Map.Entry <IEventObserver, EEventObserverHandlerType> aEntry : aHandlingInfo.getObservers ()
-                                                                                             .entrySet ())
+      for (final Map.Entry <IEventObserver, EEventObserverHandlerType> aEntry : aHandlingInfo.getObservers ().entrySet ())
       {
-        m_aQueueThread.addEventToQueue (aEvent,
-                                        aEntry.getKey (),
-                                        aEntry.getValue ().hasReturnValue () ? aLocalResultCollector : null);
+        m_aQueueThread.addEventToQueue (aEvent, aEntry.getKey (), aEntry.getValue ().hasReturnValue () ? aLocalResultCollector : null);
       }
     });
   }
@@ -94,7 +91,7 @@ public class AsynchronousEventDispatcher extends AbstractEventDispatcher impleme
   @Nonnull
   public EChange stop ()
   {
-    return m_aLock.locked ( () -> {
+    return m_aLock.lockedGet ( () -> {
       // Interrupt the dispatcher thread
       if (m_aQueueThread.isInterrupted ())
         return EChange.UNCHANGED;

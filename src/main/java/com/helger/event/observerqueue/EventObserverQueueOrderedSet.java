@@ -40,7 +40,7 @@ import com.helger.event.observer.IEventObserver;
 public class EventObserverQueueOrderedSet implements IEventObserverQueue
 {
   private final SimpleReadWriteLock m_aRWLock = new SimpleReadWriteLock ();
-  private final ICommonsOrderedSet <IEventObserver> m_aSet = new CommonsLinkedHashSet<> ();
+  private final ICommonsOrderedSet <IEventObserver> m_aSet = new CommonsLinkedHashSet <> ();
 
   public EventObserverQueueOrderedSet ()
   {}
@@ -50,7 +50,7 @@ public class EventObserverQueueOrderedSet implements IEventObserverQueue
   {
     ValueEnforcer.notNull (aObserver, "Observer");
 
-    return EChange.valueOf (m_aRWLock.writeLocked ( () -> m_aSet.add (aObserver)));
+    return m_aRWLock.writeLockedGet ( () -> m_aSet.addObject (aObserver));
   }
 
   @Nonnull
@@ -58,19 +58,19 @@ public class EventObserverQueueOrderedSet implements IEventObserverQueue
   {
     ValueEnforcer.notNull (aObserver, "Observer");
 
-    return EChange.valueOf (m_aRWLock.writeLocked ( () -> m_aSet.remove (aObserver)));
+    return m_aRWLock.writeLockedGet ( () -> m_aSet.removeObject (aObserver));
   }
 
   public boolean isEmpty ()
   {
-    return m_aRWLock.readLocked ( () -> m_aSet.isEmpty ());
+    return m_aRWLock.readLockedBoolean ( () -> m_aSet.isEmpty ());
   }
 
   @Nonnull
   @ReturnsMutableCopy
   public ICommonsList <IEventObserver> getAllObservers ()
   {
-    return m_aRWLock.readLocked ( () -> m_aSet.getCopyAsList ());
+    return m_aRWLock.readLockedGet ( () -> m_aSet.getCopyAsList ());
   }
 
   @Override

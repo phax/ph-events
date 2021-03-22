@@ -44,7 +44,7 @@ import com.helger.event.observer.IEventObserver;
 public final class EventObserverQueueWeakSet implements IEventObserverQueue
 {
   private final SimpleReadWriteLock m_aRWLock = new SimpleReadWriteLock ();
-  private final ICommonsMap <IEventObserver, Boolean> m_aWeakMap = new CommonsWeakHashMap<> ();
+  private final ICommonsMap <IEventObserver, Boolean> m_aWeakMap = new CommonsWeakHashMap <> ();
 
   public EventObserverQueueWeakSet ()
   {}
@@ -54,7 +54,7 @@ public final class EventObserverQueueWeakSet implements IEventObserverQueue
   {
     ValueEnforcer.notNull (aObserver, "Observer");
 
-    return EChange.valueOf (m_aRWLock.writeLocked ( () -> m_aWeakMap.put (aObserver, Boolean.TRUE) == null));
+    return EChange.valueOf (m_aRWLock.writeLockedBoolean ( () -> m_aWeakMap.put (aObserver, Boolean.TRUE) == null));
   }
 
   @Nonnull
@@ -62,12 +62,12 @@ public final class EventObserverQueueWeakSet implements IEventObserverQueue
   {
     ValueEnforcer.notNull (aObserver, "Observer");
 
-    return EChange.valueOf (m_aRWLock.writeLocked ( () -> m_aWeakMap.remove (aObserver) != null));
+    return m_aRWLock.writeLockedGet ( () -> m_aWeakMap.removeObject (aObserver));
   }
 
   public boolean isEmpty ()
   {
-    return m_aRWLock.readLocked ( () -> m_aWeakMap.isEmpty ());
+    return m_aRWLock.readLockedBoolean ( () -> m_aWeakMap.isEmpty ());
 
   }
 
@@ -75,7 +75,7 @@ public final class EventObserverQueueWeakSet implements IEventObserverQueue
   @ReturnsMutableCopy
   public ICommonsList <IEventObserver> getAllObservers ()
   {
-    return m_aRWLock.readLocked ( () -> new CommonsArrayList<> (m_aWeakMap.keySet ()));
+    return m_aRWLock.readLockedGet ( () -> new CommonsArrayList <> (m_aWeakMap.keySet ()));
   }
 
   @Override
